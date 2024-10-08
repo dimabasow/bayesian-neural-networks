@@ -32,34 +32,38 @@ class BayesianLinear(BayesianModule):
             self.register_parameter("bias", None)
             self.bias_kl = self.zero
             self.forward = self.forward_bias_false
-    
+
     def reset_parameters(self) -> None:
         self.weight.reset_parameters()
         if self.bias is not None:
             self.bias.reset_parameters()
-    
-    def forward_bias_true(self, x: torch.Tensor) -> None:
+
+    def forward_bias_true(self, x: torch.Tensor) -> torch.Tensor:
         dim_extra = x.shape[:-1]
-        x = x.view(-1, self.in_features)
-        n = x.shape[0]
-        noise = torch.normal(mean=0, std=1, size=(n, self.out_features))
-        bias = self.bias(n).view(-1, self.out_features)
-        y = (
-            x@self.weight.mu
-            + (x@self.weight.sigma)*noise
-            + bias
+        noise = torch.normal(
+            mean=0,
+            std=1,
+            size=(*dim_extra, self.out_features)
         )
-        y = y.view(*dim_extra, self.out_features)
+        sigma = self.bias.sigma
+        gamma = self.bias.gamma
+        bias = sigma * gamma * noise
+        y = self.forward_bias_false(x) + bias
         return y
 
-    def forward_bias_false(self, x: torch.Tensor) -> None:
+    def forward_bias_false(self, x: torch.Tensor) -> torch.Tensor:
         dim_extra = x.shape[:-1]
-        x = x.view(-1, self.in_features)
-        n = x.shape[0]
-        noise = torch.normal(mean=0, std=1, size=(n, self.out_features))
+        noise = torch.normal(
+            mean=0,
+            std=1,
+            size=(*dim_extra, self.out_features)
+        )
+        sigma = self.weight.sigma
+        gamma = self.weight.gamma
+        mu = sigma * gamma
         y = (
-            x@self.weight.mu
-            + (x@self.weight.sigma)*noise
+            x@mu
+            + (x@sigma)*noise
         )
         y = y.view(*dim_extra, self.out_features)
         return y
@@ -71,7 +75,7 @@ class BayesianLinear(BayesianModule):
             device=self.weight.gamma.device,
             dtype=self.weight.gamma.dtype,
         )
-    
+
     @property
     def kl(self) -> torch.Tensor:
         return self.weight_kl + self.bias_kl

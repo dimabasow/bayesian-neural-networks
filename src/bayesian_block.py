@@ -24,12 +24,12 @@ class BayesianBlock(BayesianModule):
         self.gamma = self.gamma.new_zeros(size=self.gamma.shape)
 
     def forward(self, n: int) -> torch.Tensor:
-        w = torch.normal(
+        noise = torch.normal(
             mean=0,
             std=1,
             size=[n] + list(self.size)
         )
-        w = w*self.sigma + self.mu
+        w = self.sigma * (self.gamma + noise)
         return w
 
     @property
@@ -39,10 +39,6 @@ class BayesianBlock(BayesianModule):
     @property
     def sigma(self) -> torch.Tensor:
         return self.softplus(self.rho)
-
-    @property
-    def mu(self) -> torch.Tensor:
-        return self.gamma * self.rho
 
     @property
     def nu(self) -> torch.Tensor:
@@ -55,10 +51,10 @@ class BayesianBlock(BayesianModule):
 
     @property
     def w(self) -> torch.Tensor:
-        w = torch.normal(
+        noise = torch.normal(
             mean=0,
             std=1,
             size=self.size
         )
-        w = w*self.sigma + self.mu
+        w = self.sigma * (self.gamma + noise)
         return w
