@@ -13,16 +13,22 @@ class BayesianBlock(BayesianModule):
         super().__init__()
 
         self.rho = torch.nn.Parameter(
-            torch.ones(size=size, **factory_kwargs)
+            torch.normal(
+                mean=0,
+                std=1,
+                size=size,
+                **factory_kwargs
+            )
         )
         self.gamma = torch.nn.Parameter(
-            torch.zeros(size=size, **factory_kwargs)
+            torch.normal(
+                mean=0,
+                std=1,
+                size=size,
+                **factory_kwargs
+            )
         )
         self.softplus = torch.nn.Softplus()
-
-    def reset_parameters(self) -> None:
-        self.rho = self.rho.new_ones(size=self.rho.shape)
-        self.gamma = self.gamma.new_zeros(size=self.gamma.shape)
 
     def forward(self, n: int) -> torch.Tensor:
         noise = torch.normal(
@@ -36,14 +42,6 @@ class BayesianBlock(BayesianModule):
         return w
 
     @property
-    def device(self) -> torch.types.Device:
-        return self.gamma.device
-
-    @property
-    def dtype(self) -> torch.dtype:
-        return self.gamma.dtype
-
-    @property
     def size(self) -> torch.Size:
         return self.rho.shape
 
@@ -52,13 +50,11 @@ class BayesianBlock(BayesianModule):
         return self.softplus(self.rho)
 
     @property
-    def nu(self) -> torch.Tensor:
-        return torch.log(1 + self.gamma*self.gamma)
-
-    @property
     def kl(self) -> torch.Tensor:
-        nu = self.nu
-        return (nu*nu).sum() / 2
+        gama_pow_2 = self.gamma**2
+        nu = torch.log(1 + gama_pow_2)
+        nu_pow_2 = nu**2
+        return nu_pow_2.sum() / 2
 
     @property
     def w(self) -> torch.Tensor:
@@ -66,7 +62,7 @@ class BayesianBlock(BayesianModule):
             mean=0,
             std=1,
             size=self.size,
-            dtype=self.dtype,
+            dtype=self.rho.dtype,
             device=self.device,
         )
         w = self.sigma * (self.gamma + noise)

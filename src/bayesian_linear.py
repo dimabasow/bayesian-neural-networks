@@ -33,11 +33,6 @@ class BayesianLinear(BayesianModule):
             self.kl_bias = self.zero
             self.forward = self.forward_bias_false
 
-    def reset_parameters(self) -> None:
-        self.weight.reset_parameters()
-        if self.bias is not None:
-            self.bias.reset_parameters()
-
     def forward_bias_true(self, x: torch.Tensor) -> torch.Tensor:
         dim_extra = x.shape[:-1]
         noise = torch.normal(
@@ -71,14 +66,6 @@ class BayesianLinear(BayesianModule):
         )
         y = y.view(*dim_extra, self.out_features)
         return y
-
-    @property
-    def device(self) -> torch.types.Device:
-        return self.weight.device
-
-    @property
-    def dtype(self) -> torch.dtype:
-        return self.weight.dtype
 
     @property
     def zero(self) -> torch.Tensor:
