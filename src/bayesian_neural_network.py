@@ -58,7 +58,7 @@ class BayesianNeuralNetwork(BayesianModule):
         y: torch.Tensor,
         train_size: int,
     ) -> torch.Tensor:
-        loss = self.negative_likelihood(x=x, y=y) + self.kl / train_size
+        loss = self.negative_likelihood(x=x, y=y) + self.get_kl() / train_size
         return loss
 
     def fit(
@@ -73,7 +73,8 @@ class BayesianNeuralNetwork(BayesianModule):
             optimizer.zero_grad()
             self.train()
             loss = self.loss(x=x, y=y, train_size=len(x))
-            loss.backward(retain_graph=True)
+            loss.backward()
             optimizer.step()
             self.log(key="loss", value=loss.item())
+            self.log(key="p_item_average", value=torch.exp(-loss).item())
             self.__count_epoch += 1

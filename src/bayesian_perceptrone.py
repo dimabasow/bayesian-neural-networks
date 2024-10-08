@@ -55,11 +55,10 @@ class BayesianPerceptrone(BayesianModule):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.fcc(x)
 
-    @property
-    def kl(self) -> torch.Tensor:
+    def get_kl(self) -> torch.Tensor:
         for count, item in enumerate(self.weights):
             if count == 0:
-                kl = item.kl
+                kl = item.get_kl()
             else:
-                kl = kl + item.kl
+                kl = kl + item.get_kl()
         return kl

@@ -45,25 +45,12 @@ class BayesianBlock(BayesianModule):
     def size(self) -> torch.Size:
         return self.rho.shape
 
-    @property
-    def sigma(self) -> torch.Tensor:
+    def get_sigma(self) -> torch.Tensor:
         return self.softplus(self.rho)
 
-    @property
-    def kl(self) -> torch.Tensor:
-        gama_pow_2 = self.gamma**2
+    def get_kl(self) -> torch.Tensor:
+        gamma = self.gamma
+        gama_pow_2 = gamma**2
         nu = torch.log(1 + gama_pow_2)
         nu_pow_2 = nu**2
         return nu_pow_2.sum() / 2
-
-    @property
-    def w(self) -> torch.Tensor:
-        noise = torch.normal(
-            mean=0,
-            std=1,
-            size=self.size,
-            dtype=self.rho.dtype,
-            device=self.device,
-        )
-        w = self.sigma * (self.gamma + noise)
-        return w

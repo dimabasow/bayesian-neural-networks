@@ -24,21 +24,25 @@ class BayesianResNet(BayesianModule):
             raise NotImplementedError(
                 f"Функция активации {f_act} не импелементирована"
             )
+        in_features = dim_in
+        out_features = dim_in
         for i in range(n_layers):
             for k in range(i):
                 if k == 0:
                     in_features = dim_in
                 else:
                     in_features = dim_hidden
-                if i == n_layers - 1:
-                    out_features = dim_out
-                else:
-                    out_features = dim_hidden
+                out_features = dim_hidden
                 self.weights[f"w_{k}_{i}"] = BayesianLinear(
                     in_features=in_features,
                     out_features=out_features,
-                    bias=False,
+                    bias=True,
                 )
+        self.weights["w_out"] = BayesianLinear(
+            in_features=out_features,
+            out_features=dim_out,
+            bias=True
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         z = [x]
@@ -51,13 +55,12 @@ class BayesianResNet(BayesianModule):
                 if k == i-1:
                     value = self.f_act(value)
                     z.append(value)
-        return z[-1]
+        return self.weights["w_out"](z[-1])
 
-    @property
-    def kl(self) -> torch.Tensor:
+    def get_kl(self) -> torch.Tensor:
         for count, key in enumerate(self.weights):
             if count == 0:
-                kl = self.weights[key].kl
+                kl = self.weights[key].get_kl()
             else:
-                kl = kl + self.weights[key].kl
+                kl = kl + self.weights[key].get_kl()
         return kl

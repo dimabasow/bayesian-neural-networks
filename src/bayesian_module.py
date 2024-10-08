@@ -3,9 +3,9 @@ import torch
 
 
 class BayesianModule(torch.nn.Module, ABC):
-    @property
+
     @abstractmethod
-    def kl(self) -> torch.Tensor:
+    def get_kl(self) -> torch.Tensor:
         ...
 
     @property
