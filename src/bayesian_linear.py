@@ -9,8 +9,8 @@ class BayesianLinear(BayesianModule):
         in_features: int,
         out_features: int,
         bias: bool = True,
-        device=None,
-        dtype=None,
+        device: torch.types.Device | None = None,
+        dtype: torch.dtype | None = None,
     ) -> None:
         factory_kwargs = {'device': device, 'dtype': dtype}
         super().__init__()
@@ -20,17 +20,17 @@ class BayesianLinear(BayesianModule):
             size=(in_features, out_features),
             **factory_kwargs,
         )
-        self.weight_kl = self.weight.kl
+        self.kl_weight = self.weight.kl
         if bias:
             self.bias = BayesianBlock(
                 size=(out_features,),
                 **factory_kwargs,
             )
-            self.bias_kl = self.bias.kl
+            self.kl_bias = self.bias.kl
             self.forward = self.forward_bias_true
         else:
             self.register_parameter("bias", None)
-            self.bias_kl = self.zero
+            self.kl_bias = self.zero
             self.forward = self.forward_bias_false
 
     def reset_parameters(self) -> None:
@@ -43,7 +43,9 @@ class BayesianLinear(BayesianModule):
         noise = torch.normal(
             mean=0,
             std=1,
-            size=(*dim_extra, self.out_features)
+            size=(*dim_extra, self.out_features),
+            dtype=self.dtype,
+            device=self.device,
         )
         sigma = self.bias.sigma
         gamma = self.bias.gamma
@@ -56,7 +58,9 @@ class BayesianLinear(BayesianModule):
         noise = torch.normal(
             mean=0,
             std=1,
-            size=(*dim_extra, self.out_features)
+            size=(*dim_extra, self.out_features),
+            dtype=self.dtype,
+            device=self.device,
         )
         sigma = self.weight.sigma
         gamma = self.weight.gamma
@@ -69,13 +73,21 @@ class BayesianLinear(BayesianModule):
         return y
 
     @property
+    def device(self) -> torch.types.Device:
+        return self.weight.device
+
+    @property
+    def dtype(self) -> torch.dtype:
+        return self.weight.dtype
+
+    @property
     def zero(self) -> torch.Tensor:
         return torch.zeros(
             size=(),
-            device=self.weight.gamma.device,
-            dtype=self.weight.gamma.dtype,
+            device=self.device,
+            dtype=self.dtype,
         )
 
     @property
     def kl(self) -> torch.Tensor:
-        return self.weight_kl + self.bias_kl
+        return self.kl_weight + self.kl_bias

@@ -1,4 +1,5 @@
 import torch
+import torch.types
 from .bayesian_module import BayesianModule
 
 
@@ -27,10 +28,20 @@ class BayesianBlock(BayesianModule):
         noise = torch.normal(
             mean=0,
             std=1,
-            size=[n] + list(self.size)
+            size=[n] + list(self.size),
+            dtype=self.dtype,
+            device=self.device,
         )
         w = self.sigma * (self.gamma + noise)
         return w
+
+    @property
+    def device(self) -> torch.types.Device:
+        return self.gamma.device
+
+    @property
+    def dtype(self) -> torch.dtype:
+        return self.gamma.dtype
 
     @property
     def size(self) -> torch.Size:
@@ -54,7 +65,9 @@ class BayesianBlock(BayesianModule):
         noise = torch.normal(
             mean=0,
             std=1,
-            size=self.size
+            size=self.size,
+            dtype=self.dtype,
+            device=self.device,
         )
         w = self.sigma * (self.gamma + noise)
         return w

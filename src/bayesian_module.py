@@ -7,3 +7,8 @@ class BayesianModule(torch.nn.Module, ABC):
     @abstractmethod
     def kl(self) -> torch.Tensor:
         ...
+
+    @property
+    @abstractmethod
+    def device(self) -> torch.types.Device:
+        ...
