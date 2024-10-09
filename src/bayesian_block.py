@@ -13,17 +13,13 @@ class BayesianBlock(BayesianModule):
         super().__init__()
 
         self.rho = torch.nn.Parameter(
-            torch.normal(
-                mean=0,
-                std=1,
+            torch.ones(
                 size=size,
                 **factory_kwargs
             )
         )
         self.gamma = torch.nn.Parameter(
-            torch.normal(
-                mean=0,
-                std=1,
+            torch.zeros(
                 size=size,
                 **factory_kwargs
             )
