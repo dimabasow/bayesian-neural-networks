@@ -1,6 +1,6 @@
 import torch
 import torch.types
-from .bayesian_module import BayesianModule
+from src.nn.base import BayesianModule
 
 
 class BayesianBlock(BayesianModule):

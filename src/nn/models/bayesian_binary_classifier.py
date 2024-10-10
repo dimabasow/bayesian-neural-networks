@@ -1,6 +1,6 @@
 from typing import Literal
 import torch
-from src import BayesianResNet, BayesianNeuralNetwork
+from src.nn import BayesianNeuralNetwork, BayesianResNet
 
 
 class BayesianBincaryClassifier(BayesianNeuralNetwork):

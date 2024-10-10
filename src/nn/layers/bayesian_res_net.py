@@ -1,6 +1,7 @@
 from typing import Literal
 import torch
-from src import BayesianLinear, BayesianModule
+from src.nn.base import BayesianModule
+from src.nn.layers import BayesianLinear
 
 
 class BayesianResNet(BayesianModule):

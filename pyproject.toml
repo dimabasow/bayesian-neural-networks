@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "bayesian-neural-networks"
+version = "0.1.0"
+description = ""
+authors = ["Basov Dmitriy"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.3"
+torch = {version = "^2.4.1+cu124", source = "pytorch_cu124"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[[tool.poetry.source]]
+name = "pytorch_cu124"
+url = "https://download.pytorch.org/whl/cu124"
+priority = "explicit"

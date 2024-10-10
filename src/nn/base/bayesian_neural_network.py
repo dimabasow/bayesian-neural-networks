@@ -1,11 +1,11 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 import torch
 import copy
 import pandas as pd
-from src import BayesianModule
+from src.nn.base import BayesianModule
 
 
-class BayesianNeuralNetwork(BayesianModule):
+class BayesianNeuralNetwork(BayesianModule, ABC):
 
     @abstractmethod
     def __init__(self):

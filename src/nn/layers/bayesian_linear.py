@@ -1,6 +1,5 @@
 import torch
-from .bayesian_module import BayesianModule
-from .bayesian_block import BayesianBlock
+from src.nn.base import BayesianModule, BayesianBlock
 
 
 class BayesianLinear(BayesianModule):
