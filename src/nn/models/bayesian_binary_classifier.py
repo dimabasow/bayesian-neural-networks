@@ -29,6 +29,10 @@ class BayesianBincaryClassifier(BayesianNeuralNetwork):
         )
         self.loss_fn = torch.nn.BCEWithLogitsLoss(reduction="mean")
 
+    def scale_shift_init(self, x: torch.Tensor):
+        self.shift = torch.nn.Parameter(-x.mean(dim=0))
+        self.scale = torch.nn.Parameter(1 / x.std(dim=0))
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.resnet((x + self.shift) * self.scale)
 

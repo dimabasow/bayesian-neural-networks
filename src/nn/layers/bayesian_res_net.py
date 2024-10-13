@@ -27,12 +27,13 @@ class BayesianResNet(BayesianModule):
                 f"Функция активации {f_act} не импелементирована"
             )
         for i in range(n_layers):
+            i += 1
             for k in range(i):
                 if k == 0:
                     in_features = dim_in
                 else:
                     in_features = dim_hidden
-                if i == n_layers - 1:
+                if i == n_layers:
                     out_features = dim_out
                 else:
                     out_features = dim_hidden
@@ -45,13 +46,14 @@ class BayesianResNet(BayesianModule):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         z = [x]
         for i in range(self.n_layers):
+            i += 1
             for k in range(i):
                 if k == 0:
                     value = self.weights[f"w_{k}_{i}"](z[k])
                 else:
                     value = value + self.weights[f"w_{k}_{i}"](z[k])
                 if k == i-1:
-                    if i != self.n_layers - 1:
+                    if i != self.n_layers:
                         value = self.f_act(value)
                     z.append(value)
         return z[-1]
