@@ -1,7 +1,7 @@
 from typing import Literal
 import torch
 from src.nn.base import BayesianModule
-from src.nn.layers import BayesianLinear
+from src.nn.linear import BayesianLinear
 from src.nn.container import BayesianSequential
 
 

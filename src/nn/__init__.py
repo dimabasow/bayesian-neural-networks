@@ -1,6 +1,7 @@
 from .base import BayesianModule, BayesianBlock, BayesianNeuralNetwork
 from .container import BayesianSequential, BayesianModuleList, BayesianModuleDict
-from .layers import BayesianLinear, BayesianPerceptrone, BayesianResNet
+from .linear import BayesianLinear
+from .layers import BayesianPerceptrone, BayesianResNet
 from .models import BayesianBincaryClassifier
 
 __all__ = [
