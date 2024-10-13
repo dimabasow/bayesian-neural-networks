@@ -3,6 +3,11 @@ from src.nn.base import BayesianModule, BayesianBlock
 
 
 class BayesianLinear(BayesianModule):
+
+    __constants__ = ['in_features', 'out_features']
+    in_features: int
+    out_features: int
+
     def __init__(
         self,
         in_features: int,
@@ -26,7 +31,7 @@ class BayesianLinear(BayesianModule):
             )
             self.forward = self.forward_bias_true
         else:
-            self.register_parameter("bias", None)
+            self.register_module("bias", None)
             self.forward = self.forward_bias_false
 
     def forward_bias_false(self, x: torch.Tensor) -> torch.Tensor:
