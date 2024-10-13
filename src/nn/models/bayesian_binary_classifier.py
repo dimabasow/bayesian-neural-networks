@@ -47,6 +47,3 @@ class BayesianBincaryClassifier(BayesianNeuralNetwork):
     ) -> torch.Tensor:
         y_pred = self(x)
         return self.loss_fn(y_pred, y)
-
-    def get_kl(self) -> torch.Tensor:
-        return self.resnet.get_kl()

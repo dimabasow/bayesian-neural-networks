@@ -2,6 +2,7 @@ from typing import Literal
 import torch
 from src.nn.base import BayesianModule
 from src.nn.layers import BayesianLinear
+from src.nn.container import BayesianModuleDict
 
 
 class BayesianResNet(BayesianModule):
@@ -16,7 +17,7 @@ class BayesianResNet(BayesianModule):
         super().__init__()
 
         self.n_layers = n_layers
-        self.weights = torch.nn.ModuleDict()
+        self.weights = BayesianModuleDict()
         if f_act == "elu":
             self.f_act = torch.nn.ELU()
         elif f_act == "relu":
@@ -54,11 +55,3 @@ class BayesianResNet(BayesianModule):
                         value = self.f_act(value)
                     z.append(value)
         return z[-1]
-
-    def get_kl(self) -> torch.Tensor:
-        for count, key in enumerate(self.weights):
-            if count == 0:
-                kl = self.weights[key].get_kl()
-            else:
-                kl = kl + self.weights[key].get_kl()
-        return kl

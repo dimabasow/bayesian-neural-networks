@@ -25,51 +25,31 @@ class BayesianLinear(BayesianModule):
                 **factory_kwargs,
             )
             self.forward = self.forward_bias_true
-            self.get_kl_proxy = self.get_kl_bias_true
         else:
             self.register_parameter("bias", None)
             self.forward = self.forward_bias_false
-            self.get_kl_proxy = self.get_kl_bias_false
 
     def forward_bias_false(self, x: torch.Tensor) -> torch.Tensor:
-        dim_extra = x.shape[:-1]
+        dim = x.shape[:-1]
         noise = torch.normal(
             mean=0,
             std=1,
-            size=(*dim_extra, self.out_features),
+            size=(*dim, self.out_features),
             dtype=self.dtype,
             device=self.device,
         )
-        sigma = self.weight.get_sigma()
+        sigma = self.softplus(self.weight.rho)
         gamma = self.weight.gamma
         mu = sigma * gamma
         y = (
             x@mu
             + (x@sigma)*noise
         )
-        y = y.view(*dim_extra, self.out_features)
+        y = y.view(*dim, self.out_features)
         return y
-
-    def get_kl_bias_false(self) -> torch.Tensor:
-        return self.weight.get_kl()
 
     def forward_bias_true(self, x: torch.Tensor) -> torch.Tensor:
-        dim_extra = x.shape[:-1]
-        noise = torch.normal(
-            mean=0,
-            std=1,
-            size=(*dim_extra, self.out_features),
-            dtype=self.dtype,
-            device=self.device,
-        )
-        sigma = self.bias.get_sigma()
-        gamma = self.bias.gamma
-        bias = sigma * gamma * noise
+        dim = x.shape[:-1]
+        bias = self.bias(*dim)
         y = self.forward_bias_false(x) + bias
         return y
-
-    def get_kl_bias_true(self) -> torch.Tensor:
-        return self.get_kl_bias_false() + self.bias.get_kl()
-
-    def get_kl(self) -> torch.Tensor:
-        return self.get_kl_proxy()

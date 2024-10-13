@@ -1,4 +1,6 @@
+from typing import Iterator
 import torch
+from torch.nn.parameter import Parameter as Parameter
 import torch.types
 from src.nn.base import BayesianModule
 
@@ -24,29 +26,31 @@ class BayesianBlock(BayesianModule):
                 **factory_kwargs
             )
         )
-        self.softplus = torch.nn.Softplus()
-
-    def forward(self, n: int) -> torch.Tensor:
-        noise = torch.normal(
-            mean=0,
-            std=1,
-            size=[n] + list(self.size),
-            dtype=self.dtype,
-            device=self.device,
-        )
-        w = self.sigma * (self.gamma + noise)
-        return w
 
     @property
     def size(self) -> torch.Size:
         return self.rho.shape
 
-    def get_sigma(self) -> torch.Tensor:
-        return self.softplus(self.rho)
+    def bayesian_modules(self) -> Iterator[BayesianModule]:
+        yield self
 
-    def get_kl(self) -> torch.Tensor:
-        gamma = self.gamma
-        gama_pow_2 = gamma**2
-        nu = torch.log(1 + gama_pow_2)
-        nu_pow_2 = nu**2
-        return nu_pow_2.sum() / 2
+    def reset_parameters(self) -> None:
+        torch.nn.init.ones_(self.rho)
+        torch.nn.init.zeros_(self.gamma)
+
+    def get_rho(self) -> Iterator[Parameter]:
+        yield self.rho
+
+    def get_gamma(self) -> Iterator[Parameter]:
+        yield self.gamma
+
+    def forward(self, *dim: int) -> torch.Tensor:
+        noise = torch.normal(
+            mean=0,
+            std=1,
+            size=list(dim) + list(self.size),
+            dtype=self.dtype,
+            device=self.device,
+        )
+        w = self.softplus(self.rho) * (self.gamma + noise)
+        return w
