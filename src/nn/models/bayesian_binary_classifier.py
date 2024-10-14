@@ -9,7 +9,11 @@ class BayesianBincaryClassifier(BayesianNeuralNetwork):
         dim_in: int,
         dim_hidden: int,
         n_layers: int,
-        f_act: Literal["elu"] | Literal["relu"] = "elu",
+        f_act: (
+            Literal["elu"]
+            | Literal["relu"]
+            | Literal["LeakyReLU"]
+        ) = "LeakyReLU",
         lr: float = 0.001
     ):
         super().__init__()

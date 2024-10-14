@@ -12,7 +12,11 @@ class BayesianResNet(BayesianModule):
         dim_out: int,
         dim_hidden: int,
         n_layers: int,
-        f_act: Literal["elu"] | Literal["relu"] = "elu",
+        f_act: (
+            Literal["elu"]
+            | Literal["relu"]
+            | Literal["LeakyReLU"]
+        ) = "LeakyReLU",
     ) -> None:
         super().__init__()
 
@@ -22,6 +26,8 @@ class BayesianResNet(BayesianModule):
             self.f_act = torch.nn.ELU()
         elif f_act == "relu":
             self.f_act = torch.nn.ReLU()
+        elif f_act == "LeakyReLU":
+            self.f_act = torch.nn.LeakyReLU(negative_slope=3)
         else:
             raise NotImplementedError(
                 f"Функция активации {f_act} не импелементирована"
