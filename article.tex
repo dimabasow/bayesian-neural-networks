@@ -24,6 +24,10 @@
 \section{Аннотация}
 $N(\mu, \sigma^2)$ — нормальное распределение
 
+$\bold{x} \cdot \bold{y}$ — поэлементное произведение (произведение Адамара)
+
+$\langle  \bold{x}, \bold{y} \rangle = \sum_{j}{(x_{j} \cdot y_{j})}$ — скалярное произведение
+
 $\mathcal{L}$ — Evidence Lower Bound (ELBO)
 
 $KL(q || p) = \int_{}{} q(\bold{Z}) \cdot \ln{\dfrac{q(\bold{Z})}{p(\bold{Z})}} d\bold{Z}$ — расстояние Кульбака — Лейблера
@@ -72,7 +76,7 @@ $p(\bold{W}| D) =
 
 
 \section{Вариационный вывод для нейронной сети}
-Запишем выражение ELBO для распределения $q(\bold{W})$ и преобразуем его используя тождество $p(\bold{W}, D) = p(\bold{W}| D)\cdot p(D)$:
+Запишем выражение ELBO для распределения $q(\bold{W})$, и преобразуем его используя тождество $p(\bold{W}, D) = p(\bold{W}| D)\cdot p(D)$:
 
 $
 \mathcal{L}(q(\bold{W})) =
@@ -99,42 +103,50 @@ $
 
 $p(\bold{W}) = N(\bold{W} | \bold{0}, \pmb{\sigma_{p(\bold{W})}}^{2} \cdot \bold{I})$, где $\pmb{\sigma_{p(\bold{W})}}$ — вектор длины M
 
-$q(\bold{W}) = N(\bold{W} | \pmb{\theta}, \pmb{\sigma_{q(\bold{W})}}^{2} \cdot \bold{I})$, где $\pmb{\theta}$ и $\pmb{\sigma_{q(\bold{W})}}$ — вектора длины M
+$q(\bold{W}) = N(\bold{W} | \pmb{\mu}, \pmb{\sigma_{q(\bold{W})}}^{2} \cdot \bold{I})$, где $\pmb{\mu}$ и $\pmb{\sigma_{q(\bold{W})}}$ — вектора длины M
 
 Так как распределения $p(\bold{W})$ и $q(\bold{W})$ являются нормальными, то $KL(q(\bold{W}) || p(\bold{W}))$ можно посчитать аналитически:
 
 $
 KL(q(\bold{W}) || p(\bold{W})) = 
-\dfrac{1}{2}\sum_{k=1}^{M}(\dfrac{\sigma_{{q(W)_{k}}}^2}{\sigma_{{p(W)_{k}}}^2} + \dfrac{\theta_{k}^2}{\sigma_{{p(W)_{k}}}^2} - \ln{\dfrac{\sigma_{{q(W)_{k}}}^2}{\sigma_{{p(W)_{k}}}^2}} - 1)
+\dfrac{1}{2}\sum_{k=1}^{M}(\dfrac{\sigma_{{q(W)_{k}}}^2}{\sigma_{{p(W)_{k}}}^2} + \dfrac{\mu_{k}^2}{\sigma_{{p(W)_{k}}}^2} - \ln{\dfrac{\sigma_{{q(W)_{k}}}^2}{\sigma_{{p(W)_{k}}}^2}} - 1)
 $
 
 Априорное распределение параметров модели определяется параметром $\pmb{\sigma_{p(\bold{W})}}$. Воспользуемся техникой эмперического Байеса — нахождения параметров априорного распределения из данных. Посчитаем
-$\dfrac{d\mathcal{L}(q(\bold{W}))}{d ({\pmb{\sigma_{p(\bold{W})}^{-2}}})}$:
+$\dfrac{d\mathcal{L}(q(\bold{W}))}{d ({\sigma_{p(W)_{k}}^{-2}})}$:
 
 $
-\dfrac{d\mathcal{L}(q(\bold{W}))}{d ({\pmb{\sigma_{p(\bold{W})}^{-2}}})} =
-\dfrac{d (\int_{}{} q(\bold{W}) \cdot \ln{p(D | \bold{W})} d\bold{W} - KL(q(\bold{W}) || p(\bold{W})))}{d ({\pmb{\sigma_{p(\bold{W})}^{-2}}})} =
-- \dfrac{d (KL(q(\bold{W}) || p(\bold{W})))}{d ({\pmb{\sigma_{p(\bold{W})}^{-2}}})}$
+\dfrac{d\mathcal{L}(q(\bold{W}))}{d ({\sigma_{p(W)_{k}}^{-2}})} =
+\dfrac{d (\int_{}{} q(\bold{W}) \cdot \ln{p(D | \bold{W})} d\bold{W} - KL(q(\bold{W}) || p(\bold{W})))}{d ({\sigma_{p(W)_{k}}^{-2}})} =
+- \dfrac{d (KL(q(\bold{W}) || p(\bold{W})))}{d ({\sigma_{p(W)_{k}}^{-2}})}$
 
 $
-\dfrac{d\mathcal{L}(q(\bold{W}))}{d ({\pmb{\sigma_{p(\bold{W})}^{-2}}})} =
--\dfrac{1}{2}\sum_{k=1}^{M}(\sigma_{{q(W)_{k}}}^2 + \theta_{k}^2 - \sigma_{{p(W)_{k}}}^2)
+\dfrac{d\mathcal{L}(q(\bold{W}))}{d ({\sigma_{p(W)_{k}}^{-2}})} =
+-\dfrac{1}{2}\sum_{k=1}^{M}(\sigma_{{q(W)_{k}}}^2 + \mu_{k}^2 - \sigma_{{p(W)_{k}}}^2)
 $
 
 Приравняв производную к нулю, получим:
 
-$\pmb{\sigma_{p(\bold{W})}^{2}} = \pmb{\theta^{2}} + \pmb{\sigma_{q(\bold{W})}^{2}}$
+$
+-\dfrac{1}{2}\sum_{k=1}^{M}(\sigma_{{q(W)_{k}}}^2 + \mu_{k}^2 - \sigma_{{p(W)_{k}}}^2) = 0
+$
+
+$
+(\sigma_{{q(W)_{k}}}^2 + \mu_{k}^2 - \sigma_{{p(W)_{k}}}^2) = 0
+$
+
+$\pmb{\sigma_{p(\bold{W})}^{2}} = \pmb{\mu^{2}} + \pmb{\sigma_{q(\bold{W})}^{2}}$
 
 Подставив полученное выражение в $KL(q(\bold{W}) || p(\bold{W}))$, получим:
 
 $
 KL(q(\bold{W}) || p(\bold{W})) = 
-\dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \dfrac{\theta_{k}^2}{\sigma_{{q(W)_{k}}}^2}})
+\dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \dfrac{\mu_{k}^2}{\sigma_{{q(W)_{k}}}^2}})
 $
 
 Чтобы избежать неопределенности $\dfrac{0}{0}$ и переписать выражение в векторном виде, сделаем следующую замену переменных:
 
-$\pmb{\theta} = \pmb{\gamma} \cdot \pmb{\sigma_{q(\bold{W})}}$
+$\pmb{\mu} = \pmb{\gamma} \cdot \pmb{\sigma_{q(\bold{W})}}$
 
 $\pmb{\nu} = \ln{(1 + \pmb{\gamma}^2)}$
 
@@ -148,28 +160,34 @@ $\pmb{\sigma_{q(\bold{W})}} = \ln{(1+\exp(\pmb{\rho}))} = Softplus(\pmb{\rho})$
 $
 Loss(\pmb{\rho}, \pmb{\gamma}) =
 - \dfrac{\mathcal{L}(q(\bold{W}))}{L} =
-\int_{}{} N(\bold{W} | \pmb{\theta}, \pmb{\sigma_{q(\bold{W})}}^{2} \cdot \bold{I}) \sum_{i=1}^{L}{\dfrac{-\ln{p( \bold{y_{i}} | \bold{x_{i}}, \bold{W})}}{L}} d\bold{W} + \dfrac{\pmb{\nu}^{T} \pmb{\nu}}{2L}
+\int_{}{} N(\bold{W} | \pmb{\mu}, \pmb{\sigma_{q(\bold{W})}}^{2} \cdot \bold{I}) \cdot NLL \cdot d\bold{W} + \dfrac{KL}{L}
 $, где:
+
+$\pmb{\mu} = \pmb{\gamma} \cdot \pmb{\sigma_{q(\bold{W})}}$
+
+$\pmb{\sigma_{q(\bold{W})}} = Softplus(\pmb{\rho})$
 
 $\pmb{\nu} = \ln{(1 + \pmb{\gamma}^2)}$
 
-$\pmb{\theta} = \pmb{\gamma} \cdot \pmb{\sigma_{q(\bold{W})}}$
+$NLL = -\dfrac{1}{L}\sum_{i=1}^{L}{\ln{p( \bold{y_{i}} | \bold{x_{i}}, \bold{W})}}$
 
-$\pmb{\sigma_{q(\bold{W})}} = Softplus(\pmb{\rho})$
+$KL = \dfrac{\langle  \pmb{\nu}, \pmb{\nu} \rangle}{2}$
 
 \section{Алгоритм обучения}
 Задаем шаг градиентного спуска $\alpha$ и инициализируем параметры распределения $q(\bold{W})$ — $\pmb{\rho} \leftarrow \bold{1}$ и $\pmb{\gamma} \leftarrow \bold{0}$. Затем повторяем, пока не достигнем критерия остановки:
 \begin{enumerate}
     \item $\pmb{\sigma} \leftarrow Softplus(\pmb{\rho})$
-    \item $\pmb{\theta} \leftarrow \pmb{\gamma} \cdot \pmb{\sigma}$
-    \item $\pmb{\nu} \leftarrow \ln{(1 + \pmb{\gamma}^2)}$
+    \item $\pmb{\mu} \leftarrow \pmb{\gamma} \cdot \pmb{\sigma}$
     \item $\hat{\bold{W}} \leftarrow N(0, 1)$ — сэмплируем случайные веса
-    \item $\hat{\bold{W}} \leftarrow \hat{\bold{W}} \cdot \pmb{\sigma} + \pmb{\theta}$ — репараметризация
-    \item $l \leftarrow \dfrac{\pmb{\nu}^{T} \pmb{\nu}}{2L} -\sum_{i=1}^{L}{\dfrac{\ln{p( \bold{y_{i}} | \bold{x_{i}}, \bold{\hat{W}})}}{L}}$ — считаем функцию потерь
+    \item $\hat{\bold{W}} \leftarrow \hat{\bold{W}} \cdot \pmb{\sigma} + \pmb{\mu}$ — репараметризация
+    \item $nll \leftarrow -\dfrac{1}{L}\sum_{i=1}^{L}{\ln{p( \bold{y_{i}} | \bold{x_{i}}, \bold{\hat{W}})}}$
+    \item $\pmb{\nu} \leftarrow \ln{(1 + \pmb{\gamma}^2)}$
+    \item $kl \leftarrow \dfrac{\langle  \pmb{\nu}, \pmb{\nu} \rangle}{2}$
+    \item $l \leftarrow nll + \dfrac{kl}{L}$ — считаем функцию потерь
     \item $\pmb{\rho} \leftarrow \pmb{\rho} - \alpha \dfrac{d l}{d \pmb{\rho}}$
     \item $\pmb{\gamma} \leftarrow \pmb{\gamma} - \alpha \dfrac{d l}{d \pmb{\gamma}}$
 \end{enumerate}
 
-Если моя задумка верна, то лишние веса модели должны выпилиться, то есть соответсвующие им $\theta$ и $\sigma$ должны занулиться.
+Если моя задумка верна, то модель должна быть сильно менее чувствительна к переобучению. Так же полученный $loss$ отражает и производительность модели ($nll$), и её сложность ($kl$). Следовательно, можно проверять гипотезы без использования валидационной выборки.
 
 \end{document}
