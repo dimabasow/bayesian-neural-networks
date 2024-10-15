@@ -44,7 +44,7 @@ class BayesianModule(torch.nn.Module, ABC):
             for gamma in module.get_gamma():
                 gamma_pow_2 = gamma**2
                 nu = torch.log(1 + gamma_pow_2).view(-1)
-                kl = kl + torch.dot(nu, nu)
+                kl += torch.dot(nu, nu) / 2
         return kl
 
     @property
