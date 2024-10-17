@@ -1,6 +1,6 @@
 import torch
 from typing import Optional
-from src.nn.base import BayesianModule, BayesianBlock
+from src.nn.base import BayesianModule, BayesianParameter
 
 __all__ = ["BayesianBatchNorm1d", "BayesianBatchNorm2d", "BayesianBatchNorm3d"]
 
@@ -41,8 +41,8 @@ class _BayesianNormBase(BayesianModule):
         self.affine = affine
         self.track_running_stats = track_running_stats
         if self.affine:
-            self.weight = BayesianBlock(size=(num_features,), **factory_kwargs)
-            self.bias = BayesianBlock(size=(num_features,), **factory_kwargs)
+            self.weight = BayesianParameter(size=(num_features,), **factory_kwargs)
+            self.bias = BayesianParameter(size=(num_features,), **factory_kwargs)
             self.get_weight_and_bias = self.get_weight_and_bias_affine
         else:
             self.register_module("weight", None)

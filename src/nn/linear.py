@@ -1,5 +1,5 @@
 import torch
-from src.nn.base import BayesianModule, BayesianBlock
+from src.nn.base import BayesianModule, BayesianParameter
 
 
 class BayesianLinear(BayesianModule):
@@ -20,12 +20,12 @@ class BayesianLinear(BayesianModule):
         super().__init__()
         self.in_features = in_features
         self.out_features = out_features
-        self.weight = BayesianBlock(
+        self.weight = BayesianParameter(
             size=(in_features, out_features),
             **factory_kwargs,
         )
         if bias:
-            self.bias = BayesianBlock(
+            self.bias = BayesianParameter(
                 size=(out_features,),
                 **factory_kwargs,
             )

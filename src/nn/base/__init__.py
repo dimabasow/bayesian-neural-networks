@@ -1,9 +1,9 @@
 from .bayesian_module import BayesianModule
-from .bayesian_block import BayesianBlock
+from .bayesian_parameter import BayesianParameter
 from .bayesian_neural_network import BayesianNeuralNetwork
 
 __all__ = [
     "BayesianModule",
-    "BayesianBlock",
+    "BayesianParameter",
     "BayesianNeuralNetwork",
 ]

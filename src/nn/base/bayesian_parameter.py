@@ -5,7 +5,7 @@ import torch.types
 from src.nn.base import BayesianModule
 
 
-class BayesianBlock(BayesianModule):
+class BayesianParameter(BayesianModule):
     def __init__(
         self, size: tuple[int, ...],
         device=None,

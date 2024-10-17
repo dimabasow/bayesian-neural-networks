@@ -1,11 +1,9 @@
 from typing import Literal
 import torch
 from src.nn.base import BayesianModule
-from src.nn.linear import BayesianLinear
-from src.nn.container import BayesianSequential
 
 
-class BayesianPerceptrone(BayesianModule):
+class Perceptrone(BayesianModule):
     def __init__(
         self,
         dim_in: int,
@@ -21,11 +19,11 @@ class BayesianPerceptrone(BayesianModule):
         super().__init__()
 
         self.n_layers = n_layers
-        self.fcc = BayesianSequential()
+        self.fcc = torch.nn.Sequential()
         in_features = dim_in
         for _ in range(n_layers):
             self.fcc.append(
-                BayesianLinear(
+                torch.nn.Linear(
                     in_features=in_features,
                     out_features=dim_hidden,
                 )
@@ -42,7 +40,7 @@ class BayesianPerceptrone(BayesianModule):
                     f"Функция активации {f_act} не импелементирована"
                 )
         self.fcc.append(
-            BayesianLinear(
+            torch.nn.Linear(
                 in_features=in_features,
                 out_features=dim_out,
             )

@@ -1,9 +1,9 @@
 from typing import Literal
 import torch
-from src.nn import BayesianNeuralNetwork, BayesianPerceptrone, BayesianResNet
+from src.nn import BayesianNeuralNetwork, Perceptrone, ResNet
 
 
-class BayesianBinaryClassifier(BayesianNeuralNetwork):
+class BinaryClassifier(BayesianNeuralNetwork):
     def __init__(
         self,
         dim_in: int,
@@ -20,7 +20,7 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
         super().__init__()
         self.lr = lr
         if backbone == "Perceptrone":
-            self.backbone = BayesianPerceptrone(
+            self.backbone = Perceptrone(
                 dim_in=dim_in,
                 dim_out=1,
                 dim_hidden=dim_hidden,
@@ -28,7 +28,7 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
                 f_act=f_act,
             )
         elif backbone == "ResNet":
-            self.backbone = BayesianResNet(
+            self.backbone = ResNet(
                 dim_in=dim_in,
                 dim_out=1,
                 dim_hidden=dim_hidden,
@@ -42,7 +42,6 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
             torch.zeros(size=(dim_in,))
         )
         self.loss_fn = torch.nn.BCEWithLogitsLoss(reduction="mean")
-        self.sigmoid = torch.nn.Sigmoid()
 
     def scale_shift_init(self, x: torch.Tensor):
         self.shift = torch.nn.Parameter(-x.mean(dim=0))

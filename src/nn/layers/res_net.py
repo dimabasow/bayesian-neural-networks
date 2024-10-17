@@ -1,11 +1,9 @@
 from typing import Literal
 import torch
 from src.nn.base import BayesianModule
-from src.nn.linear import BayesianLinear
-from src.nn.container import BayesianModuleDict
 
 
-class BayesianResNet(BayesianModule):
+class ResNet(BayesianModule):
     def __init__(
         self,
         dim_in: int,
@@ -21,7 +19,7 @@ class BayesianResNet(BayesianModule):
         super().__init__()
 
         self.n_layers = n_layers
-        self.weights = BayesianModuleDict()
+        self.weights = torch.nn.ModuleDict()
         if f_act == "ELU":
             self.f_act = torch.nn.ELU()
         elif f_act == "ReLU":
@@ -43,7 +41,7 @@ class BayesianResNet(BayesianModule):
                     out_features = dim_out
                 else:
                     out_features = dim_hidden
-                self.weights[f"w_{k}_{i}"] = BayesianLinear(
+                self.weights[f"w_{k}_{i}"] = torch.nn.Linear(
                     in_features=in_features,
                     out_features=out_features,
                     bias=True,
