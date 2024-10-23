@@ -26,8 +26,6 @@ $N(\mu, \sigma^2)$ — нормальное распределение
 
 $\bold{x} \cdot \bold{y}$ — поэлементное произведение (произведение Адамара)
 
-$\langle  \bold{x}, \bold{y} \rangle = \sum_{j}{(x_{j} \cdot y_{j})}$ — скалярное произведение
-
 $\mathcal{L}$ — Evidence Lower Bound (ELBO)
 
 $KL(q || p) = \int_{}{} q(\bold{Z}) \cdot \ln{\dfrac{q(\bold{Z})}{p(\bold{Z})}} d\bold{Z}$ — расстояние Кульбака — Лейблера
@@ -144,16 +142,20 @@ KL(q(\bold{W}) || p(\bold{W})) =
 \dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \dfrac{\mu_{k}^2}{\sigma_{{q(W)_{k}}}^2}})
 $
 
-Чтобы избежать неопределенности $\dfrac{0}{0}$ и переписать выражение в векторном виде, сделаем следующую замену переменных:
+Чтобы избежать неопределенности $\dfrac{0}{0}$, и чтобы $\pmb{\sigma_{q(\bold{W})}}$ была всегда положительна, сделаем следующую замену переменных:
 
-$\pmb{\mu} = \pmb{\gamma} \cdot \pmb{\sigma_{q(\bold{W})}}$
+$\mu_{k} = \gamma_{k} \cdot e^{\rho_{k}}$
 
-$\pmb{\nu} = \ln{(1 + \pmb{\gamma}^2)}$
+$\sigma_{{q(W)_{k}}} = |\gamma_{k}|$
 
-Так как обучение модели будет производится с помощью градиентных методов, сделаем следующую замену переменных, чтобы
-$\pmb{\sigma_{q(\bold{W})}}$ была всегда положительна:
+Тогда: 
 
-$\pmb{\sigma_{q(\bold{W})}} = \ln{(1+\exp(\pmb{\rho}))} = Softplus(\pmb{\rho})$
+$
+KL(q(\bold{W}) || p(\bold{W})) = 
+\dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \dfrac{\mu_{k}^2}{\sigma_{{q(W)_{k}}}^2}}) = 
+\dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + e^{2 \cdot \rho_{k}}}) = 
+\dfrac{1}{2}\sum_{k=1}^{M}Softplus(2 \cdot \rho_{k})
+$
 
 Таким образом, функция потерь будет иметь следующий вид:
 
@@ -163,26 +165,23 @@ Loss(\pmb{\rho}, \pmb{\gamma}) =
 \int_{}{} N(\bold{W} | \pmb{\mu}, \pmb{\sigma_{q(\bold{W})}}^{2} \cdot \bold{I}) \cdot NLL \cdot d\bold{W} + \dfrac{KL}{L}
 $, где:
 
-$\pmb{\mu} = \pmb{\gamma} \cdot \pmb{\sigma_{q(\bold{W})}}$
+$\pmb{\mu} = \pmb{\gamma} \cdot \exp({\pmb{\rho}})$
 
-$\pmb{\sigma_{q(\bold{W})}} = Softplus(\pmb{\rho})$
-
-$\pmb{\nu} = \ln{(1 + \pmb{\gamma}^2)}$
+$\pmb{\sigma_{q(\bold{W})}} = |\pmb{\gamma}|$
 
 $NLL = -\dfrac{1}{L}\sum_{i=1}^{L}{\ln{p( \bold{y_{i}} | \bold{x_{i}}, \bold{W})}}$
 
-$KL = \dfrac{\langle  \pmb{\nu}, \pmb{\nu} \rangle}{2}$
+$KL = \dfrac{1}{2}\sum_{k=1}^{M}Softplus(2 \cdot \rho_{k})$
 
 \section{Алгоритм обучения}
-Задаем шаг градиентного спуска $\alpha$ и инициализируем параметры распределения $q(\bold{W})$ — $\pmb{\rho} \leftarrow \bold{1}$ и $\pmb{\gamma} \leftarrow \bold{0}$. Затем повторяем, пока не достигнем критерия остановки:
+Задаем шаг градиентного спуска $\alpha$ и инициализируем параметры распределения $q(\bold{W})$ — $\pmb{\rho}$ и $\pmb{\gamma}$. Затем повторяем, пока не достигнем критерия остановки:
 \begin{enumerate}
-    \item $\pmb{\sigma} \leftarrow Softplus(\pmb{\rho})$
-    \item $\pmb{\mu} \leftarrow \pmb{\gamma} \cdot \pmb{\sigma}$
+    \item $\pmb{\sigma} \leftarrow |\pmb{\gamma}|$
+    \item $\pmb{\mu} \leftarrow \pmb{\gamma} \cdot \exp({\pmb{\rho}})$
     \item $\hat{\bold{W}} \leftarrow N(0, 1)$ — сэмплируем случайные веса
     \item $\hat{\bold{W}} \leftarrow \hat{\bold{W}} \cdot \pmb{\sigma} + \pmb{\mu}$ — репараметризация
     \item $nll \leftarrow -\dfrac{1}{L}\sum_{i=1}^{L}{\ln{p( \bold{y_{i}} | \bold{x_{i}}, \bold{\hat{W}})}}$
-    \item $\pmb{\nu} \leftarrow \ln{(1 + \pmb{\gamma}^2)}$
-    \item $kl \leftarrow \dfrac{\langle  \pmb{\nu}, \pmb{\nu} \rangle}{2}$
+    \item $kl \leftarrow \dfrac{1}{2}\sum_{k=1}^{M}Softplus(2 \cdot \rho_{k})$
     \item $l \leftarrow nll + \dfrac{kl}{L}$ — считаем функцию потерь
     \item $\pmb{\rho} \leftarrow \pmb{\rho} - \alpha \dfrac{d l}{d \pmb{\rho}}$
     \item $\pmb{\gamma} \leftarrow \pmb{\gamma} - \alpha \dfrac{d l}{d \pmb{\gamma}}$
@@ -217,7 +216,7 @@ $y = Sigmoid(matmul(z, W_2))$
 \begin{itemize}
     \item с ростом сложности модели байесова нейронная сеть не переобучилась;
     \item качество на тестовой выборке на всём рассматриваемом диапазоне гиперпараметров у байесовой нейронной сети было выше, чем у классической;
-    \item значение ROC-AUC на тестовой выборке имеет очень высокую корреляцию со значением ELBO на тренировочной выборке (0.89 по Пирсону). Следовательно, для подбора гиперпараметров можно ориентироваться на любые монотонные преобразования от ELBO (например $e^{-loss}$). Это даёт нам возможность отказаться от деления на тренировочную и валидационную выборки для подбора гиперпараметров.
+    \item значение ROC-AUC на тестовой выборке имеет очень высокую корреляцию со значением ELBO на тренировочной выборке (0.89 по Спирмену). Следовательно, для подбора гиперпараметров можно ориентироваться на любые монотонные преобразования от ELBO (например $e^{-loss}$). Это даёт нам возможность отказаться от деления на тренировочную и валидационную выборки для подбора гиперпараметров.
 \end{itemize}
 
 Так же стоит отметить, что данный подход переносится на другие архитектуры нейронных сетей (рекуррентные, свёрточные, трансформеры).
