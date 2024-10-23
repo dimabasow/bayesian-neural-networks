@@ -30,21 +30,19 @@ class BayesianModule(torch.nn.Module, ABC):
 
     def get_sigma(self) -> Iterator[torch.nn.Parameter]:
         for module in self.bayesian_modules():
-            for rho in module.get_rho():
-                yield self.softplus(rho)
+            for gamma in module.get_gamma():
+                yield gamma.abs()
 
     def get_mu(self) -> Iterator[torch.nn.Parameter]:
         for module in self.bayesian_modules():
-            for gamma, sigma in zip(module.get_gamma(), module.get_sigma()):
-                yield gamma * sigma
+            for gamma, rho in zip(module.get_gamma(), module.get_rho()):
+                yield gamma * torch.exp(rho)
 
     def get_kl(self) -> torch.Tensor:
         kl = torch.zeros(size=[], dtype=self.dtype, device=self.device)
         for module in self.bayesian_modules():
-            for gamma in module.get_gamma():
-                gamma_pow_2 = gamma**2
-                nu = torch.log(1 + gamma_pow_2).view(-1)
-                kl += torch.dot(nu, nu) / 2
+            for rho in module.get_rho():
+                kl += self.softplus(2 * rho).sum() / 2
         return kl
 
     @property

@@ -43,9 +43,8 @@ class BayesianLinear(BayesianModule):
             dtype=self.dtype,
             device=self.device,
         )
-        sigma = self.softplus(self.weight.rho)
-        gamma = self.weight.gamma
-        mu = sigma * gamma
+        sigma = next(self.weight.get_sigma())
+        mu = next(self.weight.get_mu())
         y = (
             x@mu
             + (x@sigma)*noise

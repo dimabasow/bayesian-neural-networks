@@ -15,13 +15,15 @@ class BayesianParameter(BayesianModule):
         super().__init__()
 
         self.rho = torch.nn.Parameter(
-            torch.ones(
+            torch.zeros(
                 size=size,
                 **factory_kwargs
             )
         )
         self.gamma = torch.nn.Parameter(
-            torch.zeros(
+            torch.normal(
+                mean=0,
+                std=1,
                 size=size,
                 **factory_kwargs
             )
@@ -35,8 +37,8 @@ class BayesianParameter(BayesianModule):
         yield self
 
     def reset_parameters(self) -> None:
-        torch.nn.init.ones_(self.rho)
-        torch.nn.init.zeros_(self.gamma)
+        torch.nn.init.zeros_(self.rho)
+        torch.nn.init.normal_(self.gamma, mean=0, std=1)
 
     def get_rho(self) -> Iterator[Parameter]:
         yield self.rho
@@ -52,5 +54,5 @@ class BayesianParameter(BayesianModule):
             dtype=self.dtype,
             device=self.device,
         )
-        w = self.softplus(self.rho) * (self.gamma + noise)
+        w = (noise * next(self.get_sigma())) + next(self.get_mu())
         return w
