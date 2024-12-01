@@ -80,37 +80,35 @@ class BayesianBatchNorm(BayesianModule):
             momentum = self.momentum
 
         if self.training:
-            bn_training = True
             self.num_batches_tracked.add_(1)
             if self.momentum is None:
                 momentum = 1.0 / float(self.num_batches_tracked)
             else:
                 momentum = self.momentum
 
-        else:
-            bn_training = (
-                (self.running_mean is None) and (self.running_std is None)
-            )
-
         x_shape = x.shape
         x = x.view(-1, *self.size)
-        if bn_training:
+        if self.training or self.penalty:
             mean = x.mean(dim=0)
             std = x.std(dim=0)
-            self.running_mean = (
+            running_mean = (
                 (self.running_mean.detach()*momentum)
                 + (mean*(1 - momentum))
             )
-            self.running_std = (
+            running_std = (
                 (self.running_std.detach()*momentum)
                 + (std*(1 - momentum))
             )
+        else:
+            running_mean = self.running_mean.detach()
+            running_std = self.running_std.detach()
+
         if self.transform:
-            x = (x - self.running_mean) / (self.running_std + self.eps)
+            x = (x - running_mean) / (running_std + self.eps)
         if self.penalty:
-            std_pow_2 = self.running_std ** 2
-            mu_pow_2 = self.running_mean ** 2
-            self.kl = (std_pow_2 + mu_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
+            std_pow_2 = std ** 2
+            mean_pow_2 = mean ** 2
+            self.kl = (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
         else:
             self.kl = torch.zeros(
                 size=[],
@@ -118,6 +116,10 @@ class BayesianBatchNorm(BayesianModule):
                 device=self.device,
                 requires_grad=True
             )
+
+        if self.training:
+            self.running_mean = running_mean
+            self.running_std = running_std
         x = x.view(*x_shape)
         return x
 
