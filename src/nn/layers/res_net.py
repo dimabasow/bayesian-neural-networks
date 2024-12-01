@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Union
 import torch
 from src.nn.base import BayesianModule
 
@@ -10,11 +10,11 @@ class ResNet(BayesianModule):
         dim_out: int,
         dim_hidden: int,
         n_layers: int,
-        f_act: (
-            Literal["ELU"]
-            | Literal["ReLU"]
-            | Literal["LeakyReLU"]
-        ) = "LeakyReLU",
+        f_act: Union[
+            Literal["ELU"],
+            Literal["ReLU"],
+            Literal["LeakyReLU"],
+        ] = "LeakyReLU",
     ) -> None:
         super().__init__()
 

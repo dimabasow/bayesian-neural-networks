@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Union
 import torch
 from src.nn import BayesianNeuralNetwork, Perceptrone, ResNet
 
@@ -9,12 +9,15 @@ class BinaryClassifier(BayesianNeuralNetwork):
         dim_in: int,
         dim_hidden: int,
         n_layers: int,
-        f_act: (
-            Literal["ELU"]
-            | Literal["ReLU"]
-            | Literal["LeakyReLU"]
-        ) = "LeakyReLU",
-        backbone: Literal["Perceptrone"] | Literal["ResNet"] = "Perceptrone",
+        f_act: Union[
+            Literal["ELU"],
+            Literal["ReLU"],
+            Literal["LeakyReLU"],
+        ] = "LeakyReLU",
+        backbone: Union[
+            Literal["Perceptrone"],
+            Literal["ResNet"],
+        ] = "Perceptrone",
         lr: float = 0.001
     ):
         super().__init__()

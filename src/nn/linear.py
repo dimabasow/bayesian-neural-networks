@@ -1,3 +1,4 @@
+from typing import Optional
 import torch
 from src.nn.base import BayesianModule, BayesianParameter
 
@@ -13,8 +14,8 @@ class BayesianLinear(BayesianModule):
         in_features: int,
         out_features: int,
         bias: bool = True,
-        device: torch.types.Device | None = None,
-        dtype: torch.dtype | None = None,
+        device: Optional[torch.types.Device] = None,
+        dtype: Optional[torch.dtype] = None,
     ) -> None:
         factory_kwargs = {'device': device, 'dtype': dtype}
         super().__init__()

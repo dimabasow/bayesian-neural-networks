@@ -1,4 +1,5 @@
-from typing import Literal, Optional, Iterable
+from typing import Literal, Dict, Optional, Any, Union
+from collections.abc import Sequence
 import torch
 from src.nn import BayesianNeuralNetwork, BayesianPerceptrone, BayesianResNet
 
@@ -7,14 +8,19 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
     def __init__(
         self,
         dim_in: int,
-        dim_hidden: int,
-        n_layers: int,
-        f_act: (
-            Literal["ELU"]
-            | Literal["ReLU"]
-            | Literal["LeakyReLU"]
-        ) = "LeakyReLU",
-        backbone: Literal["Perceptrone"] | Literal["ResNet"] = "Perceptrone",
+        dims_hidden: Sequence[int],
+        f_act: Union[
+            Literal["ELU"],
+            Literal["ReLU"],
+            Literal["LeakyReLU"],
+        ] = "LeakyReLU",
+        f_act_kwargs: Optional[Dict[str, Any]] = None,
+        batch_norm: bool = True,
+        batch_penalty: bool = True,
+        backbone: Union[
+            Literal["Perceptrone"],
+            Literal["ResNet"],
+        ] = "Perceptrone",
         lr: float = 0.001
     ):
         super().__init__()
@@ -23,46 +29,43 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
             self.backbone = BayesianPerceptrone(
                 dim_in=dim_in,
                 dim_out=1,
-                dim_hidden=dim_hidden,
-                n_layers=n_layers,
+                dims_hidden=dims_hidden,
                 f_act=f_act,
+                f_act_kwargs=f_act_kwargs,
+                batch_norm=batch_norm,
+                batch_penalty=batch_penalty,
             )
         elif backbone == "ResNet":
             self.backbone = BayesianResNet(
                 dim_in=dim_in,
                 dim_out=1,
-                dim_hidden=dim_hidden,
-                n_layers=n_layers,
+                dims_hidden=dims_hidden,
                 f_act=f_act,
+                f_act_kwargs=f_act_kwargs,
+                batch_norm=batch_norm,
+                batch_penalty=batch_penalty,
             )
-        self.scale = torch.nn.Parameter(
-            torch.ones(size=(dim_in,))
-        )
-        self.shift = torch.nn.Parameter(
-            torch.zeros(size=(dim_in,))
-        )
         self.loss_fn = torch.nn.BCEWithLogitsLoss(reduction="mean")
         self.sigmoid = torch.nn.Sigmoid()
 
-    def scale_shift_init(self, x: torch.Tensor):
-        self.shift = torch.nn.Parameter(-x.mean(dim=0))
-        self.scale = torch.nn.Parameter(1 / x.std(dim=0))
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.backbone((x + self.shift) * self.scale)
+        return self.backbone(x)
 
     def configure_optimizer(
         self,
-        parameters: Optional[Iterable[torch.Tensor]] = None
+        optimizer: str = "Adam",
+        kwargs: Optional[Dict[str, Any]] = None
     ):
-        if parameters is None:
-            parameters = self.parameters()
-        optimizer = torch.optim.Adam(
-            parameters,
-            lr=self.lr,
-            weight_decay=0,
+        if kwargs is None:
+            kwargs = {}
+        if "lr" not in kwargs:
+            kwargs["lr"] = self.lr
+        if "weight_decay" not in kwargs:
+            kwargs["weight_decay"] = 0
+        return getattr(torch.optim, optimizer)(
+            self.parameters(),
+            **kwargs
         )
-        return optimizer
 
     def negative_likelihood(
         self,

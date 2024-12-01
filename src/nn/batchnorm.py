@@ -1,4 +1,5 @@
-from typing import Optional, Tuple
+from typing import Optional
+from collections.abc import Sequence
 import torch
 from torch import Tensor
 from src.nn.base import BayesianModule
@@ -6,13 +7,13 @@ from src.nn.base import BayesianModule
 
 class BayesianBatchNorm(BayesianModule):
     __constants__ = [
-        "dim",
+        "size",
         "transform",
         "penalty",
         "momentum",
         "eps",
     ]
-    dim: Tuple[int, ...]
+    size: Sequence[int]
     transform: bool
     penalty: bool
     momentum: Optional[float]
@@ -20,7 +21,7 @@ class BayesianBatchNorm(BayesianModule):
 
     def __init__(
         self,
-        dim: Tuple[int, ...],
+        size: Sequence[int],
         transform: bool = True,
         penalty: bool = True,
         momentum: Optional[float] = 0.1,
@@ -30,14 +31,14 @@ class BayesianBatchNorm(BayesianModule):
     ):
         factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
-        self.dim = dim
+        self.size = size
         self.transform = transform
         self.penalty = penalty
         self.momentum = momentum
         self.eps = eps
         self.register_buffer(
             "running_mean", torch.zeros(
-                *dim,
+                *size,
                 **factory_kwargs,
                 requires_grad=True,
             )
@@ -45,7 +46,7 @@ class BayesianBatchNorm(BayesianModule):
         self.running_mean: Optional[Tensor]
         self.register_buffer(
             "running_std", torch.ones(
-                *dim,
+                *size,
                 **factory_kwargs,
                 requires_grad=True,
             )
@@ -92,7 +93,7 @@ class BayesianBatchNorm(BayesianModule):
             )
 
         x_shape = x.shape
-        x = x.view(-1, *self.dim)
+        x = x.view(-1, *self.size)
         if bn_training:
             mean = x.mean(dim=0)
             std = x.std(dim=0)

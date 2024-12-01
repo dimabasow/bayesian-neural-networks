@@ -1,4 +1,4 @@
-from typing import Iterator
+from collections.abc import Iterator, Sequence
 import torch
 import torch.types
 from src.nn.base import BayesianModule
@@ -7,7 +7,7 @@ from src.nn.base import BayesianModule
 class BayesianParameter(BayesianModule):
     def __init__(
         self,
-        size: tuple[int, ...],
+        size: Sequence[int],
         device=None,
         dtype=None,
     ) -> None:
@@ -15,13 +15,13 @@ class BayesianParameter(BayesianModule):
         super().__init__()
         self.rho = torch.nn.Parameter(
             torch.empty(
-                size=size,
+                size=list(size),
                 **factory_kwargs
             )
         )
         self.gamma = torch.nn.Parameter(
             torch.empty(
-                size=size,
+                size=list(size),
                 **factory_kwargs
             )
         )

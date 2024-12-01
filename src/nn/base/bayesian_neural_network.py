@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import Optional, Iterable
+from typing import Optional, Dict, Any
 import torch
 import copy
 import pandas as pd
@@ -12,13 +12,13 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
     def __init__(self):
         super().__init__()
         self.__count_epoch = 0
-        self.__metrics: dict[int, dict[str, float]] = {}
-        self.__metrics_init: dict[int, dict[str, float]] = {}
+        self.__metrics: Dict[int, Dict[str, float]] = {}
 
     @abstractmethod
     def configure_optimizer(
         self,
-        parameters: Optional[Iterable[torch.Tensor]] = None
+        optimizer: str,
+        kwargs: Optional[Dict[str, Any]],
     ) -> torch.optim.Optimizer:
         ...
 
@@ -35,7 +35,7 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
         return self.__count_epoch
 
     @property
-    def last_metrics(self) -> dict[str, float]:
+    def last_metrics(self) -> Dict[str, float]:
         return copy.deepcopy(self.__metrics[self.current_epoch - 1])
 
     @property
@@ -69,29 +69,38 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
     def init(
         self,
         x: torch.Tensor,
+        optimizer: str = "Adam",
+        lr: float = 0.1,
         num_epoch: int = 10,
     ):
         self.init_mode_on()
-        optimizer = self.configure_optimizer()
+        optimizer: torch.optim.Optimizer = self.configure_optimizer(
+            optimizer=optimizer,
+            kwargs={"lr": lr}
+        )
         for _ in range(num_epoch):
             self.train()
-            with torch.no_grad():
-                self(x)
             optimizer.zero_grad()
+            self(x)
             kl = self.get_kl()
-            kl.backward(retain_graph=True)
+            kl.backward()
             optimizer.step()
             self.log(key="kl", value=kl.item())
             self.__count_epoch += 1
+        self.init_mode_off()
 
     def fit(
         self,
         x: torch.Tensor,
         y: torch.Tensor,
+        optimizer: str = "Adam",
+        lr: float = 0.01,
         num_epoch: int = 1000,
     ):
-        optimizer = self.configure_optimizer()
-
+        optimizer: torch.optim.Optimizer = self.configure_optimizer(
+            optimizer=optimizer,
+            kwargs={"lr": lr}
+        )
         for _ in range(num_epoch):
             optimizer.zero_grad()
             self.train()

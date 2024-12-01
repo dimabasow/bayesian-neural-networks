@@ -1,8 +1,10 @@
-from typing import Literal
+from typing import Literal, Union, Dict, Any, Optional
+from collections.abc import Sequence
 import torch
 from src.nn.base import BayesianModule
 from src.nn.linear import BayesianLinear
-from src.nn.container import BayesianModuleDict
+from src.nn.container import BayesianModuleDict, BayesianModuleList, BayesianSequential
+from src.nn.batchnorm import BayesianBatchNorm
 
 
 class BayesianResNet(BayesianModule):
@@ -10,48 +12,48 @@ class BayesianResNet(BayesianModule):
         self,
         dim_in: int,
         dim_out: int,
-        dim_hidden: int,
-        n_layers: int,
-        f_act: (
-            Literal["ELU"]
-            | Literal["ReLU"]
-            | Literal["LeakyReLU"]
-        ) = "LeakyReLU",
+        dims_hidden: Sequence[int],
+        f_act: Union[
+            Literal["ELU"],
+            Literal["ReLU"],
+            Literal["LeakyReLU"],
+        ] = "LeakyReLU",
+        f_act_kwargs: Optional[Dict[str, Any]] = None,
+        batch_norm: bool = True,
+        batch_penalty: bool = True,
     ) -> None:
         super().__init__()
 
-        self.n_layers = n_layers
+        if f_act_kwargs is None:
+            f_act_kwargs = {}
+        self.dims_hidden = dims_hidden
+
         self.weights = BayesianModuleDict()
-        if f_act == "ELU":
-            self.f_act = torch.nn.ELU()
-        elif f_act == "ReLU":
-            self.f_act = torch.nn.ReLU()
-        elif f_act == "LeakyReLU":
-            self.f_act = torch.nn.LeakyReLU(negative_slope=3)
-        else:
-            raise NotImplementedError(
-                f"Функция активации {f_act} не импелементирована"
-            )
-        for i in range(n_layers + 1):
-            i += 1
-            for k in range(i):
-                if k == 0:
-                    in_features = dim_in
-                else:
-                    in_features = dim_hidden
-                if i == n_layers + 1:
-                    out_features = dim_out
-                else:
-                    out_features = dim_hidden
-                self.weights[f"w_{k}_{i}"] = BayesianLinear(
-                    in_features=in_features,
-                    out_features=out_features,
-                    bias=True,
+        dims = [dim_in] + list(dims_hidden) + [dim_out]
+        for i, dim_i in enumerate(dims):
+            for j, dim_j in enumerate(dims[i+1:]):
+                print(i, i+j+1, dim_i, dim_j)
+                self.weights[f"w_{i}_{i+j+1}"] = BayesianLinear(
+                    in_features=dim_i,
+                    out_features=dim_j,
+                    bias=True
                 )
+
+        self.f_act_blocks = BayesianModuleList()
+        for dim in dims_hidden:
+            block = BayesianSequential(
+                BayesianBatchNorm(
+                    size=[dim],
+                    transform=batch_norm,
+                    penalty=batch_penalty,
+                ),
+                getattr(torch.nn, f_act)(**f_act_kwargs),
+            )
+            self.f_act_blocks.append(block)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         z = [x]
-        for i in range(self.n_layers + 1):
+        for i in range(len(self.dims_hidden) + 1):
             i += 1
             for k in range(i):
                 if k == 0:
@@ -59,7 +61,7 @@ class BayesianResNet(BayesianModule):
                 else:
                     value = value + self.weights[f"w_{k}_{i}"](z[k])
                 if k == i-1:
-                    if i != self.n_layers + 1:
-                        value = self.f_act(value)
+                    if i != len(self.dims_hidden) + 1:
+                        value = self.f_act_blocks[i-1](value)
                     z.append(value)
         return z[-1]
