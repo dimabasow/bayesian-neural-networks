@@ -32,7 +32,6 @@ class BayesianResNet(BayesianModule):
         dims = [dim_in] + list(dims_hidden) + [dim_out]
         for i, dim_i in enumerate(dims):
             for j, dim_j in enumerate(dims[i+1:]):
-                print(i, i+j+1, dim_i, dim_j)
                 self.weights[f"w_{i}_{i+j+1}"] = BayesianLinear(
                     in_features=dim_i,
                     out_features=dim_j,

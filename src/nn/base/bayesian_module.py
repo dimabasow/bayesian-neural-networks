@@ -59,8 +59,14 @@ class BayesianModule(torch.nn.Module, ABC):
 
     @property
     def device(self) -> torch.device:
-        return next(self.parameters()).device
+        for parameter in self.parameters():
+            return parameter.device
+        for module in self.bayesian_modules():
+            return module.device
 
     @property
-    def dtype(self) -> torch.dtype:
-        return next(self.parameters()).dtype
+    def dtype(self) -> torch.device:
+        for parameter in self.parameters():
+            return parameter.dtype
+        for module in self.bayesian_modules():
+            return module.dtype

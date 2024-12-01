@@ -52,13 +52,6 @@ class BayesianPerceptrone(BayesianModule):
                 out_features=dim_out,
             )
         )
-        # self.fcc.append(
-        #     BayesianBatchNorm(
-        #         size=[dim_out],
-        #         transform=batch_norm,
-        #         penalty=batch_penalty,
-        #     )
-        # )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.fcc(x)
