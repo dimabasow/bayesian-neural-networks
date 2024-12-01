@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional, Iterable
 import torch
 from src.nn import BayesianNeuralNetwork, BayesianPerceptrone, BayesianResNet
 
@@ -51,9 +51,14 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.backbone((x + self.shift) * self.scale)
 
-    def configure_optimizer(self):
+    def configure_optimizer(
+        self,
+        parameters: Optional[Iterable[torch.Tensor]] = None
+    ):
+        if parameters is None:
+            parameters = self.parameters()
         optimizer = torch.optim.Adam(
-            self.parameters(),
+            parameters,
             lr=self.lr,
             weight_decay=0,
         )

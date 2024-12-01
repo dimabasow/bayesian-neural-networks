@@ -14,6 +14,19 @@ class BayesianModule(torch.nn.Module, ABC):
             if isinstance(module, BayesianModule):
                 yield module
 
+    def get_init_parameters(self) -> Iterator[torch.Tensor]:
+        for module in self.bayesian_modules():
+            for parameter in module.get_init_parameters():
+                yield parameter
+
+    def init_mode_on(self):
+        for module in self.bayesian_modules():
+            module.init_mode_on()
+
+    def init_mode_off(self):
+        for module in self.bayesian_modules():
+            module.init_mode_off()
+
     def reset_parameters(self) -> None:
         for module in self.bayesian_modules():
             module.reset_parameters()
@@ -41,8 +54,7 @@ class BayesianModule(torch.nn.Module, ABC):
     def get_kl(self) -> torch.Tensor:
         kl = torch.zeros(size=[], dtype=self.dtype, device=self.device)
         for module in self.bayesian_modules():
-            for rho in module.get_rho():
-                kl += self.softplus(2 * rho).sum() / 2
+            kl += module.get_kl()
         return kl
 
     @property

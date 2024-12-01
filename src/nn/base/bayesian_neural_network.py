@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from typing import Optional, Iterable
 import torch
 import copy
 import pandas as pd
@@ -11,10 +12,14 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
     def __init__(self):
         super().__init__()
         self.__count_epoch = 0
-        self.__metrics: dict[0, dict[str, float]] = {}
+        self.__metrics: dict[int, dict[str, float]] = {}
+        self.__metrics_init: dict[int, dict[str, float]] = {}
 
     @abstractmethod
-    def configure_optimizer(self) -> torch.optim.Optimizer:
+    def configure_optimizer(
+        self,
+        parameters: Optional[Iterable[torch.Tensor]] = None
+    ) -> torch.optim.Optimizer:
         ...
 
     @abstractmethod
@@ -60,6 +65,24 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
     ) -> torch.Tensor:
         loss = self.negative_likelihood(x=x, y=y) + self.get_kl() / train_size
         return loss
+
+    def init(
+        self,
+        x: torch.Tensor,
+        num_epoch: int = 10,
+    ):
+        self.init_mode_on()
+        optimizer = self.configure_optimizer()
+        for _ in range(num_epoch):
+            self.train()
+            with torch.no_grad():
+                self(x)
+            optimizer.zero_grad()
+            kl = self.get_kl()
+            kl.backward(retain_graph=True)
+            optimizer.step()
+            self.log(key="kl", value=kl.item())
+            self.__count_epoch += 1
 
     def fit(
         self,

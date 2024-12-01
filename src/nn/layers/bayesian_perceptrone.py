@@ -2,6 +2,7 @@ from typing import Literal
 import torch
 from src.nn.base import BayesianModule
 from src.nn.linear import BayesianLinear
+from src.nn.batchnorm import BayesianBatchNorm
 from src.nn.container import BayesianSequential
 
 
@@ -28,6 +29,13 @@ class BayesianPerceptrone(BayesianModule):
                 BayesianLinear(
                     in_features=in_features,
                     out_features=dim_hidden,
+                )
+            )
+            self.fcc.append(
+                BayesianBatchNorm(
+                    dim=(dim_hidden,),
+                    transform=True,
+                    penalty=True,
                 )
             )
             in_features = dim_hidden
