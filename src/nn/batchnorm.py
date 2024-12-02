@@ -45,6 +45,14 @@ class BayesianBatchNorm(BayesianModule):
         )
         self.running_mean: Optional[Tensor]
         self.register_buffer(
+            "last_train_mean", torch.zeros(
+                *size,
+                **factory_kwargs,
+                requires_grad=True,
+            )
+        )
+        self.last_train_mean: Optional[Tensor]
+        self.register_buffer(
             "running_std", torch.ones(
                 *size,
                 **factory_kwargs,
@@ -52,6 +60,14 @@ class BayesianBatchNorm(BayesianModule):
             )
         )
         self.running_std: Optional[Tensor]
+        self.register_buffer(
+            "last_train_std", torch.ones(
+                *size,
+                **factory_kwargs,
+                requires_grad=True,
+            )
+        )
+        self.last_train_std: Optional[Tensor]
         self.register_buffer(
             "num_batches_tracked",
             torch.tensor(
@@ -74,11 +90,6 @@ class BayesianBatchNorm(BayesianModule):
         self.num_batches_tracked.zero_()
 
     def forward(self, x: Tensor) -> Tensor:
-        if self.momentum is None:
-            momentum = 0.0
-        else:
-            momentum = self.momentum
-
         if self.training:
             self.num_batches_tracked.add_(1)
             if self.momentum is None:
@@ -86,45 +97,44 @@ class BayesianBatchNorm(BayesianModule):
             else:
                 momentum = self.momentum
 
+        if self.momentum is None:
+            momentum = 0.0
+        else:
+            momentum = self.momentum
+
         x_shape = x.shape
         x = x.view(-1, *self.size)
-        if self.training or self.penalty:
-            mean = x.mean(dim=0)
-            std = x.std(dim=0)
-            running_mean = (
+        if self.training:
+            self.last_train_mean = x.mean(dim=0)
+            self.last_train_std = x.std(dim=0)
+            self.running_mean = (
                 (self.running_mean.detach()*momentum)
-                + (mean*(1 - momentum))
+                + (self.last_train_mean*(1 - momentum))
             )
-            running_std = (
+            self.running_std = (
                 (self.running_std.detach()*momentum)
-                + (std*(1 - momentum))
+                + (self.last_train_std*(1 - momentum))
             )
-        else:
-            running_mean = self.running_mean.detach()
-            running_std = self.running_std.detach()
 
         if self.transform:
-            x = (x - running_mean) / (running_std + self.eps)
+            x = (x - self.running_mean) / (self.running_std + self.eps)
+
+        x = x.view(*x_shape)
+        return x
+
+    def get_kl(self) -> Tensor:
         if self.penalty:
-            std_pow_2 = std ** 2
-            mean_pow_2 = mean ** 2
-            self.kl = (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
+            std_pow_2 = self.last_train_std ** 2
+            mean_pow_2 = self.last_train_mean ** 2
+            kl = (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
         else:
-            self.kl = torch.zeros(
+            kl = torch.zeros(
                 size=[],
                 dtype=self.dtype,
                 device=self.device,
                 requires_grad=True
             )
-
-        if self.training:
-            self.running_mean = running_mean
-            self.running_std = running_std
-        x = x.view(*x_shape)
-        return x
-
-    def get_kl(self) -> Tensor:
-        return self.kl
+        return kl
 
     @property
     def device(self) -> torch.device:
