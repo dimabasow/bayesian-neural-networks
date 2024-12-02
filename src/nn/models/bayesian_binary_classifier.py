@@ -17,6 +17,9 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
         f_act_kwargs: Optional[Dict[str, Any]] = None,
         batch_norm: bool = True,
         batch_penalty: bool = True,
+        batch_affine: bool = True,
+        batch_momentum: Optional[float] = 0.1,
+        eps: float = 1e-5,
         backbone: Union[
             Literal["Perceptrone"],
             Literal["ResNet"],
@@ -34,6 +37,9 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
                 f_act_kwargs=f_act_kwargs,
                 batch_norm=batch_norm,
                 batch_penalty=batch_penalty,
+                batch_affine=batch_affine,
+                batch_momentum=batch_momentum,
+                eps=eps,
             )
         elif backbone == "ResNet":
             self.backbone = BayesianResNet(
@@ -44,6 +50,9 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
                 f_act_kwargs=f_act_kwargs,
                 batch_norm=batch_norm,
                 batch_penalty=batch_penalty,
+                batch_affine=batch_affine,
+                batch_momentum=batch_momentum,
+                eps=eps,
             )
         self.loss_fn = torch.nn.BCEWithLogitsLoss(reduction="mean")
         self.sigmoid = torch.nn.Sigmoid()

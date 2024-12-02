@@ -1,5 +1,10 @@
 from .base import BayesianModule, BayesianParameter, BayesianNeuralNetwork
-from .container import BayesianSequential, BayesianModuleList, BayesianModuleDict
+from .container import (
+    BayesianSequential,
+    BayesianModuleList,
+    BayesianModuleDict,
+)
+from .affine import BayesianAffine
 from .batchnorm import BayesianBatchNorm
 from .linear import BayesianLinear
 from .layers import BayesianPerceptrone, BayesianResNet, Perceptrone, ResNet
@@ -12,6 +17,7 @@ __all__ = [
     "BayesianSequential",
     "BayesianModuleList",
     "BayesianModuleDict",
+    "BayesianAffine",
     "BayesianBatchNorm",
     "BayesianLinear",
     "BayesianPerceptrone",

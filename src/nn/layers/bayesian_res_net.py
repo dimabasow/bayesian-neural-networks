@@ -3,7 +3,12 @@ from collections.abc import Sequence
 import torch
 from src.nn.base import BayesianModule
 from src.nn.linear import BayesianLinear
-from src.nn.container import BayesianModuleDict, BayesianModuleList, BayesianSequential
+from src.nn.container import (
+    BayesianModuleDict,
+    BayesianModuleList,
+    BayesianSequential,
+)
+from src.nn.affine import BayesianAffine
 from src.nn.batchnorm import BayesianBatchNorm
 
 
@@ -21,6 +26,9 @@ class BayesianResNet(BayesianModule):
         f_act_kwargs: Optional[Dict[str, Any]] = None,
         batch_norm: bool = True,
         batch_penalty: bool = True,
+        batch_affine: bool = True,
+        batch_momentum: Optional[float] = 0.1,
+        eps: float = 1e-5,
     ) -> None:
         super().__init__()
 
@@ -40,13 +48,20 @@ class BayesianResNet(BayesianModule):
 
         self.f_act_blocks = BayesianModuleList()
         for dim in dims_hidden:
-            block = BayesianSequential(
+            block = BayesianSequential()
+            block.append(
                 BayesianBatchNorm(
                     size=[dim],
                     transform=batch_norm,
                     penalty=batch_penalty,
-                ),
-                getattr(torch.nn, f_act)(**f_act_kwargs),
+                    momentum=batch_momentum,
+                    eps=eps,
+                )
+            )
+            if batch_affine:
+                block.append(BayesianAffine(size=[dim]))
+            block.append(
+                getattr(torch.nn, f_act)(**f_act_kwargs)
             )
             self.f_act_blocks.append(block)
 

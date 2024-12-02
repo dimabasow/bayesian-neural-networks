@@ -3,6 +3,7 @@ from collections.abc import Sequence
 import torch
 from src.nn.base import BayesianModule
 from src.nn.linear import BayesianLinear
+from src.nn.affine import BayesianAffine
 from src.nn.batchnorm import BayesianBatchNorm
 from src.nn.container import BayesianSequential
 
@@ -21,6 +22,9 @@ class BayesianPerceptrone(BayesianModule):
         f_act_kwargs: Optional[Dict[str, Any]] = None,
         batch_norm: bool = True,
         batch_penalty: bool = True,
+        batch_affine: bool = True,
+        batch_momentum: Optional[float] = 0.1,
+        eps: float = 1e-5,
     ) -> None:
         super().__init__()
 
@@ -40,12 +44,20 @@ class BayesianPerceptrone(BayesianModule):
                     size=[dim_hidden],
                     transform=batch_norm,
                     penalty=batch_penalty,
+                    momentum=batch_momentum,
+                    eps=eps,
                 )
             )
-            in_features = dim_hidden
+            if batch_affine:
+                self.fcc.append(
+                    BayesianAffine(
+                        size=[dim_hidden]
+                    )
+                )
             self.fcc.append(
                 getattr(torch.nn, f_act)(**f_act_kwargs)
             )
+            in_features = dim_hidden
         self.fcc.append(
             BayesianLinear(
                 in_features=in_features,
