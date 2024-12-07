@@ -1,4 +1,4 @@
-from collections.abc import Iterator, Sequence
+from typing import Iterator, Sequence
 import torch
 import torch.types
 from src.nn.base import BayesianModule

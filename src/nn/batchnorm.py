@@ -1,5 +1,4 @@
-from typing import Optional
-from collections.abc import Sequence
+from typing import Optional, Sequence
 import torch
 from torch import Tensor
 from src.nn.base import BayesianModule

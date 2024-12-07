@@ -1,5 +1,4 @@
-from typing import Literal, Dict, Optional, Any, Union
-from collections.abc import Sequence
+from typing import Literal, Dict, Optional, Any, Union, Sequence
 import torch
 from src.nn import BayesianNeuralNetwork, BayesianPerceptrone, BayesianResNet
 

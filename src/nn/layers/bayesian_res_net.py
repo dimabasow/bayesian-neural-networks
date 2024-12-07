@@ -1,5 +1,4 @@
-from typing import Literal, Union, Dict, Any, Optional
-from collections.abc import Sequence
+from typing import Literal, Union, Dict, Any, Optional, Sequence
 import torch
 from src.nn.base import BayesianModule
 from src.nn.linear import BayesianLinear
