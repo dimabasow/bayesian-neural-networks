@@ -20,6 +20,10 @@ class BayesianLinear(BayesianModule):
         factory_kwargs = {'device': device, 'dtype': dtype}
         super().__init__()
         self.in_features = in_features
+        self.register_buffer(
+            "scale", 1/torch.sqrt(torch.tensor(self.in_features))
+        )
+        self.scale: torch.Tensor
         self.out_features = out_features
         self.weight = BayesianParameter(
             size=(in_features, out_features),
@@ -51,7 +55,7 @@ class BayesianLinear(BayesianModule):
             + (x@sigma)*noise
         )
         y = y.view(*dim, self.out_features)
-        return y
+        return y * self.scale
 
     def forward_bias_true(self, x: torch.Tensor) -> torch.Tensor:
         dim = x.shape[:-1]
