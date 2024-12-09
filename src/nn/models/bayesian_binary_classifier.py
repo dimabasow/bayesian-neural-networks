@@ -1,6 +1,11 @@
 from typing import Literal, Dict, Optional, Any, Union, Sequence
 import torch
-from src.nn import BayesianNeuralNetwork, BayesianPerceptrone, BayesianResNet
+from src.nn import (
+    BayesianNeuralNetwork,
+    BayesianPerceptrone,
+    BayesianResNet,
+    BayesianResNetLast,
+)
 
 
 class BayesianBinaryClassifier(BayesianNeuralNetwork):
@@ -22,6 +27,7 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
         backbone: Union[
             Literal["Perceptrone"],
             Literal["ResNet"],
+            Literal["ResNetLast"],
         ] = "Perceptrone",
         lr: float = 0.001
     ):
@@ -42,6 +48,19 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
             )
         elif backbone == "ResNet":
             self.backbone = BayesianResNet(
+                dim_in=dim_in,
+                dim_out=1,
+                dims_hidden=dims_hidden,
+                f_act=f_act,
+                f_act_kwargs=f_act_kwargs,
+                batch_norm=batch_norm,
+                batch_penalty=batch_penalty,
+                batch_affine=batch_affine,
+                batch_momentum=batch_momentum,
+                eps=eps,
+            )
+        elif backbone == "ResNetLast":
+            self.backbone = BayesianResNetLast(
                 dim_in=dim_in,
                 dim_out=1,
                 dims_hidden=dims_hidden,

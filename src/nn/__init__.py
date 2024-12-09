@@ -7,7 +7,13 @@ from .container import (
 from .affine import BayesianAffine
 from .batchnorm import BayesianBatchNorm
 from .linear import BayesianLinear
-from .layers import BayesianPerceptrone, BayesianResNet, Perceptrone, ResNet
+from .layers import (
+    BayesianPerceptrone,
+    BayesianResNet,
+    BayesianResNetLast,
+    Perceptrone,
+    ResNet,
+)
 from .models import BayesianBinaryClassifier, BinaryClassifier
 
 __all__ = [
@@ -22,6 +28,7 @@ __all__ = [
     "BayesianLinear",
     "BayesianPerceptrone",
     "BayesianResNet",
+    "BayesianResNetLast",
     "Perceptrone",
     "ResNet",
     "BayesianBinaryClassifier",
