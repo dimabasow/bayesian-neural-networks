@@ -29,20 +29,21 @@ class BayesianParameter(BayesianModule):
             ),
             requires_grad=True,
         )
-        self.register_buffer(
-            "init_rho",
-            torch.randn(size=list(size), **factory_kwargs),
-        )
-        self.init_rho: torch.Tensor
+
         self.register_buffer(
             "init_gamma",
-            torch.randn(size=list(size), **factory_kwargs),
+            torch.randn(
+                size=self.size,
+                requires_grad=True
+            )
         )
         self.init_gamma: torch.Tensor
-
         self.init_parameters = torch.nn.Parameter(
             data=torch.tensor(
-                data=[0.0, 1.0, 0.0, 1.0],
+                data=[
+                    torch.ones(size=[]),
+                    torch.log(torch.exp(torch.ones([])) - 1)
+                ],
                 requires_grad=True,
                 **factory_kwargs
             ),
@@ -60,45 +61,48 @@ class BayesianParameter(BayesianModule):
     def get_init_parameters(self) -> Iterator[torch.Tensor]:
         yield self.init_parameters
 
-    def reset_parameters(self) -> None:
-        self.rho = torch.nn.Parameter(
-            next(self.get_rho_init_on()).detach(),
-            requires_grad=True,
-        )
-        self.gamma = torch.nn.Parameter(
-            next(self.get_gamma_init_on()).detach(),
-            requires_grad=True,
-        )
-
     def init_mode_on(self):
-        self.get_rho = self.get_rho_init_on
-        self.get_gamma = self.get_gamma_init_on
+        self.is_init_mode_on = True
 
     def init_mode_off(self):
-        self.get_rho = self.get_rho_init_off
-        self.get_gamma = self.get_gamma_init_off
+        self.is_init_mode_on = False
         self.reset_parameters()
 
-    def get_rho_init_off(self) -> Iterator[torch.nn.Parameter]:
-        yield self.rho
-
-    def get_rho_init_on(self) -> Iterator[torch.Tensor]:
-        yield (
-            self.init_rho * self.softplus(self.init_parameters[1])
-            + self.init_parameters[0]
+    def reset_parameters(self) -> None:
+        self.gamma = torch.nn.Parameter(
+            self.init_gamma * self.init_parameters[0],
+            requires_grad=True,
+        )
+        self.rho = torch.nn.Parameter(
+            torch.ones(
+                size=self.size,
+                dtype=self.dtype,
+                device=self.device
+            ) * self.init_parameters[1],
+            requires_grad=True,
         )
 
-    def get_gamma_init_off(self) -> Iterator[torch.nn.Parameter]:
-        yield self.gamma
+    def get_gamma(self) -> Iterator[torch.nn.Parameter]:
+        if self.is_init_mode_on:
+            yield self.init_gamma * self.init_parameters[0]
+        else:
+            yield self.gamma
 
-    def get_gamma_init_on(self) -> Iterator[torch.Tensor]:
-        yield (
-            self.init_gamma * self.softplus(self.init_parameters[3])
-            + self.init_parameters[2]
-        )
+    def get_rho(self) -> Iterator[torch.nn.Parameter]:
+        if self.is_init_mode_on:
+            yield torch.ones(
+                size=self.size,
+                dtype=self.dtype,
+                device=self.device
+            ) * self.init_parameters[1]
+        else:
+            yield self.rho
 
     def get_kl(self) -> torch.Tensor:
-        return self.softplus(2 * next(self.get_rho())).sum() / 2
+        gamma = next(self.get_gamma())
+        gamma_pow_2 = gamma ** 2
+        kl = (torch.log(1 + gamma_pow_2)).sum() / 2
+        return kl
 
     def forward(self, *dim: int) -> torch.Tensor:
         noise = torch.normal(

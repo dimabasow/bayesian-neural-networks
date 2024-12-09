@@ -7,6 +7,7 @@ import torch.types
 class BayesianModule(torch.nn.Module, ABC):
 
     softplus = torch.nn.Softplus()
+    is_init_mode_on: bool = True
 
     def bayesian_modules(self) -> Iterator["BayesianModule"]:
         for name in self._modules:
@@ -20,10 +21,12 @@ class BayesianModule(torch.nn.Module, ABC):
                 yield parameter
 
     def init_mode_on(self):
+        self.is_init_mode_on = True
         for module in self.bayesian_modules():
             module.init_mode_on()
 
     def init_mode_off(self):
+        self.is_init_mode_on = False
         for module in self.bayesian_modules():
             module.init_mode_off()
 
@@ -43,13 +46,13 @@ class BayesianModule(torch.nn.Module, ABC):
 
     def get_sigma(self) -> Iterator[torch.nn.Parameter]:
         for module in self.bayesian_modules():
-            for gamma in module.get_gamma():
-                yield gamma.abs()
+            for rho in module.get_rho():
+                yield self.softplus(rho)
 
     def get_mu(self) -> Iterator[torch.nn.Parameter]:
         for module in self.bayesian_modules():
             for gamma, rho in zip(module.get_gamma(), module.get_rho()):
-                yield gamma * torch.exp(rho)
+                yield gamma * self.softplus(rho)
 
     def get_kl(self) -> torch.Tensor:
         kl = torch.zeros(size=[], dtype=self.dtype, device=self.device)

@@ -49,16 +49,31 @@ class BayesianLinear(BayesianModule):
             device=self.device,
         )
         sigma = next(self.weight.get_sigma())
-        mu = next(self.weight.get_mu())
+        mu = next(self.weight.get_rho()) * sigma
         y = (
             x@mu
             + (x@sigma)*noise
-        )
+        ) * self.scale
+        if self.is_init_mode_on:
+            self.last_mean = y.mean(dim=0)
+            self.last_std = y.std(dim=0)
         y = y.view(*dim, self.out_features)
-        return y * self.scale
+        return y
 
     def forward_bias_true(self, x: torch.Tensor) -> torch.Tensor:
         dim = x.shape[:-1]
         bias = self.bias(*dim)
         y = self.forward_bias_false(x) + bias
         return y
+
+    def get_kl(self):
+        kl = super().get_kl()
+        if self.is_init_mode_on:
+            std_pow_2 = self.last_std ** 2
+            mean_pow_2 = self.last_mean ** 2
+            kl_z = (
+                (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
+            )
+            kl = kl + kl_z
+
+        return kl
