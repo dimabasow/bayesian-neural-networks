@@ -49,7 +49,7 @@ class BayesianLinear(BayesianModule):
             device=self.device,
         )
         sigma = next(self.weight.get_sigma())
-        mu = next(self.weight.get_rho()) * sigma
+        mu = next(self.weight.get_gamma()) * sigma
         y = (
             x@mu
             + (x@sigma)*noise

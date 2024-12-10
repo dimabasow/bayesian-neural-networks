@@ -29,7 +29,6 @@ class BayesianParameter(BayesianModule):
             ),
             requires_grad=True,
         )
-
         self.register_buffer(
             "init_gamma",
             torch.randn(
@@ -38,11 +37,21 @@ class BayesianParameter(BayesianModule):
             )
         )
         self.init_gamma: torch.Tensor
+        self.register_buffer(
+            "init_rho",
+            torch.randn(
+                size=self.size,
+                requires_grad=True
+            )
+        )
+        self.init_rho: torch.Tensor
         self.init_parameters = torch.nn.Parameter(
             data=torch.tensor(
                 data=[
+                    torch.zeros(size=[]),
                     torch.ones(size=[]),
-                    torch.log(torch.exp(torch.ones([])) - 1)
+                    torch.zeros(size=[]),
+                    torch.ones(size=[]),
                 ],
                 requires_grad=True,
                 **factory_kwargs
@@ -70,31 +79,35 @@ class BayesianParameter(BayesianModule):
 
     def reset_parameters(self) -> None:
         self.gamma = torch.nn.Parameter(
-            self.init_gamma * self.init_parameters[0],
+            (
+                self.init_gamma * self.init_parameters[1]
+                + self.init_parameters[0]
+            ),
             requires_grad=True,
         )
         self.rho = torch.nn.Parameter(
-            torch.ones(
-                size=self.size,
-                dtype=self.dtype,
-                device=self.device
-            ) * self.init_parameters[1],
+            (
+                self.init_rho * self.init_parameters[3]
+                + self.init_parameters[2]
+            ),
             requires_grad=True,
         )
 
     def get_gamma(self) -> Iterator[torch.nn.Parameter]:
         if self.is_init_mode_on:
-            yield self.init_gamma * self.init_parameters[0]
+            yield (
+                self.init_gamma * self.init_parameters[1]
+                + self.init_parameters[0]
+            )
         else:
             yield self.gamma
 
     def get_rho(self) -> Iterator[torch.nn.Parameter]:
         if self.is_init_mode_on:
-            yield torch.ones(
-                size=self.size,
-                dtype=self.dtype,
-                device=self.device
-            ) * self.init_parameters[1]
+            yield (
+                self.init_rho * self.init_parameters[3]
+                + self.init_parameters[2]
+            )
         else:
             yield self.rho
 
@@ -112,5 +125,8 @@ class BayesianParameter(BayesianModule):
             dtype=self.dtype,
             device=self.device,
         )
-        w = (noise * next(self.get_sigma())) + next(self.get_mu())
+        sigma = next(self.get_sigma())
+        gamma = next(self.get_gamma())
+        mu = gamma * sigma
+        w = (noise * sigma) + mu
         return w
