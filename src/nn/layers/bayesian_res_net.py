@@ -24,7 +24,7 @@ class BayesianResNet(BayesianModule):
         ] = "LeakyReLU",
         f_act_kwargs: Optional[Dict[str, Any]] = None,
         batch_norm: bool = True,
-        batch_penalty: bool = True,
+        batch_penalty: bool = False,
         batch_affine: bool = True,
         batch_momentum: Optional[float] = 0.1,
         eps: float = 1e-5,

@@ -19,9 +19,9 @@ class BayesianBinaryClassifier(BayesianNeuralNetwork):
             Literal["LeakyReLU"],
         ] = "LeakyReLU",
         f_act_kwargs: Optional[Dict[str, Any]] = None,
-        batch_norm: bool = False,
+        batch_norm: bool = True,
         batch_penalty: bool = False,
-        batch_affine: bool = False,
+        batch_affine: bool = True,
         batch_momentum: Optional[float] = 0.1,
         eps: float = 1e-5,
         backbone: Union[

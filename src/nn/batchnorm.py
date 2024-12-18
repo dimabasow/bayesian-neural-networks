@@ -21,7 +21,7 @@ class BayesianBatchNorm(BayesianModule):
     def __init__(
         self,
         size: Sequence[int],
-        transform: bool = False,
+        transform: bool = True,
         penalty: bool = False,
         momentum: Optional[float] = 0.1,
         eps: float = 1e-5,
