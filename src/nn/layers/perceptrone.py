@@ -1,4 +1,4 @@
-from typing import Literal, Union
+from typing import Literal, Union, Optional, Dict, Any, Sequence
 import torch
 from src.nn.base import BayesianModule
 
@@ -8,37 +8,32 @@ class Perceptrone(BayesianModule):
         self,
         dim_in: int,
         dim_out: int,
-        dim_hidden: int,
-        n_layers: int,
+        dims_hidden: Sequence[int],
         f_act: Union[
             Literal["ELU"],
             Literal["ReLU"],
             Literal["LeakyReLU"],
         ] = "LeakyReLU",
+        f_act_kwargs: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__()
 
-        self.n_layers = n_layers
+        if f_act_kwargs is None:
+            f_act_kwargs = {}
+
         self.fcc = torch.nn.Sequential()
         in_features = dim_in
-        for _ in range(n_layers):
+        for dim_hidden in dims_hidden:
             self.fcc.append(
                 torch.nn.Linear(
                     in_features=in_features,
                     out_features=dim_hidden,
                 )
             )
+            self.fcc.append(
+                getattr(torch.nn, f_act)(**f_act_kwargs)
+            )
             in_features = dim_hidden
-            if f_act == "ELU":
-                self.fcc.append(torch.nn.ELU())
-            elif f_act == "ReLU":
-                self.fcc.append(torch.nn.ReLU())
-            elif f_act == "LeakyReLU":
-                self.fcc.append(torch.nn.LeakyReLU(negative_slope=3))
-            else:
-                raise NotImplementedError(
-                    f"Функция активации {f_act} не импелементирована"
-                )
         self.fcc.append(
             torch.nn.Linear(
                 in_features=in_features,

@@ -1,4 +1,4 @@
-from typing import Literal, Union
+from typing import Literal, Union, Dict, Any, Optional, Sequence
 import torch
 from src.nn.base import BayesianModule
 
@@ -8,48 +8,35 @@ class ResNet(BayesianModule):
         self,
         dim_in: int,
         dim_out: int,
-        dim_hidden: int,
-        n_layers: int,
+        dims_hidden: Sequence[int],
         f_act: Union[
             Literal["ELU"],
             Literal["ReLU"],
             Literal["LeakyReLU"],
         ] = "LeakyReLU",
+        f_act_kwargs: Optional[Dict[str, Any]] = None,
     ) -> None:
         super().__init__()
 
-        self.n_layers = n_layers
+        if f_act_kwargs is None:
+            f_act_kwargs = {}
+        self.dims_hidden = dims_hidden
+
         self.weights = torch.nn.ModuleDict()
-        if f_act == "ELU":
-            self.f_act = torch.nn.ELU()
-        elif f_act == "ReLU":
-            self.f_act = torch.nn.ReLU()
-        elif f_act == "LeakyReLU":
-            self.f_act = torch.nn.LeakyReLU(negative_slope=3)
-        else:
-            raise NotImplementedError(
-                f"Функция активации {f_act} не импелементирована"
-            )
-        for i in range(n_layers + 1):
-            i += 1
-            for k in range(i):
-                if k == 0:
-                    in_features = dim_in
-                else:
-                    in_features = dim_hidden
-                if i == n_layers + 1:
-                    out_features = dim_out
-                else:
-                    out_features = dim_hidden
-                self.weights[f"w_{k}_{i}"] = torch.nn.Linear(
-                    in_features=in_features,
-                    out_features=out_features,
-                    bias=True,
+        dims = [dim_in] + list(dims_hidden) + [dim_out]
+        for i, dim_i in enumerate(dims):
+            for j, dim_j in enumerate(dims[i+1:]):
+                self.weights[f"w_{i}_{i+j+1}"] = torch.nn.Linear(
+                    in_features=dim_i,
+                    out_features=dim_j,
+                    bias=True
                 )
+
+        self.f_act = getattr(torch.nn, f_act)(**f_act_kwargs)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         z = [x]
-        for i in range(self.n_layers + 1):
+        for i in range(len(self.dims_hidden) + 1):
             i += 1
             for k in range(i):
                 if k == 0:
@@ -57,7 +44,7 @@ class ResNet(BayesianModule):
                 else:
                     value = value + self.weights[f"w_{k}_{i}"](z[k])
                 if k == i-1:
-                    if i != self.n_layers + 1:
+                    if i != len(self.dims_hidden) + 1:
                         value = self.f_act(value)
                     z.append(value)
         return z[-1]
