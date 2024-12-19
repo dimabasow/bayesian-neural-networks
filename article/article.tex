@@ -6,7 +6,7 @@
 
 % Set page size and margins
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
-\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 
 % Useful packages
 \usepackage{amsmath, amssymb, amsthm}
@@ -20,6 +20,19 @@
 \date{}
 \begin{document}
 \maketitle
+
+\begin{abstract}
+Данная статья посвящена применению техники эмпирического Байеса к байесовским нейронным сетям. Концептуально идея следующая:
+\begin{enumerate}
+ \item Мы используем диагональное нормальное распределение для аппроксимации апостериорного распределения параметров модели~--- $q(W)$.
+ \item Априорное распределение параметров модели так же задаётся диагональным распределением с нулевым матожиданием~--- $p(W)$.
+ \item Используя вариационный вывод, мы приходим к ситуации, когда ELBO зависит от $KL(q(W) || p(W))$. Так как оба распределения являются нормальными, то KL дивергенция считается аналитически.
+ \item Мотивация следующего этапа была взята из RVM~--- взять дисперсию априорного распределения параметров модели $p(W)$ из данных. Там несложно берётся производная и всё получается красиво, кроме возможного деления 0/0. Но сделав замену переменных, от этой беды можно уйти.
+\end{enumerate}
+Пункты 1--3 в принципе были описаны в статье \href{https://arxiv.org/pdf/1505.05424}{Weight Uncertainty in Neural Networks}. А вот четвёртый пункт я ни в книгах, ни в статьях не находил.
+
+\end{abstract}
+
 
 \section{Обозначения и сокращения}
 $N(\mu, \sigma^2)$ — нормальное распределение
