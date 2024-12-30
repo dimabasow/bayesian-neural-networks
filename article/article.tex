@@ -73,6 +73,7 @@ $q(\mathbf{W} | \pmb{\theta})$ --- аппроксимация апостерио
 
 $\pmb{\theta}$ --- обучаемые параметры байесовской модели
 
+
 \section{Постановка задачи}
 
 Задача машинного обучения с учителем в вероятностной постановке формулируется следующим образом:
@@ -128,18 +129,20 @@ p(\mathbf{W}| D) =
 \int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{\dfrac{p(\mathbf{D}, \mathbf{W})}{q(\mathbf{W} | \pmb{\theta})}} d\mathbf{W}
 \]
 
-Покажем мотивацию максимизации ELBO. Для этого преобразуем выражение $\mathcal{L}(q(\mathbf{W} | \pmb{\theta}))$, используя тождество $p(\mathbf{W}, D) = p(\mathbf{W}| D)\cdot p(D)$:
+Покажем мотивацию максимизации ELBO.
+Запишем выражение для $KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}| D))$ и преобразуем его,
+используя тождество $p(\mathbf{W}, D) = p(\mathbf{W}| D)\cdot p(D)$:
 
 \[
-\mathcal{L}(q(\mathbf{W} | \pmb{\theta})) =
-\int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{\dfrac{p(\mathbf{D}, \mathbf{W})}{q(\mathbf{W} | \pmb{\theta})}} d\mathbf{W} =
-\int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{\dfrac{p(\mathbf{W}| D) \cdot p(D)}{q(\mathbf{W} | \pmb{\theta})}} d\mathbf{W} =
+KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}| D)) =
+\int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{\dfrac{q(\mathbf{W} | \pmb{\theta})}{p(\mathbf{W}| D)}} d\mathbf{W} =
+\int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{\dfrac{p(D) \cdot q(\mathbf{W} | \pmb{\theta})}{p(D, \mathbf{W})}} d\mathbf{W} =
 \]\[
-\ln{p(D)} \cdot \int_{}{} q(\mathbf{W} | \pmb{\theta}) d\mathbf{W} - \int_{}{} q(\mathbf{W} | \pmb{\theta})\cdot \ln{\dfrac{q(\mathbf{W} | \pmb{\theta})}{p(\mathbf{W}| D)}} d\mathbf{W} =
-\ln{p(D)} - KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}| D))
+\ln{p(D)} \cdot \int_{}{} q(\mathbf{W} | \pmb{\theta}) d\mathbf{W} - \int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{\dfrac{p(\mathbf{D}, \mathbf{W})}{q(\mathbf{W} | \pmb{\theta})}} d\mathbf{W} =
+\ln{p(D)} - \mathcal{L}(q(\mathbf{W} | \pmb{\theta}))
 \]
 
-Из равенства $\mathcal{L}(q(\mathbf{W} | \pmb{\theta})) = ln(p(D)) - KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}| D))$ видно, что максимизируя $\mathcal{L}(q(\mathbf{W} | \pmb{\theta}))$, мы не только максимизируем $\ln {p(D)}$, но и минимизируем $KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}| D))$. То есть распределение весов модели $q(\mathbf{W} | \pmb{\theta})$ будет приближаться к апостериорному распределению весов модели $p(\mathbf{W}| D)$.
+$\ln{p(D)}$ не зависит от $\pmb{\theta}$. Следовательно, максимизируя $\mathcal{L}(q(\mathbf{W} | \pmb{\theta}))$, мы минимизируем $KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}| D))$. То есть распределение весов модели $q(\mathbf{W} | \pmb{\theta})$ будет приближаться к апостериорному распределению весов модели $p(\mathbf{W}| D)$.
 
 Преобразуем выражение для $\mathcal{L}(q(\mathbf{W} | \pmb{\theta}))$, используя тождество
 $p(\mathbf{W}, D) = p(D | \mathbf{W}) \cdot p(\mathbf{W})$:
@@ -161,7 +164,7 @@ $p(\mathbf{W}, D) = p(D | \mathbf{W}) \cdot p(\mathbf{W})$:
 \int_{}{} q(\mathbf{W} | \pmb{\theta}) \cdot \ln{p(D | \mathbf{W})} d\mathbf{W} - KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W}))
 \]
 
-При аппроксимации апостериорного распределения параметров модели $p(\mathbf{W}| D)$ распределением $q(\mathbf{W} | \pmb{\theta})$ аппроксимация предсказательного распределения будет выглядить следующим образом:
+При аппроксимации апостериорного распределения параметров модели $p(\mathbf{W}| D)$ распределением $q(\mathbf{W} | \pmb{\theta})$ аппроксимация предсказательного распределения $p(\mathbf{y} | \mathbf{x}, D)$ будет выглядить следующим образом:
 
 $
 p(\mathbf{y} | \mathbf{x}, D)
@@ -252,7 +255,7 @@ KL(q(\mathbf{W} | \pmb{\theta}) || p(\mathbf{W})) =
 \argmin_{\pmb{\rho}, \pmb{\gamma}} Loss(\pmb{\rho}, \pmb{\gamma}) =
 - \dfrac{\mathcal{L}(q(\mathbf{W} | \pmb{\theta}))}{L} =
 \]\[
-\int_{}{} N(\mathbf{W} | \pmb{\mu}, diag(\pmb{\sigma_{q(\mathbf{W})}})^{2}) \cdot NLL \cdot d\mathbf{W} + \dfrac{KL}{L}
+\int_{}{} N(\mathbf{W} | \pmb{\mu}, diag(\pmb{\sigma_{q(\mathbf{W})}})^{2}) \cdot NLL ~ d\mathbf{W} + \dfrac{KL}{L}
 \] где:
 
 $\pmb{\sigma_{q(\mathbf{W})}} = Softplus(\pmb{\rho})$
@@ -285,12 +288,12 @@ $z = ReLU(matmul(x, W_1))$
 
 $y = Sigmoid(matmul(z, W_2))$
 
-Размерность скрытого состояния $z$ варьировалась от 1 до 60. Для каждой размерности обучались 2 модели - классическая (без регуляризации) и байесовская. Для каждой модели производилась оценка ROC-AUC на тренировочной и тестовой выборках. На рисунке 1 представлены результаты экспериментов
+Размерность скрытого состояния $z$ варьировалась от 1 до 60. Для каждой размерности обучались 2 модели - классическая (без регуляризации) и байесовская. Для каждой модели производилась оценка ROC--AUC на тренировочной и тестовой выборках. На рисунке 1 представлены результаты экспериментов
 
 \begin{figure}
     \centering
     \includegraphics[width=1\linewidth]{roc_auc.png}
-    \caption{Зависимость $ROC-AUC$ от размерности скрытого состояния на тренировочных и тестовых данных}
+    \caption{Зависимость ROC--AUC от размерности скрытого состояния на тренировочных и тестовых данных}
     \label{fig:enter-label}
 \end{figure}
 
