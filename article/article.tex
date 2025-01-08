@@ -29,6 +29,7 @@
 \date{}
 
 \renewcommand{\shorttitle}{Автоматическая регуляризации байесовских нейронных сетей}
+\numberwithin{equation}{section}
 
 \begin{document}
     \maketitle
@@ -66,7 +67,7 @@
     $\pmb{x} \odot \pmb{y}$ --- поэлементное произведение (произведение Адамара) векторов \par
     $\mathcal{L}$ --- Evidence Lower Bound (ELBO) \par
     $
-        KL(q \parallel p)
+        KL(q~||~p)
         =
         \int_{}{
             q(\pmb{Z})
@@ -79,7 +80,7 @@
             \,
             d\pmb{Z}
         }
-    $ --- дивергенция Кульбака--Лейблера \par
+    $ --- дивергенция Кульбака--Лейблера (KL--дивергенции) \par
     $\pmb{x}$ --- вектор признаков \par
     $\pmb{y}$ --- вектор целевой переменной \par
     $D$ --- датасет --- пары значений $\{\pmb{x_i}$, $\pmb{y_i}\}$, где $i = 1, \dots, L$ \par
@@ -101,14 +102,14 @@
 
     В классическом машинном обучении делается следующее предположение:
     веса модели $\pmb{W}$ являются пусть и неизвестной, но фиксированной величиной.
-    В этом случае можно получить точечную оценку весов модели согласно гипотезе максимального правдоподобия.
-    \[
+    В этом случае можно получить точечную оценку весов модели согласно гипотезе максимального правдоподобия:
+    \begin{equation}
         \pmb{W_{ML}} = \argmax_{\pmb{W}} p(D | \pmb{W})
-    \]
+    \end{equation}
     Тогда распределение $p(\pmb{y} | \pmb{x}, D)$ аппроксимируется следующим образом:
-    \[
+    \begin{equation}
         p(\pmb{y} | \pmb{x}, D) \approx p(\pmb{y} | \pmb{x}, \pmb{W_{ML}})
-    \]
+    \end{equation}
     Однако это справедливо при условии, что количество объектов в датасете D
     сильно больше количества весов модели ($L \gg M$).
     Если это не так, веса модели $\pmb{W}$ могут слишком сильно подстроиться
@@ -119,7 +120,7 @@
     (не участвующие в обучении) выборки данных.
 
     Альтернативным подходом к машинному обучению является нахождение апостериорного распределения весов модели $p(\pmb{W}| D)$ по теореме Байеса.
-    \[
+    \begin{equation}
         p(\pmb{W}| D)
         =
         \frac
@@ -129,7 +130,7 @@
                 p(\pmb{W})
             }
             {
-                \int{
+                \int_{}{
                     p(D | \pmb{W})
                     \,
                     p(\pmb{W})
@@ -137,19 +138,19 @@
                     d\pmb{W}
                 }
             }
-    \]
+    \end{equation}
     Тогда предсказательное распределение $p(\pmb{y} | \pmb{x}, D)$ рассчитывается следующим образом:
-    \[
+    \begin{equation}
         p(\pmb{y} | \pmb{x}, D)
         =
-        \int{
+        \int_{}{
             p(\pmb{y} | \pmb{x}, \pmb{W})
             \,
             p(\pmb{W} | D)
             \,
             d\pmb{W}
         }
-    \]
+    \end{equation}
     Байесовские модели можно рассматривать как ансамбль из бесконечного числа моделей,
     веса которых сэмплируются из распределения
     $p(\pmb{W}| D)$.
@@ -206,7 +207,8 @@
     В случае параметрических моделей, которыми являются нейронные сети,
     информация из датасета D кодируется посредством весов модели $\pmb{W}$.
     Сделаем следующие преобразования:
-    \[
+    \begin{equation}
+    \begin{split}
         p(\pmb{y} | \pmb{x}, D)
         =
         \int_{}{
@@ -230,8 +232,8 @@
             \,
             d\pmb{W}
         }
-    \]
-
+    \end{split}
+    \end{equation}
     Пояснения:
     \begin{itemize}
     \item
@@ -249,7 +251,7 @@
         $
             p(\pmb{a})
             =
-            \int{
+            \int_{}{
                 p(\pmb{a}, \pmb{b})
                 \,
                 d\pmb{b}
@@ -286,7 +288,7 @@
     \end{itemize}
 
     Получим выражение для $p(\pmb{W}| D)$, используя формулу Байеса:
-    \[
+    \begin{equation}
         p(\pmb{W}| D)
         =
         \frac
@@ -296,7 +298,7 @@
         \frac
             {p(\pmb{W}, D)}
             {
-                \int{
+                \int_{}{
                     p(\pmb{W}, D)
                     \,
                     d\pmb{W}
@@ -310,7 +312,7 @@
                 p(\pmb{W})
             }
             {
-                \int{
+                \int_{}{
                     p(D | \pmb{W})
                     \,
                     p(\pmb{W})
@@ -318,240 +320,632 @@
                     d\pmb{W}
                 }
             }
-    \]
-
-    Для аппроксимации распределения ответов модели можно воспользоваться методом Монте--Карло.
-    Идея следующая: cэмплируем конечное количество весов
-    $
-        \pmb{
-            \hat{W}_1
-        }
-        ,
-        \dots
-        ,
-        \pmb{
-            \hat{W}_T
-        }
-    $
-    из распределения $p(\pmb{W}| D)$ и аппроксимируем распределение
-    $p(\pmb{y} | \pmb{x}, D)$ следующим образом:
-    \[
+    \end{equation}
+    Предсказательное распределение можно аппроксимировать следующим образом:
+    \begin{equation}
         p(\pmb{y} | \pmb{x}, D)
         \approx
-        \frac{1}{T}
-        \sum_{t=1}^{T}{
-            p (
-                \pmb{y} | \pmb{x},
-                \pmb{\hat{W}_{t}}
-            )
-        }
-    \]
+            \frac{1}{T}
+            \sum_{t=1}^{T}{
+                p (
+                    \pmb{y} | \pmb{x},
+                    \pmb{\hat{W}_{t}}
+                )
+            }
+    \end{equation}
+    где $\pmb{\hat{W}_{t}}$~--- сэмпл весов модели из распределения $p(\pmb{W}| D)$.
 
     Однако для этого нужно иметь возможность сэмплировать из распределения $p(\pmb{W}| D)$.
-    Получить аналитическое решение интеграла
-    $
-        \int {
-            p(D | \pmb{W})
-            \,
-            p(\pmb{W})
-            \,
-            d\pmb{W}
-        }
-    $
-    можно только в очень ограниченном числе случаев.
 
-    Существует возможность сэмплировать из $p(\pmb{W}| D)$,
+    Один из подходов к решению этой проблемы~--- сэмплирование из $p(\pmb{W}| D)$
     используя методы Монте--Карло для марковских цепей (MCMC).
     Однако для больших датасетов и большого числа весов это практически невозможно.
 
-    Альтернативным подходом к решению такой задачи является вариационный вывод~---
+    Другим подходом является вариационный вывод~---
     аппроксимация распределения $p(\pmb{W}| D)$ распределением $q_{\pmb{\theta}}(\pmb{W})$,
     из которого сэмплировать намного проще.
 
     \section{Вариационный вывод}
 
-    Идея вариационного вывода --- сведение задачи байесовского вывода к задаче максимизации нижней вариационной границы (ELBO) $\mathcal{L}$, которая для распределения $q_{\pmb{\theta}}(\pmb{W})$ записывается следующим образом:
-    \[
-    \mathcal{L} =
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{p(\pmb{W}, D)}{q_{\pmb{\theta}}(\pmb{W})}} d \pmb{W}
-    \]
+    Идея вариационного вывода~--- сведение задачи байесовского вывода
+    к задаче максимизации нижней вариационной границы (ELBO) $\mathcal{L}$,
+    которая для распределения $q_{\pmb{\theta}}(\pmb{W})$
+    записывается следующим образом:
+    \begin{equation}
+        \mathcal{L}
+        =
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {p(\pmb{W}, D)}
+                        {q_{\pmb{\theta}}(\pmb{W})}
+                }
+                \,
+                d\pmb{W}
+            }
+    \end{equation}
+    Покажем мотивацию максимизации $\mathcal{L}$.
+    Запишем выражение для
+    $
+    KL(
+        q_{\pmb{\theta}}(\pmb{W})
+        \parallel
+        p(\pmb{W}| D)
+    )
+    $
+    и преобразуем его, используя тождество $p(\pmb{W}, D) = p(\pmb{W}| D) \, p(D)$:
+    \begin{equation}
+    \begin{split}
+        KL(
+            q_{\pmb{\theta}}(\pmb{W})
+            \parallel
+            p(\pmb{W}| D)
+        )
+        =
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {
+                            q_{\pmb{\theta}}(\pmb{W})
+                        }
+                        {p(\pmb{W} | D)}
+                }
+                d\pmb{W}
+            }
+        = \\
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {
+                            p(D)
+                            \,
+                            q_{\pmb{\theta}}(\pmb{W})
+                        }
+                        {p(\pmb{W}, D)}
+                }
+                d\pmb{W}
+            }
+        = \\
+            \ln{p(D)}
+            \,
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W}) d\pmb{W}
+            }
+            -
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {p(\pmb{W}, D)}
+                        {q_{\pmb{\theta}}(\pmb{W})}
+                }
+                d\pmb{W}
+            }
+        = \\
+            \ln{p(D)} - \mathcal{L}
+    \end{split}
+    \end{equation}
+    Так как $\ln{p(D)}$ не зависит от $\pmb{\theta}$,
+    максимизация $\mathcal{L}$ по параметрам $\pmb{\theta}$
+    ведёт к минимизации
+    $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}| D))$.
+    Тем самым, при максимизации $\mathcal{L}$
+    распределение $q_{\pmb{\theta}}(\pmb{W})$
+    будет приближаться к распределению $p(\pmb{W}| D)$.
 
-    Покажем мотивацию максимизации ELBO. Запишем выражение для $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}| D))$ и преобразуем его, используя тождество $p(\pmb{W}, D) = p(\pmb{W}| D)\cdot p(D)$:
-    \[
-    KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}| D)) =
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{q_{\pmb{\theta}}(\pmb{W})}{p(\pmb{W}| D)}} d \pmb{W} =
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{p(D) \cdot q_{\pmb{\theta}}(\pmb{W})}{p(\pmb{W}, D)}} d \pmb{W} =
-    \]\[
-    \ln{p(D)} \cdot \int_{}{} q_{\pmb{\theta}}(\pmb{W}) d \pmb{W} - \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{p(\pmb{W}, D)}{q_{\pmb{\theta}}(\pmb{W})}} d \pmb{W} =
-    \ln{p(D)} - \mathcal{L}
-    \]
+    Преобразуем выражение для $\mathcal{L}$, используя тождество $p(\pmb{W}, D) = p(D | \pmb{W}) \cdot p(\pmb{W})$.
+    \begin{equation}
+    \begin{split}
+        \mathcal{L}
+        =
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {p(\pmb{W}, D)}
+                        {q_{\pmb{\theta}}(\pmb{W})}
+                }
+                d\pmb{W}
+            }
+        =
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {
+                            p(D | \pmb{W})
+                            \,
+                            p(\pmb{W})
+                        }
+                        {q_{\pmb{\theta}}(\pmb{W})}
+                }
+                d\pmb{W}
+            }
+        = \\
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    p(D | \pmb{W})
+                }
+                d\pmb{W}
+            }
+            -
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    \frac
+                        {q_{\pmb{\theta}}(\pmb{W})}
+                        {p(\pmb{W})}
+                }
+                d\pmb{W}
+            }
+        = \\
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \ln{
+                    p(D | \pmb{W})
+                }
+                d\pmb{W}
+            }
+            -
+            KL(
+                q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
+            )
+        = \\
+            \int_{}{
+                q_{\pmb{\theta}}(\pmb{W})
+                \,
+                \sum_{i=1}^{L}{
+                    \ln{
+                        p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{W})
+                    }
+                }
+                d\pmb{W}
+            }
+            -
+            KL(
+                q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
+            )
+    \end{split}
+    \end{equation}
 
-    Так как $\ln{p(D)}$ не зависит от $\pmb{\theta}$, максимизация $\mathcal{L}$ по параметрам $\pmb{\theta}$ ведёт к минимизации $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}| D))$. Тем самым, при максимизации $\mathcal{L}$ распределение $q_{\pmb{\theta}}(\pmb{W})$ будет приближаться к распределению $p(\pmb{W}| D)$.
-
-    Преобразуем выражение для $\mathcal{L}$, используя тождество $p(\pmb{W}, D) = p(D | \pmb{W}) \cdot p(\pmb{W})$:
-    \[
-    \mathcal{L} =
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{p(\pmb{W}, D)}{q_{\pmb{\theta}}(\pmb{W})}} d \pmb{W} =
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{p(D | \pmb{W}) \cdot p(\pmb{W})}{q_{\pmb{\theta}}(\pmb{W})}} d \pmb{W} =
-    \]\[
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{p(D | \pmb{W})} d \pmb{W} - \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{\dfrac{q_{\pmb{\theta}}(\pmb{W})}{p(\pmb{W})}} d \pmb{W} =
-    \]\[
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{p(D | \pmb{W})} d \pmb{W} - KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})) =
-    \]\[
-    \int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \sum_{i=1}^{L} {\ln{p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{W})}} d \pmb{W} - KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
-    \]
-
-    Так как в случае нейронной сети аналитически посчитать интеграл по всему пространству весов $\pmb{W}$ не представляется возможным, воспользуемся следующей аппроксимацией для $p(\pmb{y} | \pmb{x}, D)$ и $\mathcal{L}$:
-    \[
-    p(\pmb{y} | \pmb{x}, D) \approx
-    \int_{}{} p(\pmb{y} | \pmb{W}, \pmb{x}) \cdot q_{\pmb{\theta}}(\pmb{W}) d \pmb{W} \approx
-    \dfrac{1}{T} \sum_{t=1}^{T}{p(\pmb{y} | \pmb{x}, \pmb{\hat{W}_{t}})}
-    \]
-    \[
-    \mathcal{L} \approx
-    \dfrac{1}{S} \sum_{j=1}^S \sum_{i=1}^{L} {\ln{p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})}} - KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
-    \]
-
-    где $\pmb{\hat{W}_{t}}$ и $\pmb{\hat{W}_{ij}}$ --- сэмплы весов модели из распределения $q_{\pmb{\theta}}(\pmb{W})$.
+    Так как в случае нейронной сети аналитически посчитать интеграл
+    по всему пространству весов $\pmb{W}$ не представляется возможным,
+    воспользуемся следующей аппроксимацией для $p(\pmb{y} | \pmb{x}, D)$ и $\mathcal{L}$:
+    \begin{equation}
+        p(\pmb{y} | \pmb{x}, D)
+        \approx
+            \int_{}{
+                p(\pmb{y} | \pmb{W}, \pmb{x})
+                \,
+                q_{\pmb{\theta}}(\pmb{W})
+                d\pmb{W}
+            }
+        \approx
+            \frac{1}{T} \sum_{t=1}^{T}{
+                p(\pmb{y} | \pmb{x}, \pmb{\hat{W}_{t}})
+            }
+    \end{equation}
+    \begin{equation}\label{elbo_init}
+        \mathcal{L}
+        \approx
+            \frac{1}{S} \sum_{j=1}^S \sum_{i=1}^{L} {
+                \ln{
+                    p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})
+                }
+            }
+            -
+            KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
+    \end{equation}
+    где $\pmb{\hat{W}_{t}}$ и $\pmb{\hat{W}_{ij}}$~--- сэмплы весов модели из распределения $q_{\pmb{\theta}}(\pmb{W})$.
 
     \section{Задание функциональных форм распределений}
-
-    Для дальнейшнего вывода положим, что распределения $p(\pmb{W})$ и $q_{\pmb{\theta}}(\pmb{W})$ являются нормальными с диагональными матрицами ковариации:
-    \[
-    q_{\pmb{\theta}}(\pmb{W}) = N(\pmb{W} | \pmb{\mu}, diag(\pmb{\sigma_{q(\pmb{W})}})^{2})
-    \]
-    \[
-    p(\pmb{W}) = N(\pmb{W} | \pmb{0}, diag(\pmb{\sigma_{p(\pmb{W})}})^{2})
-    \]
-
-    Так как распределение $q_{\pmb{\theta}}(\pmb{W})$ нормальное, мы можем использовать трюк с репараметризацией при сэмплировании весов, что позволяет использовать градиентные методы для оптимизации:
-    $
-    \pmb{\hat{W}_{ij}} = \pmb{\epsilon_{ij}}  \odot \pmb{\sigma_{q(\pmb{W})}} + \pmb{\mu}
-    $, где $\pmb{\epsilon_{ij}}$ --- сэмпл из $N(\pmb{0}, \pmb{I})$.
-
-    Так как распределения $p(\pmb{W})$ и $q_{\pmb{\theta}}(\pmb{W})$ нормальные, $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ считается аналитически:
-    \[
-    KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})) =
-    \dfrac{1}{2}\sum_{k=1}^{M}(\dfrac{\sigma_{{q(W)_{k}}}^2}{\sigma_{{p(W)_{k}}}^2} + \dfrac{\mu_{k}^2}{\sigma_{{p(W)_{k}}}^2} - \ln{\dfrac{\sigma_{{q(W)_{k}}}^2}{\sigma_{{p(W)_{k}}}^2}} - 1)
-    \]
-
-    Априорное распределение весов модели $p(\pmb{W})$ имеет нулевое математическое ожидание (из соображений симметрии), и среднеквадратическое отклонение $\pmb{\sigma_{p(\pmb{W})}}$. В классическом байесовском выводе параметр $\pmb{\sigma_{p(\pmb{W})}}$ должен задаваться до начала обучения, то есть являться гиперпараметром. Однако мы можем воспользоваться техникой эмпирического Байеса, то есть определить параметр  априорного распределения $\pmb{\sigma_{p(\pmb{W})}}$ из данных.
+    Для дальнейшнего вывода положим,
+    что распределения $p(\pmb{W})$ и $q_{\pmb{\theta}}(\pmb{W})$
+    являются нормальными с диагональными матрицами ковариации:
+    \begin{equation}
+        q_{\pmb{\theta}}(\pmb{W})
+        =
+            N(
+                \pmb{W} | \pmb{\mu},
+                diag(\pmb{\sigma})^{2}
+            )
+    \end{equation}
+    \begin{equation}
+        p(\pmb{W})
+        =
+            N(
+                \pmb{W} | \pmb{0}, diag(\pmb{\delta})^{2}
+            )
+    \end{equation}
+    Так как распределение $q_{\pmb{\theta}}(\pmb{W})$ нормальное,
+    мы можем использовать трюк с репараметризацией при сэмплировании весов,
+    что позволяет использовать градиентные методы для оптимизации:
+    \begin{equation}\label{w_trick}
+        \pmb{\hat{W}_{ij}}
+        =
+            \pmb{\varepsilon_{ij}}
+            \odot
+            \pmb{\sigma}
+            +
+            \pmb{\mu}
+    \end{equation}
+    \begin{equation}\label{eps_sample}
+        \pmb{\varepsilon_{ij}} \sim N(\pmb{0}, \pmb{I})
+    \end{equation}
+    Так как распределения $p(\pmb{W})$ и $q_{\pmb{\theta}}(\pmb{W})$ нормальные,
+    $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ считается аналитически:
+    \begin{equation}\label{kl_init}
+        KL(
+            q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
+        )
+        =
+            \frac{1}{2}\sum_{k=1}^{M}(
+                \frac
+                    {\sigma_{k}^2}
+                    {\delta_{k}^2}
+                +
+                \frac
+                    {\mu_{k}^2}
+                    {\delta_{k}^2}
+                -
+                \ln{
+                    \frac
+                        {\sigma_{k}^2}
+                        {\delta_{k}^2}
+                }
+                - 1
+            )
+    \end{equation}
+    Подставив \ref{kl_init} в \ref{elbo_init}, получим:
+    \begin{equation}\label{elbo_kl}
+        \mathcal{L}
+        \approx
+            \frac{1}{S} \sum_{j=1}^S \sum_{i=1}^{L} {
+                \ln{
+                    p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})
+                }
+            }
+        -
+            \frac{1}{2}\sum_{k=1}^{M}(
+            \frac
+                {\sigma_{k}^2}
+                {\delta_{k}^2}
+            +
+            \frac
+                {\mu_{k}^2}
+                {\delta_{k}^2}
+            -
+            \ln{
+                \frac
+                    {\sigma_{k}^2}
+                    {\delta_{k}^2}
+            }
+            - 1
+        )
+    \end{equation}
+    Таким образом $\pmb{\mu}$ и $\pmb{\sigma}$ это обучаемые параметры модели,
+    а параметр $\pmb{\delta}$~--- гиперпараметр (так как является параметром априорного распределения $p(\pmb{W})$).
+    В байесовском выводе все параметры априорного распределения должны задаваться до начала обучения.
+    Однако мы можем определить параметр $\pmb{\delta}$ из данных.
+    Такой прием называется эмпирический Байес.
 
     \section{Эмпирический Байес}
-    Пусть $\pmb{\alpha} = diag(\pmb{\sigma_{p(\pmb{W})}})^{-2}$. Тогда выражение для $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ будет иметь следующий вид:
-    \[
-    KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})) =
-    \dfrac{1}{2}\sum_{k=1}^{M}( \alpha_{k} \cdot \sigma_{{q(W)_{k}}}^2 + \alpha_{k} \cdot \mu_{k}^2 - (\ln{\sigma_{{q(W)_{k}}}^2} + \ln{\alpha_{k}}) - 1)
-    \]
+    Найдём такое значение $\pmb{\delta}$, при котором $\mathcal{L}$ максимальна.
+    Так как в выражении \ref{elbo_init} левое слагаемое не зависит от параметров распределения
+    $p(\pmb{W})$, то максимум $\mathcal{L}$ достигается при минимуме
+    $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ по параметру $\pmb{\delta}$.
 
-    Так как в выражении $\mathcal{L}$ интеграл $\int_{}{} q_{\pmb{\theta}}(\pmb{W}) \cdot \ln{p(D | \pmb{W})} d \pmb{W}$ не зависит от параметров распределения $p(\pmb{W})$, то:
-    \[
-    \dfrac{\partial \mathcal{L}}{\partial {\alpha_k}} =
-    - \dfrac{\partial (KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})))}{\partial {\alpha_k}} =
-    -\dfrac{1}{2}(\sigma_{{q(W)_{k}}}^2 + \mu_{k}^2 - \dfrac{1}{\alpha_k}) =
-    -\dfrac{1}{2}(\sigma_{{q(W)_{k}}}^2 + \mu_{k}^2 - \sigma_{{p(W)_{k}}}^2)
-    \]
-
-    Приравняв производную к нулю, получим:
-    \[
-    -\dfrac{1}{2}(\sigma_{{q(W)_{k}}}^2 + \mu_{k}^2 - \sigma_{{p(W)_{k}}}^2) = 0
-    \]\[
-    \sigma_{{p(W)_{k}}}^2 = \sigma_{{q(W)_{k}}}^2 + \mu_{k}^2
-    \]
-
-    Подставив полученное выражение для априорной дисперсии в $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$, получим:
-    \[
-    KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})) =
-    \dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \dfrac{\mu_{k}^2}{\sigma_{{q(W)_{k}}}^2}})
-    \]
-
-    Таким образом, мы свели задачу к максимизации $\mathcal{L}$ по параметрам $\pmb{\mu}$ и $\pmb{\sigma_{q(W)}}$.
+    Пусть $\pmb{\alpha} = diag(\pmb{\delta})^{-2}$.
+    Тогда выражение \ref{kl_init} будет иметь следующий вид:
+    \begin{equation}\label{kl_init_alpha}
+        KL(
+            q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
+        )
+        =
+            \frac{1}{2} \sum_{k=1}^{M} \left(
+                \alpha_{k} \cdot \sigma_{k}^2
+                + \alpha_{k} \cdot \mu_{k}^2
+                - (\ln{\sigma_{k}^2} + \ln{\alpha_{k}})
+                - 1
+            \right)
+    \end{equation}
+    Найдём производную $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ по параметру $\pmb{\alpha}$:
+    \begin{equation}\label{kl_derivative}
+        \frac
+            {\partial (KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})))}
+            {\partial {\alpha_k}}
+        =
+            \frac{1}{2} \left(
+                \sigma_{k}^2 + \mu_{k}^2 - \dfrac{1}{\alpha_k}
+            \right)
+        =
+            \frac{1}{2} \left(
+                \sigma_{k}^2 + \mu_{k}^2 - \delta_{k}^2
+            \right)
+    \end{equation}
+    Приравняв \ref{kl_derivative} к нулю, получим выражение для оптимального значения $\pmb{\delta}$:
+    \begin{equation}\label{delta_optim}
+        \delta_{k}^2 = \sigma_{k}^2 + \mu_{k}^2
+    \end{equation}
+    Подставив \ref{delta_optim} в \ref{kl_init} и \ref{elbo_kl}, получим:
+    \begin{equation}\label{kl_optim}
+    KL(
+        q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
+    )
+    =
+        \frac{1}{2} \sum_{k=1}^{M} {
+            \ln \left(
+                {1 + \frac{\mu_{k}^2}{\sigma_{k}^2}}
+            \right)
+        }
+    \end{equation}
+    \begin{equation}\label{elbo_kl_optim}
+        \mathcal{L}
+        \approx
+            \frac{1}{S} \sum_{j=1}^S \sum_{i=1}^{L} {
+                \ln{
+                    p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})
+                }
+            }
+        -
+            \frac{1}{2} \sum_{k=1}^{M} {
+                \ln \left(
+                    {1 + \frac{\mu_{k}^2}{\sigma_{k}^2}}
+                \right)
+            }
+    \end{equation}
+    Таким образом задача свелась к максимизации $\mathcal{L}$
+    по параметрам $\pmb{\mu}$ и $\pmb{\sigma}$.
+    Однако градиентная оптимизация по параметрам $\pmb{\mu}$ и $\pmb{\sigma}$ может привести
+    к численной нестабильности.
 
     \section{Замена переменных}
 
-    При максимизации $\mathcal{L}$ могут возникнуть ситуации, когда какой--либо вес модели перестает быть случайной величиной и вырождается в ноль ($\sigma_{{q(W)_{k}}} \rightarrow 0$ и $\mu_{k} \rightarrow 0$). Это приведет к неопределенности деления 0 на 0 при вычислении KL--дивергенции.
+    При максимизации $\mathcal{L}$ могут возникнуть ситуации,
+    когда какой--либо вес модели перестает быть случайной величиной и вырождается в ноль
+    ($\sigma_{{q(W)_{k}}} \rightarrow 0$ и $\mu_{k} \rightarrow 0$).
+    Это приведет к неопределенности деления 0 на 0 при вычислении KL--дивергенции.
 
-    Так же при градиентной оптимизации компоненты вектора $\pmb{\sigma_{q(\pmb{W})}}$ могут попасть в отрицательную область, что нежелательно, так как среднеквадратическое отклонение не может быть отрицательным по определению.
+    Так же при градиентной оптимизации компоненты вектора $\pmb{\sigma}$
+    могут попасть в отрицательную область, что нежелательно,
+    так как среднеквадратическое отклонение не может быть отрицательным по определению.
 
-    Чтобы избежать этих проблем, сделаем следующую замену переменных:
-    \[
-    \pmb{\sigma_{q(\pmb{W})}} = \ln({1 + e^{\pmb{\rho}}}) = Softplus (\pmb{\rho})
-    \]\[
-    \pmb{\mu} = \pmb{\gamma} \odot \pmb{\sigma_{q(\pmb{W})}} = \pmb{\gamma} \odot Softplus (\pmb{\rho})
-    \]
-
-    Тогда:
-    \[
-    KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})) =
-    \dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \dfrac{\mu_{k}^2}{\sigma_{{q(W)_{k}}}^2}}) =
-    \dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \gamma_{k}^{2}})
-    \]
-
-    Таким образом, задача сводится к минимизации следующей функции потерь по параметрам $\pmb{\rho}$ и $\pmb{\gamma}$:
-    \[
-    loss(\pmb{\rho}, \pmb{\gamma}) =
-    - \dfrac{\mathcal{L}}{L} \approx
-    -\dfrac{1}{S \cdot L} \sum_{j=1}^S \sum_{i=1}^{L}  {\ln{p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})}} + \dfrac{KL}{L}
-    \]
-
-    где:
-    \[
-    \pmb{\hat{W}_{ij}} = \pmb{\epsilon} \odot \pmb{\sigma} + \pmb{\mu}
-    \]
-    \[
-    \pmb{\epsilon} \sim N(\pmb{0}, \pmb{I})
-    \]
-    \[
-    \pmb{\sigma} = Softplus(\pmb{\rho})
-    \]
-    \[
-    \pmb{\mu} = \pmb{\gamma} \odot \pmb{\sigma}
-    \]
-    \[
-    KL = \dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \gamma_{k}^{2}})
-    \]
+    Чтобы избежать этих проблем,
+    определим параметры $\pmb{\sigma}$ и $\pmb{\mu}$
+    через новые параметры $\pmb{\rho}$ и $\pmb{\gamma}$
+    следующим образом:
+    \begin{equation}\label{sigma_def}
+        \pmb{\sigma}
+        =
+            \ln({
+                1 + e^{\pmb{\rho}}
+            })
+        =
+            Softplus (\pmb{\rho})
+    \end{equation}
+    \begin{equation}\label{mu_def}
+        \pmb{\mu} = \pmb{\gamma} \odot \pmb{\sigma} = \pmb{\gamma} \odot Softplus (\pmb{\rho})
+    \end{equation}
+    Подставив \ref{sigma_def} и \ref{mu_def} в \ref{kl_init} и \ref{elbo_kl}, получим:
+    \begin{equation}\label{kl_optim_rho_gamma}
+        KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
+        =
+            \frac{1}{2} \sum_{k=1}^{M} \ln(
+                {1 + \gamma_{k}^{2}}
+            )
+    \end{equation}
+    \begin{equation}\label{elbo_kl_optim_rho_gamma}
+        \mathcal{L}
+        \approx
+            \frac{1}{S} \sum_{j=1}^S \sum_{i=1}^{L} {
+                \ln{
+                    p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})
+                }
+            }
+        -
+            \frac{1}{2} \sum_{k=1}^{M} \ln(
+                {1 + \gamma_{k}^{2}}
+            )
+    \end{equation}
+    Таким образом, задача свелась к максимизации \ref{elbo_kl_optim_rho_gamma}
+    по параметрам $\pmb{\rho}$ и $\pmb{\gamma}$.
+    Значение $\pmb{\hat{W}_{ij}}$ вычисляется по \ref{w_trick},
+    которое в свою очередь через
+    \ref{eps_sample}, \ref{sigma_def} и \ref{mu_def}.
 
     \section{Алгоритм обучения}
+    Возьмем выражение для $\mathcal{L}$ из \ref{elbo_kl_optim_rho_gamma}
+    со знаком минус и разделив на размер обучеющей выборки L,
+    получим следующую функцию потерь:
+    \begin{equation}\label{loss_init}
+        loss(\pmb{\rho}, \pmb{\gamma})
+        =
+            - \frac
+                {1}
+                {S \cdot L}
+            \sum_{j=1}^S
+            \sum_{i=1}^{L}
+                {\ln{
+                    p(\pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}_{ij}})
+                }
+            }
+            +
+            \frac
+                {
+                    \frac{1}{2} \sum_{k=1}^{M} \ln(
+                        {1 + \gamma_{k}^{2}}
+                    )
+                }
+                {L}
+    \end{equation}
+    Введём следующие упрощения расчёта функции потерь на каждом градиентном шаге:
+    \begin{itemize}
+        \item на каждый объект делать только один сэмпл весов (то есть задать $S=1$);
+        \item средний отрицательный логарифм правдоподобия считать не по всей обучающех выборке,
+            а на случайном подмножестве (батче).
+    \end{itemize}
 
-    Задаем шаг градиентного спуска $\alpha$ и инициализируем параметры распределения $q_{\pmb{\theta}}(\pmb{W})$ — $\pmb{\rho}$ и $\pmb{\gamma}$. Затем повторяем, пока не достигнем критерия остановки:
+    Тогда выражение \ref{loss_init} для функции потерь будет выглядить следующие образом:
+    \begin{equation}\label{loss}
+        loss(\pmb{\rho}, \pmb{\gamma})
+        \approx
+            - \frac{1}{B}
+            \sum_{b=1}^{B}
+                {\ln{
+                    p(\pmb{y_{b}} | \pmb{x_{b}}, \pmb{\hat{W}_{b}})
+                }
+            }
+            +
+            \frac
+                {
+                    \frac{1}{2} \sum_{k=1}^{M} \ln(
+                        {1 + \gamma_{k}^{2}}
+                    )
+                }
+                {L}
+    \end{equation}
+    Запишем алгоритм стохастического градиентного спуска для минимизации \ref{loss}.
+
+    Задаем шаг градиентного спуска $\eta$ и инициализируем параметры распределения $\pmb{\rho}$ и $\pmb{\gamma}$. Затем повторяем, пока не достигнем критерия остановки:
     \begin{enumerate}
-        \item $\pmb{\sigma} \leftarrow Softplus(\pmb{\rho})$ --- расчёт среднеквадратических отклонений весов
-        \item $\pmb{\mu} \leftarrow \pmb{\gamma} \odot \pmb{\sigma}$ --- расчёт математических ожиданий весов
-        \item $\pmb{\epsilon} \leftarrow N(0, 1)$ --- сэмплирование случайных весов
-        \item $\hat{\pmb{W}} \leftarrow \pmb{\epsilon} \odot \pmb{\sigma} + \pmb{\mu}$ --- репараметризация
-        \item $nll \leftarrow -\dfrac{1}{L}\sum_{i=1}^{L}{\ln{p( \pmb{y_{i}} | \pmb{x_{i}}, \pmb{\hat{W}})}}$ --- расчёт среднего отрицательного логарифма правдоподобия (возможна аппроксимация по батчам)
-        \item $kl \leftarrow \dfrac{1}{2}\sum_{k=1}^{M}\ln({1 + \gamma_{k}^{2}})$ --- расчёт KL--дивергенции
-        \item $l \leftarrow nll + \dfrac{kl}{L}$ --- расчёт функции потерь
-        \item $\pmb{\rho} \leftarrow \pmb{\rho} - \alpha \dfrac{\partial l}{\partial \pmb{\rho}}$ --- обновление $\pmb{\rho}$
-        \item $\pmb{\gamma} \leftarrow \pmb{\gamma} - \alpha \dfrac{\partial l}{\partial \pmb{\gamma}}$ --- обновление $\pmb{\gamma}$
+        \item
+            $
+                \pmb{\sigma}
+                \leftarrow
+                Softplus(\pmb{\rho})
+            $ --- расчёт среднеквадратических отклонений весов
+        \item
+            $
+                \pmb{\mu}
+                \leftarrow
+                    \pmb{\gamma}
+                    \odot
+                    \pmb{\sigma}
+            $ --- расчёт математических ожиданий весов
+        \item
+            $
+                \pmb{\varepsilon}
+                \leftarrow
+                N(0, 1)
+            $ --- сэмплирование случайных весов
+        \item
+            $
+                \hat{\pmb{W}}
+                \leftarrow
+                    \pmb{\varepsilon}
+                    \odot
+                    \pmb{\sigma}
+                    +
+                    \pmb{\mu}
+            $ --- репараметризация
+        \item
+            $
+                nll
+                \leftarrow
+                    -\dfrac{1}{B}
+                    \sum_{b=1}^{B}{
+                        \ln{
+                            p(
+                                \pmb{y_{b}} | \pmb{x_{b}}, \pmb{\hat{W}}
+                            )
+                        }
+                    }
+            $ --- расчёт среднего отрицательного логарифма правдоподобия
+        \item
+            $
+                kl
+                \leftarrow
+                    \dfrac{1}{2}
+                    \sum_{k=1}^{M}
+                    \ln(
+                        {1 + \gamma_{k}^{2}}
+                    )
+            $ --- расчёт KL--дивергенции
+        \item
+            $
+                l
+                \leftarrow
+                    nll + \dfrac{kl}{L}
+            $ --- расчёт функции потерь
+        \item
+            $
+                \pmb{\rho}
+                \leftarrow
+                    \pmb{\rho}
+                    -
+                    \eta
+                    \dfrac
+                        {\partial l}
+                        {\partial \pmb{\rho}}
+            $ --- обновление $\pmb{\rho}$
+        \item
+            $
+                \pmb{\gamma}
+                \leftarrow
+                    \pmb{\gamma}
+                    -
+                    \eta
+                    \dfrac
+                        {\partial l}
+                        {\partial \pmb{\gamma}}
+            $ --- обновление $\pmb{\gamma}$
     \end{enumerate}
 
     \section{Эксперименты}
+    Для проверки своей гипотезы я выбрал
+    \href
+        {https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset}
+        {Alzheimer's Disease Dataset}.
+    Данные были разбиты на тренировочную и тестовую часть в пропорции 80 на 20.
+    В качестве архитектуры была выбрана полносвязная нейронная сеть с одним скрытым слоем и функцией активации ReLU.
+    То есть:
 
-    Для проверки своей гипотезы я выбрал \href{https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset}{Alzheimer's Disease Dataset}. Данные были разбиты на тренировочную и тестовую часть в пропорции 80 на 20. В качестве архитектуры была выбрана полносвязная нейронная сеть с одним скрытым слоем и функцией активации ReLU. То есть:
-
-    $z = ReLU(matmul(x, W_1))$
-
+    $z = ReLU(matmul(x, W_1))$ \\
     $y = Sigmoid(matmul(z, W_2))$
 
-    Размерность скрытого состояния $z$ варьировалась от 1 до 60. Для каждой размерности обучались 2 модели - классическая (без регуляризации) и байесовская. Для каждой модели производилась оценка ROC--AUC на тренировочной и тестовой выборках. На рисунке 1 представлены результаты экспериментов
+    Размерность скрытого состояния $z$ варьировалась от 1 до 60.
+    Для каждой размерности обучались 2 модели~--- классическая (без регуляризации) и байесовская.
+    Для каждой модели производилась оценка ROC--AUC на тренировочной и тестовой выборках.
 
     \begin{figure}
         \centering
         \includegraphics[width=1\linewidth]{roc_auc.png}
         \caption{Зависимость ROC--AUC от размерности скрытого состояния на тренировочных и тестовых данных}
-        \label{fig:enter-label}
+        \label{graph_results}
     \end{figure}
+    На рисунке \ref{graph_results} представлены результаты экспериментов.
 
     \section{Выводы}
     По результатам работы можно сделать следующие выводы:
     \begin{itemize}
         \item с ростом сложности модели байесовская нейронная сеть не переобучилась;
-        \item значение ROC-AUC на тестовой выборке имеет очень высокую корреляцию со значением ROC-AUC на тренировочной выборке (0.97 по Пирсону). Следовательно, для подбора гиперпараметров можно ориентироваться на метрики, полученные по тренировочной выборке. Это даёт нам возможность отказаться от деления на тренировочную и валидационную выборки для подбора гиперпараметров.
+        \item значение ROC-AUC на тестовой выборке
+        имеет очень высокую корреляцию со значением ROC-AUC на тренировочной выборке (0.97 по Пирсону).
+        Следовательно, для подбора гиперпараметров можно ориентироваться на метрики,
+        полученные по тренировочной выборке.
+        Это даёт нам возможность отказаться от деления на тренировочную и валидационную выборки
+        для подбора гиперпараметров.
     \end{itemize}
 
-    Так же стоит отметить, что данный подход переносится на другие архитектуры нейронных сетей (рекуррентные, свёрточные, трансформеры).
+    Так же стоит отметить,
+    что данный подход переносится на другие архитектуры нейронных сетей
+    (рекуррентные, свёрточные, трансформеры).
 
-    Имплементация данного подхода была выполнена с использованием PyTorch. Весь исходный код для проведения экспериментов размещён по адресу \url{https://github.com/dimabasow/bayesian-neural-networks}.
+    Имплементация данного подхода была выполнена с использованием PyTorch.
+    Весь исходный код для проведения экспериментов размещён по адресу
+    \url{https://github.com/dimabasow/bayesian-neural-networks}.
 
 \end{document}
