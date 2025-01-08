@@ -609,7 +609,7 @@
                 - 1
             )
     \end{equation}
-    Подставив \ref{kl_init} в \ref{elbo_init}, получим:
+    Подставив (\ref{kl_init}) в (\ref{elbo_init}), получим:
     \begin{equation}\label{elbo_kl}
         \mathcal{L}
         \approx
@@ -644,12 +644,12 @@
 
     \section{Эмпирический Байес}
     Найдём такое значение $\pmb{\delta}$, при котором $\mathcal{L}$ максимальна.
-    Так как в выражении \ref{elbo_init} левое слагаемое не зависит от параметров распределения
+    Так как в выражении (\ref{elbo_init}) левое слагаемое не зависит от параметров распределения
     $p(\pmb{W})$, то максимум $\mathcal{L}$ достигается при минимуме
     $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ по параметру $\pmb{\delta}$.
 
     Пусть $\pmb{\alpha} = diag(\pmb{\delta})^{-2}$.
-    Тогда выражение \ref{kl_init} будет иметь следующий вид:
+    Тогда выражение (\ref{kl_init}) будет иметь следующий вид:
     \begin{equation}\label{kl_init_alpha}
         KL(
             q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
@@ -676,11 +676,11 @@
                 \sigma_{k}^2 + \mu_{k}^2 - \delta_{k}^2
             \right)
     \end{equation}
-    Приравняв \ref{kl_derivative} к нулю, получим выражение для оптимального значения $\pmb{\delta}$:
+    Приравняв (\ref{kl_derivative}) к нулю, получим выражение для оптимального значения $\pmb{\delta}$:
     \begin{equation}\label{delta_optim}
         \delta_{k}^2 = \sigma_{k}^2 + \mu_{k}^2
     \end{equation}
-    Подставив \ref{delta_optim} в \ref{kl_init} и \ref{elbo_kl}, получим:
+    Подставив (\ref{delta_optim}) в (\ref{kl_init}) и (\ref{elbo_kl}), получим:
     \begin{equation}\label{kl_optim}
     KL(
         q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
@@ -739,7 +739,7 @@
     \begin{equation}\label{mu_def}
         \pmb{\mu} = \pmb{\gamma} \odot \pmb{\sigma} = \pmb{\gamma} \odot Softplus (\pmb{\rho})
     \end{equation}
-    Подставив \ref{sigma_def} и \ref{mu_def} в \ref{kl_init} и \ref{elbo_kl}, получим:
+    Подставив (\ref{sigma_def}) и (\ref{mu_def}) в (\ref{kl_init}) и (\ref{elbo_kl}), получим:
     \begin{equation}\label{kl_optim_rho_gamma}
         KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
         =
@@ -760,14 +760,14 @@
                 {1 + \gamma_{k}^{2}}
             )
     \end{equation}
-    Таким образом, задача свелась к максимизации \ref{elbo_kl_optim_rho_gamma}
+    Таким образом, задача свелась к максимизации (\ref{elbo_kl_optim_rho_gamma})
     по параметрам $\pmb{\rho}$ и $\pmb{\gamma}$.
-    Значение $\pmb{\hat{W}_{ij}}$ вычисляется по \ref{w_trick},
+    Значение $\pmb{\hat{W}_{ij}}$ вычисляется по (\ref{w_trick}),
     которое в свою очередь через
-    \ref{eps_sample}, \ref{sigma_def} и \ref{mu_def}.
+    (\ref{eps_sample}), (\ref{sigma_def}) и (\ref{mu_def}).
 
     \section{Алгоритм обучения}
-    Возьмем выражение для $\mathcal{L}$ из \ref{elbo_kl_optim_rho_gamma}
+    Возьмем выражение для $\mathcal{L}$ из (\ref{elbo_kl_optim_rho_gamma})
     со знаком минус и разделив на размер обучеющей выборки L,
     получим следующую функцию потерь:
     \begin{equation}\label{loss_init}
@@ -798,7 +798,7 @@
             а на случайном подмножестве (батче).
     \end{itemize}
 
-    Тогда выражение \ref{loss_init} для функции потерь будет выглядить следующие образом:
+    Тогда выражение (\ref{loss_init}) для функции потерь будет выглядить следующие образом:
     \begin{equation}\label{loss}
         loss(\pmb{\rho}, \pmb{\gamma})
         \approx
@@ -817,7 +817,7 @@
                 }
                 {L}
     \end{equation}
-    Запишем алгоритм стохастического градиентного спуска для минимизации \ref{loss}.
+    Запишем алгоритм стохастического градиентного спуска для минимизации (\ref{loss}).
 
     Задаем шаг градиентного спуска $\eta$ и инициализируем параметры распределения $\pmb{\rho}$ и $\pmb{\gamma}$. Затем повторяем, пока не достигнем критерия остановки:
     \begin{enumerate}
@@ -926,7 +926,7 @@
         \caption{Зависимость ROC--AUC от размерности скрытого состояния на тренировочных и тестовых данных}
         \label{graph_results}
     \end{figure}
-    На рисунке \ref{graph_results} представлены результаты экспериментов.
+    На рисунке (\ref{graph_results}) представлены результаты экспериментов.
 
     \section{Выводы}
     По результатам работы можно сделать следующие выводы:
