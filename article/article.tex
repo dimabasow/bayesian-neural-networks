@@ -106,10 +106,12 @@
     \begin{equation}
         \pmb{W_{ML}} = \argmax_{\pmb{W}} p(D | \pmb{W})
     \end{equation}
+
     Тогда распределение $p(\pmb{y} | \pmb{x}, D)$ аппроксимируется следующим образом:
     \begin{equation}
         p(\pmb{y} | \pmb{x}, D) \approx p(\pmb{y} | \pmb{x}, \pmb{W_{ML}})
     \end{equation}
+
     Однако это справедливо при условии, что количество объектов в датасете D
     сильно больше количества весов модели ($L \gg M$).
     Если это не так, веса модели $\pmb{W}$ могут слишком сильно подстроиться
@@ -139,6 +141,7 @@
                 }
             }
     \end{equation}
+
     Тогда предсказательное распределение $p(\pmb{y} | \pmb{x}, D)$ рассчитывается следующим образом:
     \begin{equation}
         p(\pmb{y} | \pmb{x}, D)
@@ -151,6 +154,7 @@
             d\pmb{W}
         }
     \end{equation}
+
     Байесовские модели можно рассматривать как ансамбль из бесконечного числа моделей,
     веса которых сэмплируются из распределения
     $p(\pmb{W}| D)$.
@@ -234,6 +238,7 @@
         }
     \end{split}
     \end{equation}
+
     Пояснения:
     \begin{itemize}
     \item
@@ -321,6 +326,7 @@
                 }
             }
     \end{equation}
+
     Предсказательное распределение можно аппроксимировать следующим образом:
     \begin{equation}
         p(\pmb{y} | \pmb{x}, D)
@@ -366,6 +372,7 @@
                 d\pmb{W}
             }
     \end{equation}
+
     Покажем мотивацию максимизации $\mathcal{L}$.
     Запишем выражение для
     $
@@ -432,6 +439,7 @@
             \ln{p(D)} - \mathcal{L}
     \end{split}
     \end{equation}
+
     Так как $\ln{p(D)}$ не зависит от $\pmb{\theta}$,
     максимизация $\mathcal{L}$ по параметрам $\pmb{\theta}$
     ведёт к минимизации
@@ -441,7 +449,7 @@
     будет приближаться к распределению $p(\pmb{W}| D)$.
 
     Преобразуем выражение для $\mathcal{L}$, используя тождество $p(\pmb{W}, D) = p(D | \pmb{W}) \cdot p(\pmb{W})$.
-    \begin{equation}
+    \begin{equation}\label{elbo_inference}
     \begin{split}
         \mathcal{L}
         =
@@ -503,7 +511,21 @@
             KL(
                 q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
             )
-        = \\
+    \end{split}
+    \end{equation}
+
+    Поставив
+    $
+        p(D | \pmb{W})
+        =
+        \prod_{i=1}^{L}{
+            p(\pmb{y_i} | \pmb{x_i}, \pmb{W})
+        }
+    $
+    в (\ref{elbo_inference}), получим:
+    \begin{equation}
+        \mathcal{L}
+        =
             \int_{}{
                 q_{\pmb{\theta}}(\pmb{W})
                 \,
@@ -518,7 +540,6 @@
             KL(
                 q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W})
             )
-    \end{split}
     \end{equation}
 
     Так как в случае нейронной сети аналитически посчитать интеграл
@@ -549,7 +570,8 @@
             -
             KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
     \end{equation}
-    где $\pmb{\hat{W}_{t}}$ и $\pmb{\hat{W}_{ij}}$~--- сэмплы весов модели из распределения $q_{\pmb{\theta}}(\pmb{W})$.
+    где $\pmb{\hat{W}_{t}}$ и $\pmb{\hat{W}_{ij}}$~--- сэмплы весов модели из распределения
+    $q_{\pmb{\theta}}(\pmb{W})$.
 
     \section{Задание функциональных форм распределений}
     Для дальнейшнего вывода положим,
@@ -579,6 +601,7 @@
                 W_k | 0, \delta_k
             )
     \end{equation}
+
     Так как распределение $q_{\pmb{\theta}}(\pmb{W})$ нормальное,
     мы можем использовать трюк с репараметризацией при сэмплировании весов,
     что позволяет использовать градиентные методы для оптимизации:
@@ -594,6 +617,7 @@
     \begin{equation}\label{eps_sample}
         \pmb{\varepsilon_{ij}} \sim N(\pmb{0}, \pmb{I})
     \end{equation}
+
     Так как распределения $p(\pmb{W})$ и $q_{\pmb{\theta}}(\pmb{W})$ нормальные,
     $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ считается аналитически:
     \begin{equation}\label{kl_init}
@@ -618,6 +642,7 @@
                 - 1
             )
     \end{equation}
+
     Подставив (\ref{kl_init}) в (\ref{elbo_init}), получим:
     \begin{equation}\label{elbo_kl}
         \mathcal{L}
@@ -645,6 +670,7 @@
             - 1
         )
     \end{equation}
+
     Таким образом $\pmb{\mu}$ и $\pmb{\sigma}$ это обучаемые параметры модели,
     а параметр $\pmb{\delta}$~--- гиперпараметр
     (так как является параметром априорного распределения $p(\pmb{W})$).
@@ -674,6 +700,7 @@
                 - 1
             \right)
     \end{equation}
+
     Найдём производную $KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))$ по параметру $\pmb{\alpha}$:
     \begin{equation}\label{kl_derivative}
         \frac
@@ -688,10 +715,12 @@
                 \sigma_{k}^2 + \mu_{k}^2 - \delta_{k}^2
             \right)
     \end{equation}
+
     Приравняв (\ref{kl_derivative}) к нулю, получим выражение для оптимального значения $\pmb{\delta}$:
     \begin{equation}\label{delta_optim}
         \delta_{k}^2 = \sigma_{k}^2 + \mu_{k}^2
     \end{equation}
+
     Подставив (\ref{delta_optim}) в (\ref{kl_init}) и (\ref{elbo_kl}), получим:
     \begin{equation}\label{kl_optim}
     KL(
@@ -719,6 +748,7 @@
                 \right)
             }
     \end{equation}
+
     Таким образом задача свелась к максимизации $\mathcal{L}$
     по параметрам $\pmb{\mu}$ и $\pmb{\sigma}$.
     Однако градиентная оптимизация по параметрам $\pmb{\mu}$ и $\pmb{\sigma}$ может привести
@@ -751,6 +781,7 @@
     \begin{equation}\label{mu_def}
         \pmb{\mu} = \pmb{\gamma} \odot \pmb{\sigma} = \pmb{\gamma} \odot Softplus (\pmb{\rho})
     \end{equation}
+
     Подставив (\ref{sigma_def}) и (\ref{mu_def}) в (\ref{kl_init}) и (\ref{elbo_kl}), получим:
     \begin{equation}\label{kl_optim_rho_gamma}
         KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
@@ -772,6 +803,7 @@
                 {1 + \gamma_{k}^{2}}
             )
     \end{equation}
+
     Таким образом, задача свелась к максимизации (\ref{elbo_kl_optim_rho_gamma})
     по параметрам $\pmb{\rho}$ и $\pmb{\gamma}$.
     Значение $\pmb{\hat{W}_{ij}}$ вычисляется по (\ref{w_trick}),
@@ -803,6 +835,7 @@
                 }
                 {L}
     \end{equation}
+
     Введём следующие упрощения расчёта функции потерь на каждом градиентном шаге:
     \begin{itemize}
         \item на каждый объект делать только один сэмпл весов (то есть задать $S=1$);
@@ -829,9 +862,12 @@
                 }
                 {L}
     \end{equation}
+
     Запишем алгоритм стохастического градиентного спуска для минимизации (\ref{loss}).
 
-    Задаем шаг градиентного спуска $\eta$ и инициализируем параметры распределения $\pmb{\rho}$ и $\pmb{\gamma}$. Затем повторяем, пока не достигнем критерия остановки:
+    Задаем шаг градиентного спуска $\eta$ и инициализируем параметры распределения
+    $\pmb{\rho}$ и $\pmb{\gamma}$.
+    Затем повторяем, пока не достигнем критерия остановки:
     \begin{enumerate}
         \item
             $
