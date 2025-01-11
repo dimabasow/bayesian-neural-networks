@@ -2,19 +2,21 @@
 \usepackage{arxiv}
 
 \usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
 \usepackage[english, russian]{babel}
-\usepackage[T1]{fontenc}
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
 \usepackage{nicefrac}
 \usepackage{microtype}
-\usepackage{bm}
-\usepackage{lipsum}
 \usepackage{graphicx}
-\usepackage{natbib}
+\usepackage[square,sort,comma,numbers]{natbib}
 \usepackage{doi}
-\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 
 
 \newcommand{\argmin}{\arg\!\min}
@@ -200,6 +202,49 @@
             Это нужно, чтобы избежать неопределенности деления $\frac{0}{0}$,
             которая может возникнуть из--за определения дисперсии распределения $p(\pmb{W})$ из данных.
     \end{enumerate}
+
+    \section{Известные результаты}
+
+    В \cite{mackay_1992a}, \cite{mackay_1992b}, \cite{mackay_1992c}
+    рассматривается применение байесовского подхода к нейронным сетям,
+    в том числе использование эмпирического Байеса
+    для нахождения гиперпараметров.
+
+    В работах \cite{mackay_1994}, \cite{mackay_1995}, \cite{nea_96}
+    представлена техника Automatic Relevance Determination (ARD),
+    которая легла в основу метода релевантых векторов (RVM) \cite{tipping_01},
+    байесовского варианта SVM.
+    В отличии от SVM, RVM не требует подбора коэффициента регуляризации.
+
+    В \cite{mackay_1992a}, \cite{mackay_1992b}, \cite{mackay_1992c},
+    \cite{mackay_1994}, \cite{mackay_1995}
+    при вычислении апостериорного распределения весов модели использовалась
+    аппроксимация Лапласа, а в \cite{nea_96} для сэмплирования весов
+    из апостериорного распределения применялись методы
+    Монте--Карло для марковских цепей (MCMC).
+    К сожалению, данные подходы не масштабируются на большие модели.
+
+    В работе \cite{hinton_van_camp_1993} была применена техника вариационного вывода
+    для аппроксимации апостериорного распределения весов модели
+    нормальным распределением с диагональной матрицей ковариации.
+    Параметры распределения были найдены аналитически,
+    что возможно только в случае нейронных сетей
+    с одним скрытым слоем.
+
+    В \cite{gra_11} для оценки параметров аппроксимации апостериорного распределения
+    используются градиентные методы, что позволяет масштабировать вариационный вывод
+    на большие модели.
+
+    В \cite{blu_15} для обучения байесовской нейронной сети
+    используется трюк с репараметризацией, который до этого был реализован в модели
+    вариационного автокодировщика \cite{kingma_2013}.
+
+    Различные способы задания априоных распределений весов
+    байесовских нейронных сетей рассматриваются в
+    \cite{nal_18}, \cite{wi_20}, \cite{hoe_21}, \cite{for_22}.
+
+    Обзор байесовских методов машинного обучения приведён в книгах
+    \cite{bishop2006}, \cite{murphy_book_1}, \cite{murphy_book_2}.
 
     \section{Постановка задачи}
 
@@ -586,7 +631,7 @@
         =
             \prod_{k=1}^M
             N(
-                W_k | \mu_k, \sigma_k
+                W_k | \mu_k, \sigma_k^2
             )
     \end{equation}
     \begin{equation}
@@ -598,7 +643,7 @@
         =
             \prod_{k=1}^M
             N(
-                W_k | 0, \delta_k
+                W_k | 0, \delta_k^2
             )
     \end{equation}
 
@@ -863,7 +908,8 @@
                 {L}
     \end{equation}
 
-    Запишем алгоритм стохастического градиентного спуска для минимизации (\ref{loss}).
+    Для минимизации \ref{loss} можно использовать любые методы градиентной оптимизации.
+    Для наглядности рассмотрим алгоритм стохастического градиентного спуска.
 
     Задаем шаг градиентного спуска $\eta$ и инициализируем параметры распределения
     $\pmb{\rho}$ и $\pmb{\gamma}$.
@@ -995,5 +1041,83 @@
     Имплементация данного подхода была выполнена с использованием PyTorch.
     Весь исходный код для проведения экспериментов размещён по адресу
     \url{https://github.com/dimabasow/bayesian-neural-networks}.
+
+\begin{thebibliography}{0}
+    \bibitem{mackay_1992a}
+        MacKay, D. J. C. (1992a).
+        Bayesian interpolation. Neural Computation 4(3), 415–447.
+    \bibitem{mackay_1992b}
+        MacKay, D. J. C. (1992b).
+        The evidence framework applied to classification networks.
+        Neural Computation 4(5), 720–736.
+    \bibitem{mackay_1992c}
+        MacKay, D. J. C. (1992c).
+        A practical Bayesian framework for back-propagation networks.
+        Neural Computation 4(3), 448–472.
+    \bibitem{mackay_1994}
+        MacKay, D. J. C. (1994).
+        Bayesian methods for backprop networks.
+        In E. Domany, J. L. van Hemmen, and K. Schulten (Eds.),
+        Models of Neural Networks, III, Chapter 6, pp. 211–254.
+        Springer.
+    \bibitem{mackay_1995}
+        MacKay, D. J. C. (1995).
+        Probable networks and plausible predictions~---
+        a review of practical Bayesian methods for supervised neural networks”.
+        In: Network: Computation in Neural Systems 6.3, pp. 469–505.
+    \bibitem{nea_96}
+        R. Neal. (1996).
+        Bayesian learning for neural networks.
+        Springer.
+    \bibitem{tipping_01}
+        Tipping, M. E. (2001).
+        Sparse Bayesian learning and the relevance vector machine.
+        Journal of Machine Learning Research 1, 211–244.
+    \bibitem{hinton_van_camp_1993}
+        Hinton, G. E. and D. van Camp (1993).
+        Keeping neural networks simple by minimizing the description length of the weights.
+        In Proceedings of the Sixth Annual Conference on Computational Learning Theory, pp. 5–13. ACM.
+    \bibitem{gra_11}
+        A. Graves (2011).
+        Practical Variational Inference for Neural Networks.
+        NIPS.
+    \bibitem{blu_15}
+        C. Blundell, J. Cornebise, K. Kavukcuoglu, and D. Wierstra. (2015).
+        Weight Uncertainty in Neural Networks.
+        ICML.
+    \bibitem{kingma_2013}
+        Kingma D. P., Welling M. (2013).
+        Welling M. Auto-Encoding Variational Bayes. ArXiv e-prints.
+    \bibitem{nal_18}
+        E. T. Nalisnick. (2018).
+        On Priors for Bayesian Neural Networks.
+        PhD thesis. UC Irvine.
+    \bibitem{wi_20}
+        A. G. Wilson and P. Izmailov. (2020).
+        Bayesian Deep Learning and a Probabilistic Perspective of Generalization.
+        NIPS.
+    \bibitem{hoe_21}
+        T. Hoefler, D. Alistarh, T. Ben-Nun, N. Dryden, and A. Peste. (2021).
+        “Sparsity in Deep Learning:
+        Pruning and growth for efficient inference and training in neural networks.
+        In arXiv: 2102.00554.
+    \bibitem{for_22}
+        V. Fortuin. (2022).
+        Priors in Bayesian Deep Learning: A Review.
+        In: Intl. Statisical Review.
+    \bibitem{bishop2006}
+        C. Bishop (2006).
+        Pattern recognition and machine learning.
+        Springer.
+    \bibitem{murphy_book_1}
+        Kevin P. Murphy. (2022).
+        Probabilistic Machine Learning: An introduction.
+        MIT Press.
+    \bibitem{murphy_book_2}
+        Kevin P. Murphy. (2023).
+        Probabilistic Machine Learning: Advanced Topics.
+        MIT Press.
+\end{thebibliography}
+
 
 \end{document}
