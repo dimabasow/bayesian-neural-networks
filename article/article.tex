@@ -827,7 +827,7 @@
         \pmb{\mu} = \pmb{\gamma} \odot \pmb{\sigma} = \pmb{\gamma} \odot Softplus (\pmb{\rho})
     \end{equation}
 
-    Подставив (\ref{sigma_def}) и (\ref{mu_def}) в (\ref{kl_init}) и (\ref{elbo_kl}), получим:
+    Подставив (\ref{sigma_def}) и (\ref{mu_def}) в (\ref{kl_optim}) и (\ref{elbo_kl_optim}), получим:
     \begin{equation}\label{kl_optim_rho_gamma}
         KL(q_{\pmb{\theta}}(\pmb{W})~||~p(\pmb{W}))
         =
@@ -1098,7 +1098,7 @@
         NIPS.
     \bibitem{hoe_21}
         T. Hoefler, D. Alistarh, T. Ben-Nun, N. Dryden, and A. Peste. (2021).
-        “Sparsity in Deep Learning:
+        Sparsity in Deep Learning:
         Pruning and growth for efficient inference and training in neural networks.
         In arXiv: 2102.00554.
     \bibitem{for_22}
