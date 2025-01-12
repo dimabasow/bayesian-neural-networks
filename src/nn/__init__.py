@@ -14,7 +14,11 @@ from .layers import (
     Perceptrone,
     ResNet,
 )
-from .models import BayesianBinaryClassifier, BinaryClassifier
+from .models import (
+    BayesianBinaryClassifier,
+    BinaryClassifier,
+    BayesianRegressor,
+)
 
 __all__ = [
     "BayesianModule",
@@ -33,4 +37,5 @@ __all__ = [
     "ResNet",
     "BayesianBinaryClassifier",
     "BinaryClassifier",
+    "BayesianRegressor",
 ]
