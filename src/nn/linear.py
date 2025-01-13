@@ -21,7 +21,7 @@ class BayesianLinear(BayesianModule):
         super().__init__()
         self.in_features = in_features
         self.register_buffer(
-            "scale", 1/torch.sqrt(torch.tensor(self.in_features))
+            "scale", 1 / torch.sqrt(torch.tensor(self.in_features))
         )
         self.scale: torch.Tensor
         self.out_features = out_features
@@ -40,30 +40,14 @@ class BayesianLinear(BayesianModule):
             self.forward = self.forward_bias_false
 
     def forward_bias_false(self, x: torch.Tensor) -> torch.Tensor:
-        dim = x.shape[:-1]
-        noise = torch.normal(
-            mean=0,
-            std=1,
-            size=(*dim, self.out_features),
-            dtype=self.dtype,
-            device=self.device,
-        )
-        sigma = next(self.weight.get_sigma())
-        mu = next(self.weight.get_gamma()) * sigma
-        y = (
-            x@mu
-            + (x@sigma)*noise
-        ) * self.scale
+        y = (x @ self.weight) * self.scale
         if self.is_init_mode_on:
-            self.last_mean = y.mean(dim=0)
-            self.last_std = y.std(dim=0)
-        y = y.view(*dim, self.out_features)
+            self.last_mean = y.view(-1, y.shape[-1]).mean(dim=0)
+            self.last_std = y.view(-1, y.shape[-1]).std(dim=0)
         return y
 
     def forward_bias_true(self, x: torch.Tensor) -> torch.Tensor:
-        dim = x.shape[:-1]
-        bias = self.bias(*dim)
-        y = self.forward_bias_false(x) + bias
+        y = self.forward_bias_false(x) + self.bias
         return y
 
     def get_kl(self):
