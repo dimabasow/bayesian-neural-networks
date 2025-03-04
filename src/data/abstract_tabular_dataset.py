@@ -27,7 +27,7 @@ class AbstractTabularDataset(ABC):
         self,
         df: pl.DataFrame,
         metadata: Dict[str, MetaDataColumn],
-    ) -> pl.DataFrame:
+    ):
         df, metadata = self.__filter_df_metadata(df, metadata)
         self.metadata = metadata
 
