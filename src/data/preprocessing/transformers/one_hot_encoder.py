@@ -1,8 +1,10 @@
-from typing import Optional, Dict, Any, List
 import copy
+from typing import Any, Dict, List, Optional
+
 import polars as pl
-from src.data.preprocessing.transformers import BaseTransformer
-from src.data.preprocessing import Metadata
+
+from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.transformers.base import BaseTransformer
 
 
 class OneHotEncoder(BaseTransformer):
@@ -19,11 +21,7 @@ class OneHotEncoder(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [
-            item["name"]
-            for item in self.conf
-            if "name" in item
-        ]
+        return [item["name"] for item in self.conf if "name" in item]
 
     @classmethod
     def from_config(
@@ -33,10 +31,7 @@ class OneHotEncoder(BaseTransformer):
     ) -> "OneHotEncoder":
         if kwargs is None:
             kwargs = {}
-        return cls(
-            conf=[{"column": column} for column in columns],
-            **kwargs
-        )
+        return cls(conf=[{"column": column} for column in columns], **kwargs)
 
     @property
     def metadata(self) -> Metadata:
@@ -56,18 +51,12 @@ class OneHotEncoder(BaseTransformer):
         for column in self.columns_in:
             df_count = data[column].drop_nans().drop_nulls().value_counts()
             if self.min_frequency is not None:
-                df_count = df_count.filter(
-                    pl.col("count") >= self.min_frequency
-                )
+                df_count = df_count.filter(pl.col("count") >= self.min_frequency)
             if self.max_categories:
-                df_count = df_count[:self.max_categories]
+                df_count = df_count[: self.max_categories]
             values = df_count[column].to_list()
             for value in values:
-                item = {
-                    "column": column,
-                    "value": value,
-                    "name": f"{column}_{value}"
-                }
+                item = {"column": column, "value": value, "name": f"{column}_{value}"}
                 conf.append(item)
         self.conf = conf
 
@@ -78,8 +67,8 @@ class OneHotEncoder(BaseTransformer):
             value = item["value"]
             name = item["name"]
             series_encoded: pl.Series = (
-                data[column] == value
-            ).cast(pl.Int64).rename(name)
+                (data[column] == value).cast(pl.Int64).rename(name)
+            )
             list_to_cat.append(series_encoded.to_frame())
 
         df_encoded: pl.DataFrame = pl.concat(list_to_cat, how="horizontal")

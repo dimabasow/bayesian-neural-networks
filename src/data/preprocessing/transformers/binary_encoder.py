@@ -1,8 +1,10 @@
-from typing import Optional, Dict, Any, List
 import copy
+from typing import Any, Dict, List, Optional
+
 import polars as pl
-from src.data.preprocessing.transformers import BaseTransformer
-from src.data.preprocessing import Metadata
+
+from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.transformers.base import BaseTransformer
 
 
 class BinaryEncoder(BaseTransformer):
@@ -12,11 +14,7 @@ class BinaryEncoder(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [
-            item["name"]
-            for item in self.conf
-            if "name" in item
-        ]
+        return [item["name"] for item in self.conf if "name" in item]
 
     @classmethod
     def from_config(
@@ -28,15 +26,11 @@ class BinaryEncoder(BaseTransformer):
 
     @property
     def metadata(self) -> Metadata:
-        return Metadata(
-            features_numeric=tuple(self.columns_out)
-        )
+        return Metadata(features_numeric=tuple(self.columns_out))
 
     @property
     def state(self) -> Dict[str, Any]:
-        return {
-            "conf": copy.deepcopy(self.conf)
-        }
+        return {"conf": copy.deepcopy(self.conf)}
 
     def fit(self, data: pl.DataFrame):
         self.update_columns_in(data=data)

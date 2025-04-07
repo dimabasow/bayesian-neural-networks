@@ -1,14 +1,16 @@
-from abc import ABC, abstractmethod
-from typing import Dict, List, Iterator, Tuple, Sequence, Optional
 import random
+from abc import ABC, abstractmethod
+from typing import Dict, Iterator, List, Optional, Sequence, Tuple
+
 import polars as pl
+
 from src.data.types import (
+    EmbedingInit,
     MetaData,
     MetaDataColumn,
+    PolarsTableItem,
     TableItem,
     TargetItem,
-    EmbedingInit,
-    PolarsTableItem,
 )
 
 
@@ -43,30 +45,20 @@ class AbstractTabularDataset(ABC):
         df: pl.DataFrame,
         metadata: MetaData,
     ) -> Tuple[pl.DataFrame, MetaData]:
-        metadata = {
-            key: value
-            for key, value in metadata.items()
-            if key in df.columns
-        }
+        metadata = {key: value for key, value in metadata.items() if key in df.columns}
         columns = sorted(metadata.keys())
         df = df[columns]
         return df, metadata
 
     def __cast_df_types(self, df: pl.DataFrame) -> pl.DataFrame:
         df = df.with_columns(
-            pl.col(column).cast(pl.Boolean)
-            for column in
-            self.columns_binary
+            pl.col(column).cast(pl.Boolean) for column in self.columns_binary
         )
         df = df.with_columns(
-            pl.col(column).cast(pl.Float32)
-            for column in
-            self.columns_numeric
+            pl.col(column).cast(pl.Float32) for column in self.columns_numeric
         )
         df = df.with_columns(
-            pl.col(column).cast(pl.Int64)
-            for column in
-            self.columns_category
+            pl.col(column).cast(pl.Int64) for column in self.columns_category
         )
         return df
 
@@ -94,10 +86,7 @@ class AbstractTabularDataset(ABC):
         return embeding_init_kwargs
 
     def __init_data(self, df: pl.DataFrame) -> PolarsTableItem:
-        columns_numeric = (
-            self.columns_numeric_features
-            + self.columns_binary_features
-        )
+        columns_numeric = self.columns_numeric_features + self.columns_binary_features
 
         index = df[self.columns_id]
         if index.is_empty():
@@ -108,8 +97,7 @@ class AbstractTabularDataset(ABC):
             features_numeric = None
 
         features_category = {
-            column: df[column]
-            for column in self.columns_category_features
+            column: df[column] for column in self.columns_category_features
         }
         if not features_category:
             features_category = None
@@ -188,48 +176,31 @@ class AbstractTabularDataset(ABC):
 
     @staticmethod
     def transform_df_metadata(
-        df: pl.DataFrame,
-        metadata: Dict[str, MetaDataColumn]
+        df: pl.DataFrame, metadata: Dict[str, MetaDataColumn]
     ) -> Tuple[pl.DataFrame, MetaData]:
-        metadata = {
-            key: value
-            for key, value in metadata.items()
-            if key in df.columns
-        }
+        metadata = {key: value for key, value in metadata.items() if key in df.columns}
         columns = sorted(metadata.keys())
         df = df[columns]
 
         columns_binary = sorted(
-            column
-            for column in columns
-            if metadata[column].type == "binary"
+            column for column in columns if metadata[column].type == "binary"
         )
         columns_numeric = sorted(
-            column
-            for column in columns
-            if metadata[column].type == "numeric"
+            column for column in columns if metadata[column].type == "numeric"
         )
         columns_category = sorted(
-            column
-            for column in columns
-            if metadata[column].type == "category"
+            column for column in columns if metadata[column].type == "category"
         )
 
         df = df[columns]
         df = df.with_columns(
-            pl.col(column).cast(pl.Boolean)
-            for column in
-            columns_binary
+            pl.col(column).cast(pl.Boolean) for column in columns_binary
         )
         df = df.with_columns(
-            pl.col(column).cast(pl.Float32)
-            for column in
-            columns_numeric
+            pl.col(column).cast(pl.Float32) for column in columns_numeric
         )
         df = df.with_columns(
-            pl.col(column).cast(pl.Int64)
-            for column in
-            columns_category
+            pl.col(column).cast(pl.Int64) for column in columns_category
         )
 
         return df, metadata
@@ -268,89 +239,65 @@ class AbstractTabularDataset(ABC):
         batch_size: int,
     ) -> Iterator[TableItem]:
         for i in range(0, len(idx), batch_size):
-            idx_batch = idx[i: i + batch_size]
+            idx_batch = idx[i : i + batch_size]
             yield self[*idx_batch]
 
     @property
     def columns(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata
-        )
+        return sorted(name for name in self.metadata)
 
     @property
     def columns_id(self) -> List[str]:
         return sorted(
-            name for name in self.metadata
-            if self.metadata[name].type == "identifier"
+            name for name in self.metadata if self.metadata[name].type == "identifier"
         )
 
     @property
     def columns_numeric(self) -> List[str]:
         return sorted(
-            name for name in self.metadata
-            if self.metadata[name].type == "numeric"
+            name for name in self.metadata if self.metadata[name].type == "numeric"
         )
 
     @property
     def columns_binary(self) -> List[str]:
         return sorted(
-            name for name in self.metadata
-            if self.metadata[name].type == "binary"
+            name for name in self.metadata if self.metadata[name].type == "binary"
         )
 
     @property
     def columns_category(self) -> List[str]:
         return sorted(
-            name for name in self.metadata
-            if self.metadata[name].type == "category"
+            name for name in self.metadata if self.metadata[name].type == "category"
         )
 
     @property
     def columns_features(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata
-            if self.metadata[name].feature
-        )
+        return sorted(name for name in self.metadata if self.metadata[name].feature)
 
     @property
     def columns_target(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata
-            if self.metadata[name].target
-        )
+        return sorted(name for name in self.metadata if self.metadata[name].target)
 
     @property
     def columns_numeric_features(self) -> List[str]:
-        return sorted(
-            set(self.columns_numeric) & set(self.columns_features)
-        )
+        return sorted(set(self.columns_numeric) & set(self.columns_features))
 
     @property
     def columns_numeric_target(self) -> List[str]:
-        return sorted(
-            set(self.columns_numeric) & set(self.columns_target)
-        )
+        return sorted(set(self.columns_numeric) & set(self.columns_target))
 
     @property
     def columns_binary_features(self) -> List[str]:
-        return sorted(
-            set(self.columns_binary) & set(self.columns_features)
-        )
+        return sorted(set(self.columns_binary) & set(self.columns_features))
 
     @property
     def columns_binary_target(self) -> List[str]:
-        return sorted(
-            set(self.columns_binary) & set(self.columns_target)
-        )
+        return sorted(set(self.columns_binary) & set(self.columns_target))
 
     @property
     def columns_category_features(self) -> List[str]:
-        return sorted(
-            set(self.columns_category) & set(self.columns_features)
-        )
+        return sorted(set(self.columns_category) & set(self.columns_features))
 
     @property
     def columns_category_target(self) -> List[str]:
-        return sorted(
-            set(self.columns_category) & set(self.columns_target)
-        )
+        return sorted(set(self.columns_category) & set(self.columns_target))

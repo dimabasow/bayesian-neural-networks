@@ -1,4 +1,5 @@
-from typing import NamedTuple, Dict, Literal, Optional, TypeVar
+from typing import Dict, Literal, NamedTuple, Optional, TypeVar
+
 import polars as pl
 import torch
 
@@ -14,13 +15,7 @@ class MetaDataColumn(NamedTuple):
 TableVar = TypeVar("TableVar")
 ColumnVar = TypeVar("ColumnVar")
 MetaData = Dict[str, MetaDataColumn]
-EmbedingInit = Dict[
-    str,
-    Dict[
-        Literal["num_embeddings", "embedding_dim"],
-        int
-    ]
-]
+EmbedingInit = Dict[str, Dict[Literal["num_embeddings", "embedding_dim"], int]]
 
 
 class TargetItem(NamedTuple):

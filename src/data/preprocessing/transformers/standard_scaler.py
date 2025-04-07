@@ -1,7 +1,9 @@
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List, Optional
+
 import polars as pl
-from src.data.preprocessing.transformers import BaseTransformer
-from src.data.preprocessing import Metadata
+
+from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.transformers.base import BaseTransformer
 
 
 class StandardScaler(BaseTransformer):
@@ -14,11 +16,7 @@ class StandardScaler(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [
-            item["name"]
-            for item in self.conf
-            if "name" in item
-        ]
+        return [item["name"] for item in self.conf if "name" in item]
 
     @classmethod
     def from_config(
@@ -34,9 +32,7 @@ class StandardScaler(BaseTransformer):
 
     @property
     def state(self) -> Dict[str, Any]:
-        return {
-            "conf": self.conf
-        }
+        return {"conf": self.conf}
 
     def fit(self, data: pl.DataFrame):
         self.update_columns_in(data=data)

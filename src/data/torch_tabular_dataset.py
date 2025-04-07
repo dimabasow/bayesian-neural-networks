@@ -1,11 +1,12 @@
 import copy
+
 import torch
-from src.data.types import PolarsTableItem, TorchTargetItem, TorchTableItem
+
 from src.data.abstract_tabular_dataset import AbstractTabularDataset
+from src.data.types import PolarsTableItem, TorchTableItem, TorchTargetItem
 
 
 class TorchTabularDataset(AbstractTabularDataset):
-
     def make_data(self, data: PolarsTableItem) -> TorchTableItem:
         index = data.index
 

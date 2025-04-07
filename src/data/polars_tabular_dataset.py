@@ -1,5 +1,5 @@
-from src.data.types import PolarsTableItem
 from src.data.abstract_tabular_dataset import AbstractTabularDataset
+from src.data.types import PolarsTableItem
 
 
 class PolarsTabularDataset(AbstractTabularDataset):

@@ -1,24 +1,57 @@
-from typing import Dict, Any, List, Optional
 import copy
+from typing import Any, Dict, List, NamedTuple, Optional
+
 import polars as pl
 import scipy
 import scipy.stats
-from src.data.preprocessing.transformers import BaseTransformer
-from src.data.preprocessing import Metadata
+
+from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.transformers.base import BaseTransformer
+
+
+class YeoJohsonResult(NamedTuple):
+    series: pl.Series
+    lmbda: float
+    mean: float
+    std: float
 
 
 def apply_yeojohson_pos(x: pl.Series, lmbda: float) -> pl.Series:
     if lmbda != 0:
-        return ((x + 1)**lmbda - 1) / lmbda
+        return ((x + 1) ** lmbda - 1) / lmbda
     else:
         return (x + 1).log()
 
 
 def apply_yeojohson_neg(x: pl.Series, lmbda: float) -> pl.Series:
     if lmbda != 2:
-        return -((-x + 1)**(2 - lmbda) - 1) / (2 - lmbda)
+        return -((-x + 1) ** (2 - lmbda) - 1) / (2 - lmbda)
     else:
         return -(-x + 1).log()
+
+
+def apply_yeojohson(
+    x: pl.Series,
+    lmbda: Optional[float] = None,
+    mean: Optional[float] = None,
+    std: Optional[float] = None,
+) -> YeoJohsonResult:
+    if lmbda is None:
+        lmbda = scipy.stats.yeojohnson_normmax(
+            x=x.drop_nulls().drop_nans().to_numpy()
+        ).item()
+    series = pl.DataFrame().with_columns(
+        pl.when(x >= 0)
+        .then(apply_yeojohson_pos(x=x, lmbda=lmbda))
+        .otherwise(apply_yeojohson_neg(x=x, lmbda=lmbda))
+        .alias(x.name)
+    )[x.name]
+    if mean is None:
+        mean = series.mean()
+    if std is None:
+        std = series.std()
+    series = (series - mean) / std
+    return YeoJohsonResult(series=series, lmbda=lmbda, mean=mean, std=std)
 
 
 class PowerTransformer(BaseTransformer):
@@ -31,11 +64,7 @@ class PowerTransformer(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [
-            item["name"]
-            for item in self.conf
-            if "name" in item
-        ]
+        return [item["name"] for item in self.conf if "name" in item]
 
     @classmethod
     def from_config(
@@ -51,9 +80,7 @@ class PowerTransformer(BaseTransformer):
 
     @property
     def state(self) -> Dict[str, Any]:
-        return {
-            "conf": copy.deepcopy(self.conf)
-        }
+        return {"conf": copy.deepcopy(self.conf)}
 
     def fit_transform(self, data: pl.DataFrame) -> pl.DataFrame:
         self.update_columns_in(data=data)
@@ -61,31 +88,14 @@ class PowerTransformer(BaseTransformer):
 
         conf = []
         for column in df.columns:
-            lmbda = scipy.stats.yeojohnson_normmax(
-                x=df[column].drop_nulls().drop_nans().to_numpy()
-            )
-            df = df.with_columns(
-                pl.when(pl.col(column) >= 0)
-                .then(
-                    apply_yeojohson_pos(x=pl.col(column), lmbda=lmbda)
-                )
-                .otherwise(
-                    apply_yeojohson_neg(x=pl.col(column), lmbda=lmbda)
-                )
-                .alias(column)
-            )
-            mean = df[column].mean()
-            std = df[column].std()
-            df = df.with_columns(
-                ((pl.col(column) - mean) / std).alias(column)
-            )
-
+            result = apply_yeojohson(x=df[column])
+            df = df.with_columns(result.series)
             item = {
                 "column": column,
                 "name": f"{column}_PowerTransformer",
-                "lmbda": lmbda,
-                "mean": mean,
-                "std": std,
+                "lmbda": result.lmbda,
+                "mean": result.mean,
+                "std": result.std,
             }
             conf.append(item)
         self.conf = conf
@@ -100,25 +110,14 @@ class PowerTransformer(BaseTransformer):
     def transform(self, data: pl.DataFrame) -> pl.DataFrame:
         df: pl.DataFrame = data[self.columns_in].cast(pl.Float64)
         for item in self.conf:
-            column = item["column"]
-            lmbda = item["lmbda"]
-            mean = item["mean"]
-            std = item["std"]
-
             df = df.with_columns(
-                pl.when(pl.col(column) >= 0)
-                .then(
-                    apply_yeojohson_pos(x=pl.col(column), lmbda=lmbda)
-                )
-                .otherwise(
-                    apply_yeojohson_neg(x=pl.col(column), lmbda=lmbda)
-                )
-                .alias(column)
+                apply_yeojohson(
+                    x=df[item["column"]],
+                    lmbda=item["lmbda"],
+                    mean=item["mean"],
+                    std=item["std"],
+                ).series
             )
-            df = df.with_columns(
-                ((pl.col(column) - mean) / std).alias(column)
-            )
-
         df.columns = [f"{column}_PowerTransformer" for column in df.columns]
         df = df.fill_nan(0).fill_null(0)
         return df[self.columns_out]

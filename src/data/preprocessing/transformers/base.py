@@ -1,7 +1,9 @@
-from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, List
 import json
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional
+
 import polars as pl
+
 from src.data.preprocessing.metadata import Metadata
 
 
@@ -44,8 +46,8 @@ class BaseTransformer(ABC):
     def transform(self, data: pl.DataFrame) -> pl.DataFrame:
         pass
 
-    @abstractmethod
     @staticmethod
+    @abstractmethod
     def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
         pass
 
@@ -78,6 +80,5 @@ class BaseTransformer(ABC):
         else:
             columns_in_set = set(self.columns_in)
             self.columns_in = [
-                column for column in data.columns
-                if column in columns_in_set
+                column for column in data.columns if column in columns_in_set
             ]
