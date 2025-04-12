@@ -1,14 +1,16 @@
-from typing import Literal, Union, Dict, Any, Optional, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence, Union
+
 import torch
+
+from src.nn.affine import BayesianAffine
 from src.nn.base import BayesianModule
-from src.nn.linear import BayesianLinear
+from src.nn.batchnorm import BayesianBatchNorm
 from src.nn.container import (
     BayesianModuleDict,
     BayesianModuleList,
     BayesianSequential,
 )
-from src.nn.affine import BayesianAffine
-from src.nn.batchnorm import BayesianBatchNorm
+from src.nn.linear import BayesianLinear
 
 
 class BayesianResNet(BayesianModule):
@@ -38,11 +40,9 @@ class BayesianResNet(BayesianModule):
         self.weights = BayesianModuleDict()
         dims = [dim_in] + list(dims_hidden) + [dim_out]
         for i, dim_i in enumerate(dims):
-            for j, dim_j in enumerate(dims[i+1:]):
-                self.weights[f"w_{i}_{i+j+1}"] = BayesianLinear(
-                    in_features=dim_i,
-                    out_features=dim_j,
-                    bias=True
+            for j, dim_j in enumerate(dims[i + 1 :]):
+                self.weights[f"w_{i}_{i + j + 1}"] = BayesianLinear(
+                    in_features=dim_i, out_features=dim_j, bias=True
                 )
 
         self.f_act_blocks = BayesianModuleList()
@@ -59,9 +59,7 @@ class BayesianResNet(BayesianModule):
             )
             if batch_affine:
                 block.append(BayesianAffine(size=[dim]))
-            block.append(
-                getattr(torch.nn, f_act)(**f_act_kwargs)
-            )
+            block.append(getattr(torch.nn, f_act)(**f_act_kwargs))
             self.f_act_blocks.append(block)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -73,8 +71,8 @@ class BayesianResNet(BayesianModule):
                     value = self.weights[f"w_{k}_{i}"](z[k])
                 else:
                     value = value + self.weights[f"w_{k}_{i}"](z[k])
-                if k == i-1:
+                if k == i - 1:
                     if i != len(self.dims_hidden) + 1:
-                        value = self.f_act_blocks[i-1](value)
+                        value = self.f_act_blocks[i - 1](value)
                     z.append(value)
         return z[-1]

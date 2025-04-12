@@ -1,12 +1,34 @@
-from typing import Any, Dict, List, Optional
+from abc import ABC
+from typing import Any, Dict, List, NamedTuple, Optional
 
 import polars as pl
 
-from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.metadata import TransformType
 from src.data.preprocessing.transformers.base import BaseTransformer
+from src.data.preprocessing.utils import drop_columns_empty_or_constant
 
 
-class StandardScaler(BaseTransformer):
+class FitTransformResult(NamedTuple):
+    df: pl.DataFrame
+    conf: List[Dict[str, Any]]
+
+
+def transform(df: pl.DataFrame, conf: List[Dict[str, Any]]) -> pl.DataFrame:
+    df = df.cast(pl.Float64())
+    columns = []
+    list_to_cat = []
+    for item in conf:
+        column = item["column"]
+        if column in df.columns:
+            columns.append(column)
+            series = df[column]
+            series = (series - item["mean"]) / item["std"]
+            list_to_cat.append(series)
+        df_ecoded: pl.DataFrame = pl.concat(list_to_cat, how="horizontal")
+        return df_ecoded
+
+
+class StandardScaler(BaseTransformer, ABC):
     def __init__(
         self,
         conf: List[Dict[str, Any]],
@@ -16,7 +38,7 @@ class StandardScaler(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [item["name"] for item in self.conf if "name" in item]
+        return [self.rename_column(item["name"]) for item in self.conf]
 
     @classmethod
     def from_config(
@@ -25,10 +47,6 @@ class StandardScaler(BaseTransformer):
         kwargs: Optional[Dict[str, Any]] = None,
     ) -> "StandardScaler":
         return cls(conf=[{"column": column} for column in columns])
-
-    @property
-    def metadata(self) -> Metadata:
-        return Metadata(features_numeric=tuple(self.columns_out))
 
     @property
     def state(self) -> Dict[str, Any]:
@@ -41,34 +59,32 @@ class StandardScaler(BaseTransformer):
         for column in data.columns:
             item = {
                 "column": column,
-                "name": f"{column}_StandardScaler",
                 "mean": data[column].mean(),
                 "std": data[column].std(),
             }
             conf.append(item)
         self.conf = conf
 
-    def transform(self, data: pl.DataFrame) -> pl.DataFrame:
-        df: pl.DataFrame = data[self.columns_in].cast(pl.Float64)
-        list_to_cat = []
-        for item in self.conf:
-            series = df[item["column"]]
-            series = (series - item["mean"]) / item["std"]
-            series = series.rename(item["name"])
-            list_to_cat.append(series)
-        df_ecoded: pl.DataFrame = pl.concat(list_to_cat, how="horizontal")
-        df_ecoded = df_ecoded.fill_nan(0).fill_null(0)
-        return df_ecoded[self.columns_out]
-
     @staticmethod
     def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
-        columns_to_drop = []
-        for column in data.columns:
-            series = data[column]
-            series_drop_null = series.drop_nans().drop_nulls()
-            if series_drop_null.len() == 0:
-                columns_to_drop.append(column)
-            elif (series_drop_null[0] == series_drop_null).all():
-                columns_to_drop.append(column)
-        data = data.drop(*columns_to_drop)
-        return data
+        return drop_columns_empty_or_constant(df=data)
+
+    def rename_column(self, column: str) -> str:
+        return f"{column}_{self.__class__.__name__}"
+
+
+class FeatureStandardScaler(StandardScaler):
+    transform_type = TransformType.features_numeric
+
+    def transform(self, data: pl.DataFrame) -> pl.DataFrame:
+        df = transform(df=data[self.columns_in], conf=self.conf)
+        df = df.fill_nan(0).fill_null(0)
+        return df[self.columns_out]
+
+
+class TargetStandardScaler(StandardScaler):
+    transform_type = TransformType.targets_regression
+
+    def transform(self, data: pl.DataFrame) -> pl.DataFrame:
+        df = transform(df=data[self.columns_in], conf=self.conf)
+        return df

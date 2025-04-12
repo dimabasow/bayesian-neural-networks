@@ -1,5 +1,7 @@
-from typing import Literal, Union, Dict, Any, Optional, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence, Union
+
 import torch
+
 from src.nn.base import BayesianModule
 
 
@@ -25,11 +27,9 @@ class ResNet(BayesianModule):
         self.weights = torch.nn.ModuleDict()
         dims = [dim_in] + list(dims_hidden) + [dim_out]
         for i, dim_i in enumerate(dims):
-            for j, dim_j in enumerate(dims[i+1:]):
-                self.weights[f"w_{i}_{i+j+1}"] = torch.nn.Linear(
-                    in_features=dim_i,
-                    out_features=dim_j,
-                    bias=True
+            for j, dim_j in enumerate(dims[i + 1 :]):
+                self.weights[f"w_{i}_{i + j + 1}"] = torch.nn.Linear(
+                    in_features=dim_i, out_features=dim_j, bias=True
                 )
 
         self.f_act = getattr(torch.nn, f_act)(**f_act_kwargs)
@@ -43,7 +43,7 @@ class ResNet(BayesianModule):
                     value = self.weights[f"w_{k}_{i}"](z[k])
                 else:
                     value = value + self.weights[f"w_{k}_{i}"](z[k])
-                if k == i-1:
+                if k == i - 1:
                     if i != len(self.dims_hidden) + 1:
                         value = self.f_act(value)
                     z.append(value)

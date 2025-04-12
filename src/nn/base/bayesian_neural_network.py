@@ -1,13 +1,14 @@
-from abc import abstractmethod, ABC
-from typing import Optional, Dict, Any
-import torch
 import copy
+from abc import ABC, abstractmethod
+from typing import Any, Dict, Optional
+
 import pandas as pd
-from src.nn.base import BayesianModule
+import torch
+
+from src.nn.base.bayesian_module import BayesianModule
 
 
 class BayesianNeuralNetwork(BayesianModule, ABC):
-
     @abstractmethod
     def __init__(self):
         super().__init__()
@@ -19,16 +20,14 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
         self,
         optimizer: str,
         kwargs: Optional[Dict[str, Any]],
-    ) -> torch.optim.Optimizer:
-        ...
+    ) -> torch.optim.Optimizer: ...
 
     @abstractmethod
     def negative_likelihood(
         self,
         x: torch.Tensor,
         y: torch.Tensor,
-    ) -> torch.Tensor:
-        ...
+    ) -> torch.Tensor: ...
 
     @property
     def current_epoch(self) -> int:
@@ -75,8 +74,7 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
     ):
         self.init_mode_on()
         optimizer: torch.optim.Optimizer = self.configure_optimizer(
-            optimizer=optimizer,
-            kwargs={"lr": lr}
+            optimizer=optimizer, kwargs={"lr": lr}
         )
         for _ in range(num_epoch):
             self.train()
@@ -98,8 +96,7 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
         num_epoch: int = 1000,
     ):
         optimizer: torch.optim.Optimizer = self.configure_optimizer(
-            optimizer=optimizer,
-            kwargs={"lr": lr}
+            optimizer=optimizer, kwargs={"lr": lr}
         )
         for _ in range(num_epoch):
             optimizer.zero_grad()

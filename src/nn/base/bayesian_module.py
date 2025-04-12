@@ -1,11 +1,10 @@
 from abc import ABC
 from typing import Iterator
+
 import torch
-import torch.types
 
 
 class BayesianModule(torch.nn.Module, ABC):
-
     softplus = torch.nn.Softplus()
     is_init_mode_on: bool = True
 

@@ -1,12 +1,14 @@
 import copy
+from abc import ABC
 from typing import Any, Dict, List, NamedTuple, Optional
 
 import polars as pl
 import scipy
 import scipy.stats
 
-from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.metadata import TransformType
 from src.data.preprocessing.transformers.base import BaseTransformer
+from src.data.preprocessing.utils import drop_columns_empty_or_constant
 
 
 class YeoJohsonResult(NamedTuple):
@@ -14,6 +16,11 @@ class YeoJohsonResult(NamedTuple):
     lmbda: float
     mean: float
     std: float
+
+
+class FitTransformResult(NamedTuple):
+    df: pl.DataFrame
+    conf: List[Dict[str, Any]]
 
 
 def apply_yeojohson_pos(x: pl.Series, lmbda: float) -> pl.Series:
@@ -54,7 +61,43 @@ def apply_yeojohson(
     return YeoJohsonResult(series=series, lmbda=lmbda, mean=mean, std=std)
 
 
-class PowerTransformer(BaseTransformer):
+def fit_transform(df: pl.DataFrame) -> FitTransformResult:
+    df = df.cast(pl.Float64())
+    conf = []
+    for column in df.columns:
+        result = apply_yeojohson(x=df[column])
+        df = df.with_columns(result.series)
+        item = {
+            "column": column,
+            "lmbda": result.lmbda,
+            "mean": result.mean,
+            "std": result.std,
+        }
+        conf.append(item)
+
+    return FitTransformResult(df=df, conf=conf)
+
+
+def transform(df: pl.DataFrame, conf: List[Dict[str, Any]]) -> pl.DataFrame:
+    df = df.cast(pl.Float64())
+    columns = []
+    for item in conf:
+        column = item["column"]
+        if column in df.columns:
+            columns.append(column)
+            df = df.with_columns(
+                apply_yeojohson(
+                    x=df[column],
+                    lmbda=item["lmbda"],
+                    mean=item["mean"],
+                    std=item["std"],
+                ).series
+            )
+    df = df[columns]
+    return df
+
+
+class PowerTransformer(BaseTransformer, ABC):
     def __init__(
         self,
         conf: List[Dict[str, Any]],
@@ -64,7 +107,7 @@ class PowerTransformer(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [item["name"] for item in self.conf if "name" in item]
+        return [self.rename_column(column=item["column"]) for item in self.conf]
 
     @classmethod
     def from_config(
@@ -75,62 +118,53 @@ class PowerTransformer(BaseTransformer):
         return cls(conf=[{"column": column} for column in columns])
 
     @property
-    def metadata(self) -> Metadata:
-        return Metadata(features_numeric=tuple(self.columns_out))
-
-    @property
     def state(self) -> Dict[str, Any]:
         return {"conf": copy.deepcopy(self.conf)}
-
-    def fit_transform(self, data: pl.DataFrame) -> pl.DataFrame:
-        self.update_columns_in(data=data)
-        df = data[list(self.columns_in)].cast(pl.Float64)
-
-        conf = []
-        for column in df.columns:
-            result = apply_yeojohson(x=df[column])
-            df = df.with_columns(result.series)
-            item = {
-                "column": column,
-                "name": f"{column}_PowerTransformer",
-                "lmbda": result.lmbda,
-                "mean": result.mean,
-                "std": result.std,
-            }
-            conf.append(item)
-        self.conf = conf
-
-        df.columns = [f"{column}_PowerTransformer" for column in df.columns]
-        df = df.fill_nan(0).fill_null(0)
-        return df[self.columns_out]
 
     def fit(self, data: pl.DataFrame):
         self.fit_transform(data=data)
 
-    def transform(self, data: pl.DataFrame) -> pl.DataFrame:
-        df: pl.DataFrame = data[self.columns_in].cast(pl.Float64)
-        for item in self.conf:
-            df = df.with_columns(
-                apply_yeojohson(
-                    x=df[item["column"]],
-                    lmbda=item["lmbda"],
-                    mean=item["mean"],
-                    std=item["std"],
-                ).series
-            )
-        df.columns = [f"{column}_PowerTransformer" for column in df.columns]
+    @staticmethod
+    def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
+        return drop_columns_empty_or_constant(df=data)
+
+    def rename_column(self, column: str) -> str:
+        return f"{column}_{self.__class__.__name__}"
+
+
+class FeaturePowerTransformer(PowerTransformer):
+    transform_type = TransformType.features_numeric
+
+    def fit_transform(self, data: pl.DataFrame) -> pl.DataFrame:
+        self.update_columns_in(data=data)
+        result = fit_transform(df=data[list(self.columns_in)])
+        self.conf = result.conf
+        df = result.df
+
+        df.columns = [self.rename_column(column=column) for column in df.columns]
         df = df.fill_nan(0).fill_null(0)
         return df[self.columns_out]
 
-    @staticmethod
-    def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
-        columns_to_drop = []
-        for column in data.columns:
-            series = data[column]
-            series_drop_null = series.drop_nans().drop_nulls()
-            if series_drop_null.len() == 0:
-                columns_to_drop.append(column)
-            elif (series_drop_null[0] == series_drop_null).all():
-                columns_to_drop.append(column)
-        data = data.drop(*columns_to_drop)
-        return data
+    def transform(self, data: pl.DataFrame) -> pl.DataFrame:
+        df = transform(df=data[self.columns_in], conf=self.conf)
+        df.columns = [self.rename_column(column=column) for column in df.columns]
+        df = df.fill_nan(0).fill_null(0)
+        return df[self.columns_out]
+
+
+class TargetPowerTransformer(PowerTransformer):
+    transform_type = TransformType.targets_regression
+
+    def fit_transform(self, data: pl.DataFrame) -> pl.DataFrame:
+        self.update_columns_in(data=data)
+        result = fit_transform(df=data[list(self.columns_in)])
+        self.conf = result.conf
+        df = result.df
+
+        df.columns = [self.rename_column(column=column) for column in df.columns]
+        return df
+
+    def transform(self, data: pl.DataFrame) -> pl.DataFrame:
+        df = transform(df=data[self.columns_in], conf=self.conf)
+        df.columns = [self.rename_column(column=column) for column in df.columns]
+        return df

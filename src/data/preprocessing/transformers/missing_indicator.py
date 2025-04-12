@@ -2,11 +2,13 @@ from typing import Any, Dict, List, Optional
 
 import polars as pl
 
-from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.metadata import TransformType
 from src.data.preprocessing.transformers.base import BaseTransformer
 
 
 class MissingIndicator(BaseTransformer):
+    transform_type = TransformType.features_numeric
+
     def __init__(
         self,
         columns: Optional[List[str]] = None,
@@ -15,7 +17,7 @@ class MissingIndicator(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [f"missing_indicator_{column}" for column in self.columns_in]
+        return [self.rename_column(column=column) for column in self.columns_in]
 
     @classmethod
     def from_config(
@@ -24,10 +26,6 @@ class MissingIndicator(BaseTransformer):
         kwargs: Optional[Dict[str, Any]] = None,
     ) -> "MissingIndicator":
         return cls(columns=columns)
-
-    @property
-    def metadata(self) -> Dict[str, Any]:
-        return Metadata(features_numeric=tuple(self.columns_out))
 
     @property
     def state(self) -> Dict[str, Any]:
@@ -58,3 +56,6 @@ class MissingIndicator(BaseTransformer):
                 columns_to_drop.append(column)
         data = data.drop(*columns_to_drop)
         return data
+
+    def rename_column(self, column: str) -> str:
+        return f"{column}_{self.__class__.__name__}"

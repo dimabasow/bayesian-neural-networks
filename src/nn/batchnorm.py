@@ -1,6 +1,8 @@
 from typing import Optional, Sequence
+
 import torch
 from torch import Tensor
+
 from src.nn.base import BayesianModule
 
 
@@ -36,35 +38,39 @@ class BayesianBatchNorm(BayesianModule):
         self.momentum = momentum
         self.eps = eps
         self.register_buffer(
-            "running_mean", torch.zeros(
+            "running_mean",
+            torch.zeros(
                 *size,
                 **factory_kwargs,
                 requires_grad=True,
-            )
+            ),
         )
         self.running_mean: Optional[Tensor]
         self.register_buffer(
-            "last_train_mean", torch.zeros(
+            "last_train_mean",
+            torch.zeros(
                 *size,
                 **factory_kwargs,
                 requires_grad=True,
-            )
+            ),
         )
         self.last_train_mean: Optional[Tensor]
         self.register_buffer(
-            "running_std", torch.ones(
+            "running_std",
+            torch.ones(
                 *size,
                 **factory_kwargs,
                 requires_grad=True,
-            )
+            ),
         )
         self.running_std: Optional[Tensor]
         self.register_buffer(
-            "last_train_std", torch.ones(
+            "last_train_std",
+            torch.ones(
                 *size,
                 **factory_kwargs,
                 requires_grad=True,
-            )
+            ),
         )
         self.last_train_std: Optional[Tensor]
         self.register_buffer(
@@ -106,13 +112,11 @@ class BayesianBatchNorm(BayesianModule):
         if self.training:
             self.last_train_mean = x.mean(dim=0)
             self.last_train_std = x.std(dim=0)
-            self.running_mean = (
-                (self.running_mean.detach()*momentum)
-                + (self.last_train_mean*(1 - momentum))
+            self.running_mean = (self.running_mean.detach() * momentum) + (
+                self.last_train_mean * (1 - momentum)
             )
-            self.running_std = (
-                (self.running_std.detach()*momentum)
-                + (self.last_train_std*(1 - momentum))
+            self.running_std = (self.running_std.detach() * momentum) + (
+                self.last_train_std * (1 - momentum)
             )
 
         if self.transform:
@@ -123,15 +127,12 @@ class BayesianBatchNorm(BayesianModule):
 
     def get_kl(self) -> Tensor:
         if self.penalty:
-            std_pow_2 = self.last_train_std ** 2
-            mean_pow_2 = self.last_train_mean ** 2
+            std_pow_2 = self.last_train_std**2
+            mean_pow_2 = self.last_train_mean**2
             kl = (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
         else:
             kl = torch.zeros(
-                size=[],
-                dtype=self.dtype,
-                device=self.device,
-                requires_grad=True
+                size=[], dtype=self.dtype, device=self.device, requires_grad=True
             )
         return kl
 

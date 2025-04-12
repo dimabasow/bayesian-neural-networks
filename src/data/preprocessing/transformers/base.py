@@ -4,11 +4,12 @@ from typing import Any, Dict, List, Optional
 
 import polars as pl
 
-from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.metadata import TransformType
 
 
 class BaseTransformer(ABC):
     columns_in: Optional[List[str]] = None
+    transform_type: TransformType
 
     @abstractmethod
     def __init__(self):
@@ -26,11 +27,6 @@ class BaseTransformer(ABC):
         columns: Optional[List[str]] = None,
         kwargs: Optional[Dict[str, Any]] = None,
     ) -> "BaseTransformer":
-        pass
-
-    @property
-    @abstractmethod
-    def metadata(self) -> Metadata:
         pass
 
     @property

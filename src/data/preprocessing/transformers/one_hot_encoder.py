@@ -3,11 +3,14 @@ from typing import Any, Dict, List, Optional
 
 import polars as pl
 
-from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.metadata import TransformType
 from src.data.preprocessing.transformers.base import BaseTransformer
+from src.data.preprocessing.utils import drop_columns_constant
 
 
 class OneHotEncoder(BaseTransformer):
+    transform_type = TransformType.features_numeric
+
     def __init__(
         self,
         conf: List[Dict[str, Any]],
@@ -21,7 +24,11 @@ class OneHotEncoder(BaseTransformer):
 
     @property
     def columns_out(self) -> List[str]:
-        return [item["name"] for item in self.conf if "name" in item]
+        return [
+            self.rename_column(column=item["column"], value=item["value"])
+            for item in self.conf
+            if "value" in item
+        ]
 
     @classmethod
     def from_config(
@@ -32,10 +39,6 @@ class OneHotEncoder(BaseTransformer):
         if kwargs is None:
             kwargs = {}
         return cls(conf=[{"column": column} for column in columns], **kwargs)
-
-    @property
-    def metadata(self) -> Metadata:
-        return Metadata(features_numeric=tuple(self.columns_out))
 
     @property
     def state(self) -> Dict[str, Any]:
@@ -56,7 +59,7 @@ class OneHotEncoder(BaseTransformer):
                 df_count = df_count[: self.max_categories]
             values = df_count[column].to_list()
             for value in values:
-                item = {"column": column, "value": value, "name": f"{column}_{value}"}
+                item = {"column": column, "value": value}
                 conf.append(item)
         self.conf = conf
 
@@ -65,9 +68,9 @@ class OneHotEncoder(BaseTransformer):
         for item in self.conf:
             column = item["column"]
             value = item["value"]
-            name = item["name"]
-            series_encoded: pl.Series = (
-                (data[column] == value).cast(pl.Int64).rename(name)
+            series_encoded: pl.Series = (data[column] == value).cast(pl.Int64)
+            series_encoded = series_encoded.rename(
+                self.rename_column(column=column, value=value)
             )
             list_to_cat.append(series_encoded.to_frame())
 
@@ -76,14 +79,8 @@ class OneHotEncoder(BaseTransformer):
         return df_encoded[self.columns_out]
 
     @staticmethod
-    def filter_raw_data(self, data: pl.DataFrame) -> pl.DataFrame:
-        columns_to_drop = []
-        for column in data.columns:
-            series = data[column]
-            series_drop_null = series.drop_nulls().drop_nans()
-            if series_drop_null.len() == 0:
-                columns_to_drop.append(column)
-            elif (series_drop_null[0] == series_drop_null).all():
-                columns_to_drop.append(column)
-        data = data.drop(*columns_to_drop)
-        return data
+    def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
+        return drop_columns_constant(df=data)
+
+    def rename_column(self, column: str, value) -> str:
+        return f"{column}_{self.__class__.__name__}_{value}"

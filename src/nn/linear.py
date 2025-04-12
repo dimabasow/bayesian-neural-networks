@@ -1,11 +1,12 @@
 from typing import Optional
+
 import torch
+
 from src.nn.base import BayesianModule, BayesianParameter
 
 
 class BayesianLinear(BayesianModule):
-
-    __constants__ = ['in_features', 'out_features']
+    __constants__ = ["in_features", "out_features"]
     in_features: int
     out_features: int
 
@@ -17,12 +18,10 @@ class BayesianLinear(BayesianModule):
         device: Optional[torch.types.Device] = None,
         dtype: Optional[torch.dtype] = None,
     ) -> None:
-        factory_kwargs = {'device': device, 'dtype': dtype}
+        factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
         self.in_features = in_features
-        self.register_buffer(
-            "scale", 1/torch.sqrt(torch.tensor(self.in_features))
-        )
+        self.register_buffer("scale", 1 / torch.sqrt(torch.tensor(self.in_features)))
         self.scale: torch.Tensor
         self.out_features = out_features
         self.weight = BayesianParameter(
@@ -50,10 +49,7 @@ class BayesianLinear(BayesianModule):
         )
         sigma = next(self.weight.get_sigma())
         mu = next(self.weight.get_gamma()) * sigma
-        y = (
-            x@mu
-            + (x@sigma)*noise
-        ) * self.scale
+        y = (x @ mu + (x @ sigma) * noise) * self.scale
         if self.is_init_mode_on:
             self.last_mean = y.mean(dim=0)
             self.last_std = y.std(dim=0)
@@ -69,11 +65,9 @@ class BayesianLinear(BayesianModule):
     def get_kl(self):
         kl = super().get_kl()
         if self.is_init_mode_on:
-            std_pow_2 = self.last_std ** 2
-            mean_pow_2 = self.last_mean ** 2
-            kl_z = (
-                (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
-            )
+            std_pow_2 = self.last_std**2
+            mean_pow_2 = self.last_mean**2
+            kl_z = (std_pow_2 + mean_pow_2 - torch.log(std_pow_2) - 1).sum() / 2
             kl = kl + kl_z
 
         return kl

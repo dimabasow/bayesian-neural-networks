@@ -1,4 +1,5 @@
 import json
+from enum import Enum
 from typing import (
     Any,
     Dict,
@@ -21,6 +22,14 @@ class RuleTransform(NamedTuple):
     transformer: str
     columns: Optional[Tuple[str, ...]] = None
     kwargs: Optional[Dict[str, Any]] = None
+
+
+class TransformType(Enum):
+    ids = 0
+    features_numeric = 1
+    targets_regression = 2
+    targets_binary = 3
+    targets_multiclass = 4
 
 
 class Preprocessor:
@@ -71,12 +80,10 @@ class Preprocessor:
     def metadata(self) -> Metadata:
         metadata_dict: Dict[str, List[str]] = {}
         for item in self.transformers:
-            item_metadata_dict = item.metadata._asdict()
-            for key, value in item_metadata_dict.items():
-                if value is not None:
-                    if key not in metadata_dict:
-                        metadata_dict[key] = []
-                    metadata_dict[key].extend(value)
+            transform_type = item.transform_type.name
+            if transform_type not in metadata_dict:
+                metadata_dict[transform_type] = []
+            metadata_dict[transform_type].extend(item.columns_out)
 
         for key, value in metadata_dict.items():
             metadata_dict[key] = sorted(set(value))
@@ -92,12 +99,20 @@ class Preprocessor:
 
     @property
     def columns_out(self) -> List[str]:
-        metadata = self.metadata
+        dict_metadata = self.metadata._asdict()
+
         columns = []
-        for value in metadata._asdict().values():
+        for key in [
+            "ids",
+            "targets_regression",
+            "targets_binary",
+            "targets_multiclass",
+            "features_numeric",
+        ]:
+            value = dict_metadata[key]
             if value is not None:
                 columns.extend(value)
-        return sorted(set(columns))
+        return columns
 
     @property
     def state(self) -> List[Dict[str, Union[str, Dict]]]:
