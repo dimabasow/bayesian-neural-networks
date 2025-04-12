@@ -3,7 +3,7 @@ from typing import NamedTuple, Optional, Tuple
 
 
 class Metadata(NamedTuple):
-    ids: Optional[Tuple[str, ...]] = None
+    index: Optional[Tuple[str, ...]] = None
     features_numeric: Optional[Tuple[str, ...]] = None
     targets_regression: Optional[Tuple[str, ...]] = None
     targets_binary: Optional[Tuple[str, ...]] = None
@@ -11,7 +11,7 @@ class Metadata(NamedTuple):
 
 
 class TransformType(Enum):
-    ids = 0
+    index = 0
     features_numeric = 1
     targets_regression = 2
     targets_binary = 3

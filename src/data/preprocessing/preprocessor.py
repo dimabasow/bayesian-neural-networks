@@ -1,5 +1,4 @@
 import json
-from enum import Enum
 from typing import (
     Any,
     Dict,
@@ -22,14 +21,6 @@ class RuleTransform(NamedTuple):
     transformer: str
     columns: Optional[Tuple[str, ...]] = None
     kwargs: Optional[Dict[str, Any]] = None
-
-
-class TransformType(Enum):
-    ids = 0
-    features_numeric = 1
-    targets_regression = 2
-    targets_binary = 3
-    targets_multiclass = 4
 
 
 class Preprocessor:
@@ -103,7 +94,7 @@ class Preprocessor:
 
         columns = []
         for key in [
-            "ids",
+            "index",
             "targets_regression",
             "targets_binary",
             "targets_multiclass",

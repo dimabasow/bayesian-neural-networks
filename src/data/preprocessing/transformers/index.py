@@ -7,7 +7,7 @@ from src.data.preprocessing.transformers.base import BaseTransformer
 
 
 class Index(BaseTransformer):
-    transform_type = TransformType.ids
+    transform_type = TransformType.index
 
     def __init__(
         self,

@@ -1,132 +1,126 @@
 import random
 from abc import ABC, abstractmethod
-from typing import Dict, Iterator, List, Optional, Sequence, Tuple
+from typing import Dict, Iterator, List, NamedTuple, Optional, Sequence, Tuple, TypeVar
 
 import polars as pl
 
-from src.data.types import (
-    EmbedingInit,
-    MetaData,
-    MetaDataColumn,
-    PolarsTableItem,
-    TableItem,
-    TargetItem,
-)
+from src.data.preprocessing.metadata import Metadata
+
+TableVar = TypeVar("TableVar")
+
+
+class TargetItem(NamedTuple):
+    value: TableVar
+    mask: Optional[TableVar] = None
+
+
+class TableItem(NamedTuple):
+    index: Optional[pl.DataFrame] = None
+    features_numeric: Optional[TableVar] = None
+    target: Optional[Dict[str, TargetItem]] = None
+
+
+class PolarsTargetItem(TargetItem):
+    value: pl.Series
+    mask: Optional[pl.Series]
+
+
+class PolarsTableItem(TableItem):
+    index: Optional[pl.DataFrame]
+    features_numeric: Optional[pl.DataFrame]
+    features_category: Optional[Dict[str, pl.Series]]
+    target: Optional[Dict[str, PolarsTargetItem]]
+
+
+def filter_df_metadata(
+    df: pl.DataFrame,
+    metadata: Metadata,
+) -> Tuple[pl.DataFrame, Metadata]:
+    dict_metadata = metadata._asdict()
+    columns_metadata = []
+    for key in dict_metadata:
+        key_columns = dict_metadata[key]
+        if key_columns is not None:
+            dict_metadata[key] = tuple(
+                column for column in key_columns if column in df.columns
+            )
+            columns_metadata.extend(dict_metadata[key])
+    columns = [column for column in df.columns if column in columns_metadata]
+    df = df[columns]
+
+    return df, metadata
+
+
+def transform_df_to_table_item(df: pl.DataFrame, metadata: Metadata) -> PolarsTableItem:
+    if metadata.index is None:
+        df_index = None
+    else:
+        df_index = df[list(metadata.index)]
+
+    if metadata.features_numeric is None:
+        df_features = None
+    else:
+        df_features = df[list(metadata.features_numeric)]
+
+    columns_target = []
+    if metadata.targets_binary is not None:
+        columns_target.extend(metadata.targets_binary)
+    if metadata.targets_regression is not None:
+        columns_target.extend(metadata.targets_regression)
+    if metadata.targets_multiclass is not None:
+        columns_target.extend(metadata.targets_multiclass)
+
+    dict_target = {}
+    for column in columns_target:
+        series: pl.Series = df[column]
+        if series.has_nulls():
+            mask = series.is_null()
+        else:
+            mask = None
+        dict_target[column] = PolarsTargetItem(value=series, mask=mask)
+    if not dict_target:
+        dict_target = None
+
+    data = PolarsTableItem(
+        index=df_index,
+        features_numeric=df_features,
+        target=dict_target,
+    )
+    return data
 
 
 class AbstractTabularDataset(ABC):
     length: int
-    metadata: MetaData
+    metadata: Metadata
     data: TableItem
     target_dim: Dict[str, int]
-    embeding_init_kwargs: EmbedingInit
 
     @abstractmethod
-    def make_data(self, data: PolarsTableItem) -> TableItem:
+    def prepare_data(self, data: PolarsTableItem) -> TableItem:
         pass
 
     def __init__(
         self,
         df: pl.DataFrame,
-        metadata: Dict[str, MetaDataColumn],
+        metadata: Metadata,
     ):
-        df, metadata = self.__filter_df_metadata(df, metadata)
+        df, metadata = filter_df_metadata(df, metadata)
         self.metadata = metadata
-
-        df = self.__cast_df_types(df=df)
-        self.target_dim = self.__get_target_dim(df=df)
-        self.embeding_init_kwargs = self.__get_embeding_init_kwargs(df=df)
         self.length = len(df)
-        data_init = self.__init_data(df=df)
-        self.data = self.make_data(data=data_init)
+        data = transform_df_to_table_item(df=df, metadata=metadata)
+        self.data = self.prepare_data(data=data)
 
-    @staticmethod
-    def __filter_df_metadata(
-        df: pl.DataFrame,
-        metadata: MetaData,
-    ) -> Tuple[pl.DataFrame, MetaData]:
-        metadata = {key: value for key, value in metadata.items() if key in df.columns}
-        columns = sorted(metadata.keys())
-        df = df[columns]
-        return df, metadata
-
-    def __cast_df_types(self, df: pl.DataFrame) -> pl.DataFrame:
-        df = df.with_columns(
-            pl.col(column).cast(pl.Boolean) for column in self.columns_binary
-        )
-        df = df.with_columns(
-            pl.col(column).cast(pl.Float32) for column in self.columns_numeric
-        )
-        df = df.with_columns(
-            pl.col(column).cast(pl.Int64) for column in self.columns_category
-        )
-        return df
-
-    def __get_target_dim(self, df: pl.DataFrame) -> Dict[str, int]:
+    @property
+    def target_dim(self, df: pl.DataFrame) -> Dict[str, int]:
         target_dim = {}
-        for name in self.columns_binary_target:
+        for name in self.metadata.targets_binary:
             target_dim[name] = 1
-        for name in self.columns_numeric_target:
+        for name in self.metadata.targets_regression:
             target_dim[name] = 1
-        for name in self.columns_category_target:
+        for name in self.metadata.targets_multiclass:
             target_dim[name] = df[name].max() + 1
 
         return target_dim
-
-    def __get_embeding_init_kwargs(self, df: pl.DataFrame) -> EmbedingInit:
-        embeding_init_kwargs = {}
-        for name in self.columns_category_features:
-            num_embeddings = df[name].max() + 1
-            embedding_dim = self.metadata[name].category_embeding_dim
-            embeding_init_kwargs[name] = {
-                "num_embeddings": num_embeddings,
-                "embedding_dim": embedding_dim,
-            }
-
-        return embeding_init_kwargs
-
-    def __init_data(self, df: pl.DataFrame) -> PolarsTableItem:
-        columns_numeric = self.columns_numeric_features + self.columns_binary_features
-
-        index = df[self.columns_id]
-        if index.is_empty():
-            index = None
-
-        features_numeric = df[columns_numeric].cast(pl.Float32)
-        if features_numeric.is_empty():
-            features_numeric = None
-
-        features_category = {
-            column: df[column] for column in self.columns_category_features
-        }
-        if not features_category:
-            features_category = None
-
-        target: Dict[str, TargetItem] = {}
-        for column in self.columns_target:
-            series = df[column]
-            masked_by = self.metadata[column].target_masked_by
-            if masked_by is None:
-                mask = None
-            else:
-                mask = df[masked_by].cast(pl.Boolean)
-
-            if series.has_nulls():
-                if mask is None:
-                    mask = series.is_null()
-                else:
-                    mask = mask * series.is_null()
-            target[column] = TargetItem(value=series, mask=mask)
-        if not target:
-            target = None
-
-        data = TableItem(
-            index=index,
-            features_numeric=features_numeric,
-            features_category=features_category,
-            target=target,
-        )
-        return data
 
     def __len__(self) -> int:
         return self.length
@@ -149,14 +143,6 @@ class AbstractTabularDataset(ABC):
         else:
             features_numeric = self.data.features_numeric[idx]
 
-        if self.data.features_category is None:
-            features_category = None
-        else:
-            features_category = {
-                column: self.data.features_category[column][idx]
-                for column in self.data.features_category
-            }
-
         target = {}
         for name in self.data.target:
             item = self.data.target[name]
@@ -170,40 +156,8 @@ class AbstractTabularDataset(ABC):
         return TableItem(
             index=index,
             features_numeric=features_numeric,
-            features_category=features_category,
             target=target,
         )
-
-    @staticmethod
-    def transform_df_metadata(
-        df: pl.DataFrame, metadata: Dict[str, MetaDataColumn]
-    ) -> Tuple[pl.DataFrame, MetaData]:
-        metadata = {key: value for key, value in metadata.items() if key in df.columns}
-        columns = sorted(metadata.keys())
-        df = df[columns]
-
-        columns_binary = sorted(
-            column for column in columns if metadata[column].type == "binary"
-        )
-        columns_numeric = sorted(
-            column for column in columns if metadata[column].type == "numeric"
-        )
-        columns_category = sorted(
-            column for column in columns if metadata[column].type == "category"
-        )
-
-        df = df[columns]
-        df = df.with_columns(
-            pl.col(column).cast(pl.Boolean) for column in columns_binary
-        )
-        df = df.with_columns(
-            pl.col(column).cast(pl.Float32) for column in columns_numeric
-        )
-        df = df.with_columns(
-            pl.col(column).cast(pl.Int64) for column in columns_category
-        )
-
-        return df, metadata
 
     def to_epochs(
         self,
@@ -241,63 +195,3 @@ class AbstractTabularDataset(ABC):
         for i in range(0, len(idx), batch_size):
             idx_batch = idx[i : i + batch_size]
             yield self[*idx_batch]
-
-    @property
-    def columns(self) -> List[str]:
-        return sorted(name for name in self.metadata)
-
-    @property
-    def columns_id(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata if self.metadata[name].type == "identifier"
-        )
-
-    @property
-    def columns_numeric(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata if self.metadata[name].type == "numeric"
-        )
-
-    @property
-    def columns_binary(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata if self.metadata[name].type == "binary"
-        )
-
-    @property
-    def columns_category(self) -> List[str]:
-        return sorted(
-            name for name in self.metadata if self.metadata[name].type == "category"
-        )
-
-    @property
-    def columns_features(self) -> List[str]:
-        return sorted(name for name in self.metadata if self.metadata[name].feature)
-
-    @property
-    def columns_target(self) -> List[str]:
-        return sorted(name for name in self.metadata if self.metadata[name].target)
-
-    @property
-    def columns_numeric_features(self) -> List[str]:
-        return sorted(set(self.columns_numeric) & set(self.columns_features))
-
-    @property
-    def columns_numeric_target(self) -> List[str]:
-        return sorted(set(self.columns_numeric) & set(self.columns_target))
-
-    @property
-    def columns_binary_features(self) -> List[str]:
-        return sorted(set(self.columns_binary) & set(self.columns_features))
-
-    @property
-    def columns_binary_target(self) -> List[str]:
-        return sorted(set(self.columns_binary) & set(self.columns_target))
-
-    @property
-    def columns_category_features(self) -> List[str]:
-        return sorted(set(self.columns_category) & set(self.columns_features))
-
-    @property
-    def columns_category_target(self) -> List[str]:
-        return sorted(set(self.columns_category) & set(self.columns_target))

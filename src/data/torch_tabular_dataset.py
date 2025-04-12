@@ -1,13 +1,30 @@
 import copy
+from typing import Dict, Optional
 
+import polars as pl
 import torch
 
-from src.data.abstract_tabular_dataset import AbstractTabularDataset
-from src.data.types import PolarsTableItem, TorchTableItem, TorchTargetItem
+from src.data.abstract_tabular_dataset import (
+    AbstractTabularDataset,
+    PolarsTableItem,
+    TableItem,
+    TargetItem,
+)
+
+
+class TorchTargetItem(TargetItem):
+    value: torch.Tensor
+    mask: Optional[torch.BoolTensor]
+
+
+class TorchTableItem(TableItem):
+    index: Optional[pl.DataFrame]
+    features_numeric: Optional[torch.Tensor]
+    target: Optional[Dict[str, TorchTargetItem]]
 
 
 class TorchTabularDataset(AbstractTabularDataset):
-    def make_data(self, data: PolarsTableItem) -> TorchTableItem:
+    def prepare_data(self, data: PolarsTableItem) -> TorchTableItem:
         index = data.index
 
         if data.features_numeric is None:
@@ -15,26 +32,20 @@ class TorchTabularDataset(AbstractTabularDataset):
         else:
             features_numeric = data.features_numeric.to_torch()
 
-        if data.features_category is None:
-            features_category = None
-        else:
-            features_category = {}
-            for name in data.features_category:
-                item = data.features_category[name].to_torch().long()
-                features_category[name] = item
-
         if data.target is None:
             target = None
         else:
             target = {}
-            for name in data.target:
-                target_metadata = self.metadata[name]
-                value = data.target[name].value.to_torch()
-                if target_metadata.type in {"numeric", "binary"}:
-                    value = value.float()
-                elif target_metadata.type == "category":
-                    value = value.long()
 
+            for name in data.target:
+                value = data.target[name].value.to_torch()
+                if (
+                    self.metadata.targets_multiclass is not None
+                    and name in self.metadata.targets_multiclass
+                ):
+                    value = value.long()
+                else:
+                    value = value.float()
                 if data.target[name].mask is None:
                     mask = None
                 else:
@@ -44,7 +55,6 @@ class TorchTabularDataset(AbstractTabularDataset):
         return TorchTableItem(
             index=index,
             features_numeric=features_numeric,
-            features_category=features_category,
             target=target,
         )
 
@@ -81,14 +91,6 @@ class TorchTabularDataset(AbstractTabularDataset):
         else:
             features_numeric = data.features_numeric.to(device=device)
 
-        if data.features_category is None:
-            features_category = None
-        else:
-            features_category = {
-                name: data.features_category[name].to(device=device)
-                for name in data.features_category
-            }
-
         if data.target is None:
             target = None
         else:
@@ -104,7 +106,6 @@ class TorchTabularDataset(AbstractTabularDataset):
         dataset.data = TorchTableItem(
             index=index,
             features_numeric=features_numeric,
-            features_category=features_category,
             target=target,
         )
         return dataset
