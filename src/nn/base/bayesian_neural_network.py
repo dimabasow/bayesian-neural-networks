@@ -2,7 +2,7 @@ import copy
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
-import pandas as pd
+import polars as pl
 import torch
 
 from src.nn.base.bayesian_module import BayesianModule
@@ -38,13 +38,15 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
         return copy.deepcopy(self.__metrics[self.current_epoch - 1])
 
     @property
-    def df_metrics(self) -> pd.DataFrame:
+    def df_metrics(self) -> pl.DataFrame:
         metrics = self.__metrics
         epochs = sorted(metrics.keys())
         values = [metrics[epoch] for epoch in epochs]
-        df_metrics = pd.DataFrame(data=values)
-        df_metrics["epoch"] = epochs
-        df_metrics = df_metrics.set_index("epoch")
+        df_metrics = pl.DataFrame(data=values)
+        df_metrics = df_metrics.insert_column(
+            index=0,
+            column=pl.Series(name="index", values=epochs),
+        )
         return df_metrics
 
     def log(self, key: str, value: float) -> None:
