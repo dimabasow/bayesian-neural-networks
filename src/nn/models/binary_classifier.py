@@ -2,11 +2,9 @@ from typing import Any, Dict, Literal, Optional, Sequence, Union
 
 import torch
 
-from src.nn.base import BayesianNeuralNetwork
-from src.nn.layers import (
-    Perceptrone,
-    ResNet,
-)
+from src.nn.base.bayesian_neural_network import BayesianNeuralNetwork
+from src.nn.layers.perceptrone import Perceptrone
+from src.nn.layers.res_net import ResNet
 
 
 class BinaryClassifier(BayesianNeuralNetwork):

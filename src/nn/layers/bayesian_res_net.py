@@ -3,7 +3,7 @@ from typing import Any, Dict, Literal, Optional, Sequence, Union
 import torch
 
 from src.nn.affine import BayesianAffine
-from src.nn.base import BayesianModule
+from src.nn.base.bayesian_module import BayesianModule
 from src.nn.batchnorm import BayesianBatchNorm
 from src.nn.container import (
     BayesianModuleDict,

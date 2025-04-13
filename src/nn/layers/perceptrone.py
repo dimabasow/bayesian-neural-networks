@@ -2,7 +2,7 @@ from typing import Any, Dict, Literal, Optional, Sequence, Union
 
 import torch
 
-from src.nn.base import BayesianModule
+from src.nn.base.bayesian_module import BayesianModule
 
 
 class Perceptrone(BayesianModule):

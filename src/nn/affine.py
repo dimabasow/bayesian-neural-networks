@@ -1,6 +1,6 @@
 from typing import Sequence
 
-from torch import Tensor
+import torch
 
 from src.nn.base import BayesianModule, BayesianParameter
 
@@ -26,8 +26,5 @@ class BayesianAffine(BayesianModule):
             **factory_kwargs,
         )
 
-    def forward(self, x: Tensor) -> Tensor:
-        dim = x.shape[: -len(self.size)]
-        scale = self.scale(*dim)
-        shift = self.shift(*dim)
-        return x * (1 + scale) + shift
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return x * (1 + self.scale) + self.shift

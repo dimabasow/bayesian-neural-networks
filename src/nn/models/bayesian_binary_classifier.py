@@ -2,12 +2,10 @@ from typing import Any, Dict, Literal, Optional, Sequence, Union
 
 import torch
 
-from src.nn.base import BayesianNeuralNetwork
-from src.nn.layers import (
-    BayesianPerceptrone,
-    BayesianResNet,
-    BayesianResNetLast,
-)
+from src.nn.base.bayesian_neural_network import BayesianNeuralNetwork
+from src.nn.layers.bayesian_perceptrone import BayesianPerceptrone
+from src.nn.layers.bayesian_res_net import BayesianResNet
+from src.nn.layers.bayesian_res_net_last import BayesianResNetLast
 
 
 class BayesianBinaryClassifier(BayesianNeuralNetwork):

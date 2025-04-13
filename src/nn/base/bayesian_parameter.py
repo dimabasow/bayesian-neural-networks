@@ -1,4 +1,4 @@
-from typing import Iterator, Sequence
+from typing import Iterator, Optional, Sequence, Union
 
 import torch
 
@@ -76,16 +76,189 @@ class BayesianParameter(BayesianModule):
         kl = (torch.log(1 + gamma_pow_2)).sum() / 2
         return kl
 
-    def forward(self, *dim: int) -> torch.Tensor:
+    def sample_noise(
+        self,
+        dim_batch: Optional[Sequence[int]] = None,
+        dim_expand: Optional[Sequence[int]] = None,
+        dim_sample: Optional[Sequence[int]] = None,
+    ) -> torch.Tensor:
+        if dim_batch is None:
+            dim_batch = tuple()
+        if dim_sample is None:
+            dim_sample = tuple()
+        if dim_expand is None:
+            dim_expand = tuple()
+
         noise = torch.normal(
             mean=0,
             std=1,
-            size=list(dim) + list(self.size),
+            size=list(dim_batch) + list(dim_sample),
             dtype=self.dtype,
             device=self.device,
         )
+
+        noise = noise.reshape(
+            *dim_batch,
+            *([1] * len(dim_expand)),
+            *dim_sample,
+        )
+        noise = noise.expand(
+            *dim_batch,
+            *dim_expand,
+            *dim_sample,
+        )
+        return noise
+
+    def sample(
+        self,
+        dim_batch: Optional[Sequence[int]] = None,
+        dim_expand: Optional[Sequence[int]] = None,
+    ) -> torch.Tensor:
+        noise = self.sample_noise(
+            dim_batch=dim_batch,
+            dim_expand=dim_expand,
+            dim_sample=self.size,
+        )
+        sigma = next(self.get_sigma())
+        gamma = next(self.get_gamma())
+        w = (noise + gamma) * sigma
+        return w
+
+    def forward(
+        self,
+        *dim: int,
+    ) -> torch.Tensor:
+        return self.sample(dim_batch=dim)
+
+    def sample_pointwise(
+        self,
+        x: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        if isinstance(x, (int, float)):
+            dim_batch = None
+            dim_expand = None
+        elif isinstance(x, torch.Tensor):
+            if len(x.shape) == 0:
+                dim_batch = None
+                dim_expand = None
+            else:
+                dim_batch_expand = x.shape[: -len(self.size)]
+                if self.training:
+                    dim_batch = dim_batch_expand
+                    dim_expand = None
+                else:
+                    dim_batch = dim_batch_expand[:1]
+                    dim_expand = dim_batch_expand[1:]
+        else:
+            raise NotImplementedError
+        sample = self.sample(
+            dim_batch=dim_batch,
+            dim_expand=dim_expand,
+        )
+        return sample
+
+    def __pos__(
+        self,
+    ) -> torch.Tensor:
+        return self.sample()
+
+    def __neg__(
+        self,
+    ) -> torch.Tensor:
+        return -self.sample()
+
+    def __add__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return sample + other
+
+    def __radd__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return other + sample
+
+    def __sub__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return sample - other
+
+    def __rsub__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return other - sample
+
+    def __mul__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return sample * other
+
+    def __rmul__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return other * sample
+
+    def __truediv__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return sample / other
+
+    def __rtruediv__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return other / sample
+
+    def __pow__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return sample**other
+
+    def __rpow__(
+        self,
+        other: Union[int, float, torch.Tensor],
+    ) -> torch.Tensor:
+        sample = self.sample_pointwise(x=other)
+        return other**sample
+
+    def __rmatmul__(
+        self,
+        x: torch.Tensor,
+    ) -> torch.Tensor:
+        dim_batch_expand = x.shape[:-1]
+        if self.training:
+            dim_batch = dim_batch_expand
+            dim_expand = None
+        else:
+            dim_batch = dim_batch_expand[:1]
+            dim_expand = dim_batch_expand[1:]
         sigma = next(self.get_sigma())
         gamma = next(self.get_gamma())
         mu = gamma * sigma
-        w = (noise * sigma) + mu
-        return w
+        x_mu = x @ mu
+        x_sigma = x @ sigma
+        dim_sample = x_sigma.shape[-1:]
+        noise = self.sample_noise(
+            dim_batch=dim_batch,
+            dim_expand=dim_expand,
+            dim_sample=dim_sample,
+        )
+        y = x_sigma * noise + x_mu
+        y = y.view(*dim_batch_expand, *dim_sample)
+        return y
