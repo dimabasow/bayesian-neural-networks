@@ -8,7 +8,7 @@ import torch
 from src.nn.base.bayesian_module import BayesianModule
 
 
-class BayesianNeuralNetwork(BayesianModule, ABC):
+class BayesianNeuralNetworkHead(BayesianModule, ABC):
     @abstractmethod
     def __init__(self):
         super().__init__()
@@ -43,10 +43,9 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
         epochs = sorted(metrics.keys())
         values = [metrics[epoch] for epoch in epochs]
         df_metrics = pl.DataFrame(data=values)
-        df_metrics = df_metrics.insert_column(
-            index=0,
-            column=pl.Series(name="index", values=epochs),
-        )
+        df_metrics = df_metrics.with_columns()
+        df_metrics["epoch"] = epochs
+        df_metrics = df_metrics.set_index("epoch")
         return df_metrics
 
     def log(self, key: str, value: float) -> None:

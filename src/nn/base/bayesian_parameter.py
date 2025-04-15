@@ -1,7 +1,8 @@
-from typing import Iterator, Sequence, Union, Optional
+from typing import Iterator, Optional, Sequence, Union
+
 import torch
-import torch.types
-from src.nn.base import BayesianModule
+
+from src.nn.base.bayesian_module import BayesianModule
 
 
 class BayesianParameter(BayesianModule):
@@ -11,25 +12,16 @@ class BayesianParameter(BayesianModule):
         device=None,
         dtype=None,
     ) -> None:
-        factory_kwargs = {'device': device, 'dtype': dtype}
+        factory_kwargs = {"device": device, "dtype": dtype}
         super().__init__()
         self.gamma = torch.nn.Parameter(
-            torch.empty(
-                size=list(size),
-                **factory_kwargs
-            ),
+            torch.empty(size=list(size), **factory_kwargs),
         )
         self.rho = torch.nn.Parameter(
-            torch.empty(
-                size=list(size),
-                **factory_kwargs
-            ),
+            torch.empty(size=list(size), **factory_kwargs),
         )
         self.init_parameters = torch.nn.Parameter(
-            data=torch.zeros(
-                size=[4],
-                **factory_kwargs
-            ),
+            data=torch.zeros(size=[4], **factory_kwargs),
         )
         self.reset_parameters()
 
@@ -52,25 +44,19 @@ class BayesianParameter(BayesianModule):
 
     def get_init_gamma(self) -> torch.Tensor:
         return (
-            torch.randn_like(self.gamma)
-            * self.softplus(self.init_parameters[0])
+            torch.randn_like(self.gamma) * self.softplus(self.init_parameters[0])
             + self.init_parameters[1]
         )
 
     def get_init_rho(self) -> torch.Tensor:
         return (
-            torch.randn_like(self.rho)
-            * self.softplus(self.init_parameters[2])
+            torch.randn_like(self.rho) * self.softplus(self.init_parameters[2])
             + self.init_parameters[3]
         )
 
     def reset_parameters(self) -> None:
-        self.gamma = torch.nn.Parameter(
-            self.get_init_gamma()
-        )
-        self.rho = torch.nn.Parameter(
-            self.get_init_rho()
-        )
+        self.gamma = torch.nn.Parameter(self.get_init_gamma())
+        self.rho = torch.nn.Parameter(self.get_init_rho())
 
     def get_gamma(self) -> Iterator[torch.nn.Parameter]:
         if self.is_init_mode_on:
@@ -86,7 +72,7 @@ class BayesianParameter(BayesianModule):
 
     def get_kl(self) -> torch.Tensor:
         gamma = next(self.get_gamma())
-        gamma_pow_2 = gamma ** 2
+        gamma_pow_2 = gamma**2
         kl = (torch.log(1 + gamma_pow_2)).sum() / 2
         return kl
 
@@ -156,7 +142,7 @@ class BayesianParameter(BayesianModule):
                 dim_batch = None
                 dim_expand = None
             else:
-                dim_batch_expand = x.shape[:-len(self.size)]
+                dim_batch_expand = x.shape[: -len(self.size)]
                 if self.training:
                     dim_batch = dim_batch_expand
                     dim_expand = None
@@ -179,7 +165,7 @@ class BayesianParameter(BayesianModule):
     def __neg__(
         self,
     ) -> torch.Tensor:
-        return - self.sample()
+        return -self.sample()
 
     def __add__(
         self,
@@ -242,14 +228,14 @@ class BayesianParameter(BayesianModule):
         other: Union[int, float, torch.Tensor],
     ) -> torch.Tensor:
         sample = self.sample_pointwise(x=other)
-        return sample ** other
+        return sample**other
 
     def __rpow__(
         self,
         other: Union[int, float, torch.Tensor],
     ) -> torch.Tensor:
         sample = self.sample_pointwise(x=other)
-        return other ** sample
+        return other**sample
 
     def __rmatmul__(
         self,

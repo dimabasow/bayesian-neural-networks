@@ -1,6 +1,8 @@
-from typing import Literal, Union, Optional, Dict, Any, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence, Union
+
 import torch
-from src.nn.base import BayesianModule
+
+from src.nn.base.bayesian_module import BayesianModule
 
 
 class Perceptrone(BayesianModule):
@@ -30,9 +32,7 @@ class Perceptrone(BayesianModule):
                     out_features=dim_hidden,
                 )
             )
-            self.fcc.append(
-                getattr(torch.nn, f_act)(**f_act_kwargs)
-            )
+            self.fcc.append(getattr(torch.nn, f_act)(**f_act_kwargs))
             in_features = dim_hidden
         self.fcc.append(
             torch.nn.Linear(

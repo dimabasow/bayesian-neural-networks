@@ -8,9 +8,14 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pandas = "^2.2.3"
-torch = {version = "^2.4.1+cu124", source = "pytorch_cu124"}
+polars = "^1.27.1"
+pytorch-triton = {version = "^3.3.0", source = "pytorch_cu128"}
+torch = {version = "^2.8.0.dev20250412", source = "pytorch_cu128"}
+scipy = "^1.15.2"
 
+
+[tool.poetry.group.jupyter.dependencies]
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]
@@ -18,6 +23,6 @@ build-backend = "poetry.core.masonry.api"
 
 
 [[tool.poetry.source]]
-name = "pytorch_cu124"
-url = "https://download.pytorch.org/whl/cu124"
+name = "pytorch_cu128"
+url = "https://download.pytorch.org/whl/nightly/cu128"
 priority = "explicit"

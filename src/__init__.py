@@ -1,5 +1,6 @@
-from . import nn
+from . import data, nn
 
 __all__ = [
     "nn",
+    "data",
 ]

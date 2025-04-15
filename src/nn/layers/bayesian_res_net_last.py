@@ -1,14 +1,16 @@
-from typing import Literal, Union, Dict, Any, Optional, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence, Union
+
 import torch
-from src.nn.base import BayesianModule
-from src.nn.linear import BayesianLinear
+
+from src.nn.affine import BayesianAffine
+from src.nn.base.bayesian_module import BayesianModule
+from src.nn.batchnorm import BayesianBatchNorm
 from src.nn.container import (
     BayesianModuleDict,
     BayesianModuleList,
     BayesianSequential,
 )
-from src.nn.affine import BayesianAffine
-from src.nn.batchnorm import BayesianBatchNorm
+from src.nn.linear import BayesianLinear
 
 
 class BayesianResNetLast(BayesianModule):
@@ -67,9 +69,7 @@ class BayesianResNetLast(BayesianModule):
             )
             if batch_affine:
                 block.append(BayesianAffine(size=[dim]))
-            block.append(
-                getattr(torch.nn, f_act)(**f_act_kwargs)
-            )
+            block.append(getattr(torch.nn, f_act)(**f_act_kwargs))
             self.f_act_blocks.append(block)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

@@ -1,12 +1,11 @@
-from .base import BayesianModule, BayesianParameter, BayesianNeuralNetwork
-from .container import (
-    BayesianSequential,
-    BayesianModuleList,
-    BayesianModuleDict,
-)
 from .affine import BayesianAffine
+from .base import BayesianModule, BayesianNeuralNetwork, BayesianParameter
 from .batchnorm import BayesianBatchNorm
-from .linear import BayesianLinear
+from .container import (
+    BayesianModuleDict,
+    BayesianModuleList,
+    BayesianSequential,
+)
 from .layers import (
     BayesianPerceptrone,
     BayesianResNet,
@@ -14,28 +13,29 @@ from .layers import (
     Perceptrone,
     ResNet,
 )
+from .linear import BayesianLinear
 from .models import (
     BayesianBinaryClassifier,
-    BinaryClassifier,
     BayesianRegressor,
+    BinaryClassifier,
 )
 
 __all__ = [
-    "BayesianModule",
-    "BayesianParameter",
-    "BayesianNeuralNetwork",
-    "BayesianSequential",
-    "BayesianModuleList",
-    "BayesianModuleDict",
     "BayesianAffine",
+    "BayesianModule",
+    "BayesianNeuralNetwork",
+    "BayesianParameter",
     "BayesianBatchNorm",
-    "BayesianLinear",
+    "BayesianModuleDict",
+    "BayesianModuleList",
+    "BayesianSequential",
     "BayesianPerceptrone",
     "BayesianResNet",
     "BayesianResNetLast",
     "Perceptrone",
     "ResNet",
+    "BayesianLinear",
     "BayesianBinaryClassifier",
-    "BinaryClassifier",
     "BayesianRegressor",
+    "BinaryClassifier",
 ]

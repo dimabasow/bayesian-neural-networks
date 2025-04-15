@@ -1,6 +1,10 @@
-from typing import Literal, Dict, Optional, Any, Union, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence, Union
+
 import torch
-from src.nn import BayesianNeuralNetwork, Perceptrone, ResNet
+
+from src.nn.base.bayesian_neural_network import BayesianNeuralNetwork
+from src.nn.layers.perceptrone import Perceptrone
+from src.nn.layers.res_net import ResNet
 
 
 class BinaryClassifier(BayesianNeuralNetwork):
@@ -18,7 +22,7 @@ class BinaryClassifier(BayesianNeuralNetwork):
             Literal["Perceptrone"],
             Literal["ResNet"],
         ] = "Perceptrone",
-        lr: float = 0.001
+        lr: float = 0.001,
     ):
         super().__init__()
         self.lr = lr
@@ -44,9 +48,7 @@ class BinaryClassifier(BayesianNeuralNetwork):
         return self.backbone(x)
 
     def configure_optimizer(
-        self,
-        optimizer: str = "Adam",
-        kwargs: Optional[Dict[str, Any]] = None
+        self, optimizer: str = "Adam", kwargs: Optional[Dict[str, Any]] = None
     ):
         if kwargs is None:
             kwargs = {}
@@ -54,10 +56,7 @@ class BinaryClassifier(BayesianNeuralNetwork):
             kwargs["lr"] = self.lr
         if "weight_decay" not in kwargs:
             kwargs["weight_decay"] = 0
-        return getattr(torch.optim, optimizer)(
-            self.parameters(),
-            **kwargs
-        )
+        return getattr(torch.optim, optimizer)(self.parameters(), **kwargs)
 
     def negative_likelihood(
         self,

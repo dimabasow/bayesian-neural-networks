@@ -1,10 +1,12 @@
-from typing import Literal, Union, Optional, Dict, Any, Sequence
+from typing import Any, Dict, Literal, Optional, Sequence, Union
+
 import torch
-from src.nn.base import BayesianModule
-from src.nn.linear import BayesianLinear
+
 from src.nn.affine import BayesianAffine
+from src.nn.base.bayesian_module import BayesianModule
 from src.nn.batchnorm import BayesianBatchNorm
 from src.nn.container import BayesianSequential
+from src.nn.linear import BayesianLinear
 
 
 class BayesianPerceptrone(BayesianModule):
@@ -48,14 +50,8 @@ class BayesianPerceptrone(BayesianModule):
                 )
             )
             if batch_affine:
-                self.fcc.append(
-                    BayesianAffine(
-                        size=[dim_hidden]
-                    )
-                )
-            self.fcc.append(
-                getattr(torch.nn, f_act)(**f_act_kwargs)
-            )
+                self.fcc.append(BayesianAffine(size=[dim_hidden]))
+            self.fcc.append(getattr(torch.nn, f_act)(**f_act_kwargs))
             in_features = dim_hidden
         self.fcc.append(
             BayesianLinear(
