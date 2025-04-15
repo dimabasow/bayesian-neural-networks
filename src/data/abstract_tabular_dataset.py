@@ -164,7 +164,7 @@ class AbstractTabularDataset(ABC):
 
     def to_epochs(
         self,
-        batch_size: int,
+        batch_size: Optional[int],
         shuffle: bool = False,
         num_epochs: Optional[int] = 1,
     ) -> Iterator[Iterator[TableItem]]:
@@ -172,13 +172,13 @@ class AbstractTabularDataset(ABC):
         count = 0
         while num_epochs is None or count < num_epochs:
             count += 1
-            if shuffle:
+            if shuffle and batch_size is not None:
                 random.shuffle(idx)
             yield self.__get_batches(idx=idx, batch_size=batch_size)
 
     def to_bathes(
         self,
-        batch_size: int,
+        batch_size: Optional[int],
         shuffle: bool = False,
         num_epochs: Optional[int] = 1,
     ) -> Iterator[TableItem]:
@@ -186,15 +186,18 @@ class AbstractTabularDataset(ABC):
         count = 0
         while num_epochs is None or count < num_epochs:
             count += 1
-            if shuffle:
+            if shuffle and batch_size is not None:
                 random.shuffle(idx)
             yield from self.__get_batches(idx=idx, batch_size=batch_size)
 
     def __get_batches(
         self,
         idx: List[int],
-        batch_size: int,
+        batch_size: Optional[int],
     ) -> Iterator[TableItem]:
-        for i in range(0, len(idx), batch_size):
-            idx_batch = idx[i : i + batch_size]
-            yield self[idx_batch]
+        if batch_size is None:
+            yield self.data
+        else:
+            for i in range(0, len(idx), batch_size):
+                idx_batch = idx[i : i + batch_size]
+                yield self[idx_batch]
