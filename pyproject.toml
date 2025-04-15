@@ -1,28 +1,67 @@
-[tool.poetry]
+[project]
 name = "bayesian-neural-networks"
 version = "0.1.0"
 description = ""
-authors = ["Basov Dmitriy"]
 readme = "README.md"
-packages = [{include = "src"}]
+authors = [
+    { name = "Dmitriy Basov", email = "dimabasow@vk.com" }
+]
+requires-python = ">=3.9"
+dependencies = [
+    "polars>=1.27.1",
+    "scipy>=1.13.1",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-polars = "^1.27.1"
-pytorch-triton = {version = "^3.3.0", source = "pytorch_cu128"}
-torch = {version = "^2.8.0.dev20250412", source = "pytorch_cu128"}
-scipy = "^1.15.2"
-
-
-[tool.poetry.group.jupyter.dependencies]
-ipykernel = "^6.29.5"
+[project.optional-dependencies]
+cpu = [
+  "torch>=2.6.0",
+]
+cu126 = [
+  "torch>=2.6.0",
+]
+cu128 = [
+  "torch>=2.6.0",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
 
-[[tool.poetry.source]]
-name = "pytorch_cu128"
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+]
+
+[tool.uv]
+conflicts = [
+  [
+    { extra = "cpu" },
+    { extra = "cu126" },
+    { extra = "cu128" },
+  ],
+]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", extra = "cpu" },
+  { index = "pytorch-cu126", extra = "cu126" },
+  { index = "pytorch-cu128-nightly", extra = "cu128" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128-nightly"
 url = "https://download.pytorch.org/whl/nightly/cu128"
-priority = "explicit"
+explicit = true
