@@ -143,15 +143,18 @@ class AbstractTabularDataset(ABC):
         else:
             features_numeric = self.data.features_numeric[idx]
 
-        target = {}
-        for name in self.data.target:
-            item = self.data.target[name]
-            value = item.value[idx]
-            if item.mask is None:
-                mask = None
-            else:
-                mask = item.mask[idx]
-            target[name] = TargetItem(value=value, mask=mask)
+        if self.data.target is None:
+            target = None
+        else:
+            target = {}
+            for name in self.data.target:
+                item = self.data.target[name]
+                value = item.value[idx]
+                if item.mask is None:
+                    mask = None
+                else:
+                    mask = item.mask[idx]
+                target[name] = TargetItem(value=value, mask=mask)
 
         return TableItem(
             index=index,
@@ -194,4 +197,4 @@ class AbstractTabularDataset(ABC):
     ) -> Iterator[TableItem]:
         for i in range(0, len(idx), batch_size):
             idx_batch = idx[i : i + batch_size]
-            yield self[*idx_batch]
+            yield self[idx_batch]
