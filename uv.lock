@@ -2,28 +2,19 @@ version = 1
 revision = 1
 requires-python = ">=3.9"
 resolution-markers = [
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
 ]
 conflicts = [[
-    { package = "bayesian-neural-networks", extra = "cpu" },
     { package = "bayesian-neural-networks", extra = "cu126" },
     { package = "bayesian-neural-networks", extra = "cu128" },
 ]]
@@ -52,21 +43,16 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "polars" },
-    { name = "scipy", version = "1.13.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "scipy", version = "1.15.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "scipy", version = "1.13.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "scipy", version = "1.15.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 
 [package.optional-dependencies]
-cpu = [
-    { name = "torch", version = "2.6.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "torch", version = "2.6.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-]
 cu126 = [
-    { name = "torch", version = "2.6.0+cu126", source = { registry = "https://download.pytorch.org/whl/cu126" } },
+    { name = "torch" },
 ]
 cu128 = [
-    { name = "pytorch-triton" },
-    { name = "torch", version = "2.8.0.dev20250416+cu128", source = { registry = "https://download.pytorch.org/whl/nightly/cu128" } },
+    { name = "torch" },
 ]
 
 [package.dev-dependencies]
@@ -77,13 +63,11 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "polars", specifier = ">=1.27.1" },
-    { name = "pytorch-triton", marker = "extra == 'cu128'", index = "https://download.pytorch.org/whl/nightly/cu128", conflict = { package = "bayesian-neural-networks", extra = "cu128" } },
     { name = "scipy", specifier = ">=1.13.1" },
-    { name = "torch", marker = "extra == 'cpu'", specifier = ">=2.6.0", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "bayesian-neural-networks", extra = "cpu" } },
-    { name = "torch", marker = "extra == 'cu126'", specifier = ">=2.6.0", index = "https://download.pytorch.org/whl/cu126", conflict = { package = "bayesian-neural-networks", extra = "cu126" } },
-    { name = "torch", marker = "extra == 'cu128'", specifier = ">=2.6.0", index = "https://download.pytorch.org/whl/nightly/cu128", conflict = { package = "bayesian-neural-networks", extra = "cu128" } },
+    { name = "torch", marker = "extra == 'cu126'", specifier = ">=2.6.0" },
+    { name = "torch", marker = "extra == 'cu128'", specifier = ">=2.6.0" },
 ]
-provides-extras = ["cpu", "cu126", "cu128"]
+provides-extras = ["cu126", "cu128"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ipykernel", specifier = ">=6.29.5" }]
@@ -257,7 +241,7 @@ name = "importlib-metadata"
 version = "8.6.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "zipp", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/33/08/c1395a292bb23fd03bdf572a1357c5a733d3eecbab877641ceacab23db6e/importlib_metadata-8.6.1.tar.gz", hash = "sha256:310b41d755445d74569f993ccfc22838295d9fe005425094fad953d7f15c8580", size = 55767 }
 wheels = [
@@ -269,12 +253,12 @@ name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
     { name = "comm" },
     { name = "debugpy" },
-    { name = "ipython", version = "8.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "ipython", version = "8.35.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "ipython", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "ipython", version = "8.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "ipython", version = "8.35.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "ipython", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
     { name = "jupyter-client" },
     { name = "jupyter-core" },
     { name = "matplotlib-inline" },
@@ -295,24 +279,20 @@ name = "ipython"
 version = "8.18.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10'",
 ]
 dependencies = [
-    { name = "colorama", marker = "(python_full_version < '3.10' and sys_platform == 'win32') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "decorator", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "jedi", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "matplotlib-inline", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "pexpect", marker = "(python_full_version < '3.10' and sys_platform != 'win32') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "prompt-toolkit", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "pygments", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "stack-data", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "traitlets", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "typing-extensions", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "colorama", marker = "(python_full_version < '3.10' and sys_platform == 'win32') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "decorator", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "jedi", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "matplotlib-inline", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pexpect", marker = "(python_full_version < '3.10' and sys_platform != 'win32') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "prompt-toolkit", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pygments", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "stack-data", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "traitlets", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "typing-extensions", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b1/b9/3ba6c45a6df813c09a48bac313c22ff83efa26cbb55011218d925a46e2ad/ipython-8.18.1.tar.gz", hash = "sha256:ca6f079bb33457c66e233e4580ebfc4128855b4cf6370dddd73842a9563e8a27", size = 5486330 }
 wheels = [
@@ -324,24 +304,20 @@ name = "ipython"
 version = "8.35.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*'",
 ]
 dependencies = [
-    { name = "colorama", marker = "(python_full_version == '3.10.*' and sys_platform == 'win32') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "decorator", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "exceptiongroup", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "jedi", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "matplotlib-inline", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "pexpect", marker = "(python_full_version == '3.10.*' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "prompt-toolkit", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "pygments", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "stack-data", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "traitlets", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "typing-extensions", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "colorama", marker = "(python_full_version == '3.10.*' and sys_platform == 'win32') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "decorator", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "exceptiongroup", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "jedi", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "matplotlib-inline", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pexpect", marker = "(python_full_version == '3.10.*' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version != '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "prompt-toolkit", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pygments", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "stack-data", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "traitlets", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "typing-extensions", marker = "python_full_version == '3.10.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0c/77/7d1501e8b539b179936e0d5969b578ed23887be0ab8c63e0120b825bda3e/ipython-8.35.0.tar.gz", hash = "sha256:d200b7d93c3f5883fc36ab9ce28a18249c7706e51347681f80a0aef9895f2520", size = 5605027 }
 wheels = [
@@ -353,28 +329,24 @@ name = "ipython"
 version = "9.1.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
 ]
 dependencies = [
-    { name = "colorama", marker = "(python_full_version >= '3.11' and sys_platform == 'win32') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "decorator", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "jedi", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "matplotlib-inline", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "pexpect", marker = "(python_full_version >= '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "prompt-toolkit", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "stack-data", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "traitlets", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "typing-extensions", marker = "python_full_version == '3.11.*' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "colorama", marker = "(python_full_version >= '3.11' and sys_platform == 'win32') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "decorator", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "jedi", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "matplotlib-inline", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pexpect", marker = "(python_full_version >= '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version < '3.11' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'emscripten' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "prompt-toolkit", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "stack-data", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "traitlets", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "typing-extensions", marker = "python_full_version == '3.11.*' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/70/9a/6b8984bedc990f3a4aa40ba8436dea27e23d26a64527de7c2e5e12e76841/ipython-9.1.0.tar.gz", hash = "sha256:a47e13a5e05e02f3b8e1e7a0f9db372199fe8c3763532fe7a1e0379e4e135f16", size = 4373688 }
 wheels = [
@@ -386,7 +358,7 @@ name = "ipython-pygments-lexers"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ef/4c/5dd1d8af08107f88c7f741ead7a40854b8ac24ddf9ae850afbcf698aa552/ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81", size = 8393 }
 wheels = [
@@ -422,7 +394,7 @@ name = "jupyter-client"
 version = "8.6.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "importlib-metadata", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "importlib-metadata", marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
     { name = "jupyter-core" },
     { name = "python-dateutil" },
     { name = "pyzmq" },
@@ -440,7 +412,7 @@ version = "5.7.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "platformdirs" },
-    { name = "pywin32", marker = "(platform_python_implementation != 'PyPy' and sys_platform == 'win32') or (platform_python_implementation == 'PyPy' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (platform_python_implementation == 'PyPy' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (platform_python_implementation == 'PyPy' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "pywin32", marker = "(platform_python_implementation != 'PyPy' and sys_platform == 'win32') or (platform_python_implementation == 'PyPy' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'win32' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
     { name = "traitlets" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/00/11/b56381fa6c3f4cc5d2cf54a7dbf98ad9aa0b339ef7a601d6053538b079a7/jupyter_core-5.7.2.tar.gz", hash = "sha256:aa5f8d32bbf6b431ac830496da7392035d6f61b4f54872f15c4bd2a9c3f536d9", size = 87629 }
@@ -551,10 +523,7 @@ name = "networkx"
 version = "3.2.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/c4/80/a84676339aaae2f1cfdf9f418701dd634aef9cc76f708ef55c36ff39c3ca/networkx-3.2.1.tar.gz", hash = "sha256:9f1bb5cf3409bf324e0a722c20bdb4c20ee39bf1c30ce8ae499c8502b0b5e0c6", size = 2073928 }
 wheels = [
@@ -566,18 +535,9 @@ name = "networkx"
 version = "3.4.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12'",
+    "python_full_version == '3.11.*'",
+    "python_full_version == '3.10.*'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fd/1d/06475e1cd5264c0b870ea2cc6fdb3e37177c1e565c43f56ff17a10e3937f/networkx-3.4.2.tar.gz", hash = "sha256:307c3669428c5362aab27c8a1260aa8f47c4e91d3891f48be0141738d8d053e1", size = 2151368 }
 wheels = [
@@ -589,11 +549,7 @@ name = "numpy"
 version = "2.0.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/a9/75/10dd1f8116a8b796cb2c737b674e02d02e80454bda953fa7e65d8c12b016/numpy-2.0.2.tar.gz", hash = "sha256:883c987dee1880e2a864ab0dc9892292582510604156762362d9326444636e78", size = 18902015 }
 wheels = [
@@ -648,20 +604,14 @@ name = "numpy"
 version = "2.2.4"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e1/78/31103410a57bc2c2b93a3597340a8119588571f6a4539067546cb9a0bfac/numpy-2.2.4.tar.gz", hash = "sha256:9ba03692a45d3eef66559efe1d1096c4b9b75c0986b5dff5530c378fb8331d4f", size = 20270701 }
 wheels = [
@@ -723,92 +673,82 @@ wheels = [
 
 [[package]]
 name = "nvidia-cublas-cu12"
-version = "12.8.3.14"
+version = "12.4.5.8"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ed/63/684a6f72f52671ea222c12ecde9bdf748a0ba025e2ad3ec374e466c26eb6/nvidia_cublas_cu12-12.8.3.14-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:93a4e0e386cc7f6e56c822531396de8170ed17068a1e18f987574895044cd8c3", size = 604900717 },
-    { url = "https://files.pythonhosted.org/packages/82/df/4b01f10069e23c641f116c62fc31e31e8dc361a153175d81561d15c8143b/nvidia_cublas_cu12-12.8.3.14-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:3f0e05e7293598cf61933258b73e66a160c27d59c4422670bf0b79348c04be44", size = 609620630 },
-    { url = "https://files.pythonhosted.org/packages/6c/54/fbfa3315b936d3358517f7da5f9f2557c279bf210e5261f0cf66cc0f9832/nvidia_cublas_cu12-12.8.3.14-py3-none-win_amd64.whl", hash = "sha256:9ae5eae500aead01fc4bdfc458209df638b1a3551557ce11a78eea9ece602ae9", size = 578387959 },
+    { url = "https://files.pythonhosted.org/packages/7f/7f/7fbae15a3982dc9595e49ce0f19332423b260045d0a6afe93cdbe2f1f624/nvidia_cublas_cu12-12.4.5.8-py3-none-manylinux2014_aarch64.whl", hash = "sha256:0f8aa1706812e00b9f19dfe0cdb3999b092ccb8ca168c0db5b8ea712456fd9b3", size = 363333771 },
+    { url = "https://files.pythonhosted.org/packages/ae/71/1c91302526c45ab494c23f61c7a84aa568b8c1f9d196efa5993957faf906/nvidia_cublas_cu12-12.4.5.8-py3-none-manylinux2014_x86_64.whl", hash = "sha256:2fc8da60df463fdefa81e323eef2e36489e1c94335b5358bcb38360adf75ac9b", size = 363438805 },
+    { url = "https://files.pythonhosted.org/packages/e2/2a/4f27ca96232e8b5269074a72e03b4e0d43aa68c9b965058b1684d07c6ff8/nvidia_cublas_cu12-12.4.5.8-py3-none-win_amd64.whl", hash = "sha256:5a796786da89203a0657eda402bcdcec6180254a8ac22d72213abc42069522dc", size = 396895858 },
 ]
 
 [[package]]
 name = "nvidia-cuda-cupti-cu12"
-version = "12.8.57"
+version = "12.4.127"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fe/53/458956a65283c55c22ba40a65745bbe9ff20c10b68ea241bc575e20c0465/nvidia_cuda_cupti_cu12-12.8.57-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:ff154211724fd824e758ce176b66007b558eea19c9a5135fc991827ee147e317", size = 9526469 },
-    { url = "https://files.pythonhosted.org/packages/39/6f/3683ecf4e38931971946777d231c2df00dd5c1c4c2c914c42ad8f9f4dca6/nvidia_cuda_cupti_cu12-12.8.57-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:8e0b2eb847de260739bee4a3f66fac31378f4ff49538ff527a38a01a9a39f950", size = 10237547 },
-    { url = "https://files.pythonhosted.org/packages/3f/2a/cabe033045427beb042b70b394ac3fd7cfefe157c965268824011b16af67/nvidia_cuda_cupti_cu12-12.8.57-py3-none-win_amd64.whl", hash = "sha256:bbed719c52a476958a74cfc42f2b95a3fd6b3fd94eb40134acc4601feb4acac3", size = 7002337 },
+    { url = "https://files.pythonhosted.org/packages/93/b5/9fb3d00386d3361b03874246190dfec7b206fd74e6e287b26a8fcb359d95/nvidia_cuda_cupti_cu12-12.4.127-py3-none-manylinux2014_aarch64.whl", hash = "sha256:79279b35cf6f91da114182a5ce1864997fd52294a87a16179ce275773799458a", size = 12354556 },
+    { url = "https://files.pythonhosted.org/packages/67/42/f4f60238e8194a3106d06a058d494b18e006c10bb2b915655bd9f6ea4cb1/nvidia_cuda_cupti_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl", hash = "sha256:9dec60f5ac126f7bb551c055072b69d85392b13311fcc1bcda2202d172df30fb", size = 13813957 },
+    { url = "https://files.pythonhosted.org/packages/f3/79/8cf313ec17c58ccebc965568e5bcb265cdab0a1df99c4e674bb7a3b99bfe/nvidia_cuda_cupti_cu12-12.4.127-py3-none-win_amd64.whl", hash = "sha256:5688d203301ab051449a2b1cb6690fbe90d2b372f411521c86018b950f3d7922", size = 9938035 },
 ]
 
 [[package]]
 name = "nvidia-cuda-nvrtc-cu12"
-version = "12.8.61"
+version = "12.4.127"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/22/32029d4583f7b19cfe75c84399cbcfd23f2aaf41c66fc8db4da460104fff/nvidia_cuda_nvrtc_cu12-12.8.61-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:a0fa9c2a21583105550ebd871bd76e2037205d56f33f128e69f6d2a55e0af9ed", size = 88024585 },
-    { url = "https://files.pythonhosted.org/packages/f1/98/29f98d57fc40d6646337e942d37509c6d5f8abe29012671f7a6eb9978ebe/nvidia_cuda_nvrtc_cu12-12.8.61-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:b1f376bf58111ca73dde4fd4df89a462b164602e074a76a2c29c121ca478dcd4", size = 43097015 },
-    { url = "https://files.pythonhosted.org/packages/f8/5b/052d05aa068e4752415ad03bac58e852ea8bc17c9321e08546b3f261e47e/nvidia_cuda_nvrtc_cu12-12.8.61-py3-none-win_amd64.whl", hash = "sha256:9c8887bf5e5dffc441018ba8c5dc59952372a6f4806819e8c1f03d62637dbeea", size = 73567440 },
+    { url = "https://files.pythonhosted.org/packages/77/aa/083b01c427e963ad0b314040565ea396f914349914c298556484f799e61b/nvidia_cuda_nvrtc_cu12-12.4.127-py3-none-manylinux2014_aarch64.whl", hash = "sha256:0eedf14185e04b76aa05b1fea04133e59f465b6f960c0cbf4e37c3cb6b0ea198", size = 24133372 },
+    { url = "https://files.pythonhosted.org/packages/2c/14/91ae57cd4db3f9ef7aa99f4019cfa8d54cb4caa7e00975df6467e9725a9f/nvidia_cuda_nvrtc_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl", hash = "sha256:a178759ebb095827bd30ef56598ec182b85547f1508941a3d560eb7ea1fbf338", size = 24640306 },
+    { url = "https://files.pythonhosted.org/packages/7c/30/8c844bfb770f045bcd8b2c83455c5afb45983e1a8abf0c4e5297b481b6a5/nvidia_cuda_nvrtc_cu12-12.4.127-py3-none-win_amd64.whl", hash = "sha256:a961b2f1d5f17b14867c619ceb99ef6fcec12e46612711bcec78eb05068a60ec", size = 19751955 },
 ]
 
 [[package]]
 name = "nvidia-cuda-runtime-cu12"
-version = "12.8.57"
+version = "12.4.127"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/9d/e77ec4227e70c6006195bdf410370f2d0e5abfa2dc0d1d315cacd57c5c88/nvidia_cuda_runtime_cu12-12.8.57-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:534ccebd967b6a44292678fa5da4f00666029cb2ed07a79515ea41ef31fe3ec7", size = 965264 },
-    { url = "https://files.pythonhosted.org/packages/16/f6/0e1ef31f4753a44084310ba1a7f0abaf977ccd810a604035abb43421c057/nvidia_cuda_runtime_cu12-12.8.57-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:75342e28567340b7428ce79a5d6bb6ca5ff9d07b69e7ce00d2c7b4dc23eff0be", size = 954762 },
-    { url = "https://files.pythonhosted.org/packages/16/ee/52508c74bee2a3de8d59c6fd9af4ca2f216052fa2bc916da3a6a7bb998af/nvidia_cuda_runtime_cu12-12.8.57-py3-none-win_amd64.whl", hash = "sha256:89be637e3ee967323865b85e0f147d75f9a5bd98360befa37481b02dd57af8f5", size = 944309 },
+    { url = "https://files.pythonhosted.org/packages/a1/aa/b656d755f474e2084971e9a297def515938d56b466ab39624012070cb773/nvidia_cuda_runtime_cu12-12.4.127-py3-none-manylinux2014_aarch64.whl", hash = "sha256:961fe0e2e716a2a1d967aab7caee97512f71767f852f67432d572e36cb3a11f3", size = 894177 },
+    { url = "https://files.pythonhosted.org/packages/ea/27/1795d86fe88ef397885f2e580ac37628ed058a92ed2c39dc8eac3adf0619/nvidia_cuda_runtime_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl", hash = "sha256:64403288fa2136ee8e467cdc9c9427e0434110899d07c779f25b5c068934faa5", size = 883737 },
+    { url = "https://files.pythonhosted.org/packages/a8/8b/450e93fab75d85a69b50ea2d5fdd4ff44541e0138db16f9cd90123ef4de4/nvidia_cuda_runtime_cu12-12.4.127-py3-none-win_amd64.whl", hash = "sha256:09c2e35f48359752dfa822c09918211844a3d93c100a715d79b59591130c5e1e", size = 878808 },
 ]
 
 [[package]]
 name = "nvidia-cudnn-cu12"
-version = "9.8.0.87"
+version = "9.1.0.70"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nvidia-cublas-cu12" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9e/74/57e9771579eada9733610017e782739a370d2a933c4d232ac2db9bda0d8a/nvidia_cudnn_cu12-9.8.0.87-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:b883faeb2f6f15dba7bbb6756eab6a0d9cecb59db5b0fa07577b9cfa24cd99f4", size = 696667657 },
-    { url = "https://files.pythonhosted.org/packages/77/f0/8236c886a061d203e51247aec2b8e3a8f5350178251ab57237daf2140680/nvidia_cudnn_cu12-9.8.0.87-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:d6b02cd0e3e24aa31d0193a8c39fec239354360d7d81055edddb69f35d53a4c8", size = 697999707 },
-    { url = "https://files.pythonhosted.org/packages/39/6a/5e9910b2b2c9dcddee9aaef372b3db0f08b9f7eaf1d462f859461a79caf9/nvidia_cudnn_cu12-9.8.0.87-py3-none-win_amd64.whl", hash = "sha256:b4b5cfddc32aa4180f9d390ee99e9a9f55a89e7087329b41aba4319327e22466", size = 684630375 },
+    { url = "https://files.pythonhosted.org/packages/9f/fd/713452cd72343f682b1c7b9321e23829f00b842ceaedcda96e742ea0b0b3/nvidia_cudnn_cu12-9.1.0.70-py3-none-manylinux2014_x86_64.whl", hash = "sha256:165764f44ef8c61fcdfdfdbe769d687e06374059fbb388b6c89ecb0e28793a6f", size = 664752741 },
+    { url = "https://files.pythonhosted.org/packages/3f/d0/f90ee6956a628f9f04bf467932c0a25e5a7e706a684b896593c06c82f460/nvidia_cudnn_cu12-9.1.0.70-py3-none-win_amd64.whl", hash = "sha256:6278562929433d68365a07a4a1546c237ba2849852c0d4b2262a486e805b977a", size = 679925892 },
 ]
 
 [[package]]
 name = "nvidia-cufft-cu12"
-version = "11.3.3.41"
+version = "11.2.1.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nvidia-nvjitlink-cu12" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/72/95/6157cb45a49f5090a470de42353a22a0ed5b13077886dca891b4b0e350fe/nvidia_cufft_cu12-11.3.3.41-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:68509dcd7e3306e69d0e2d8a6d21c8b25ed62e6df8aac192ce752f17677398b5", size = 193108626 },
-    { url = "https://files.pythonhosted.org/packages/ac/26/b53c493c38dccb1f1a42e1a21dc12cba2a77fbe36c652f7726d9ec4aba28/nvidia_cufft_cu12-11.3.3.41-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:da650080ab79fcdf7a4b06aa1b460e99860646b176a43f6208099bdc17836b6a", size = 193118795 },
-    { url = "https://files.pythonhosted.org/packages/32/f3/f6248aa119c2726b1bdd02d472332cae274133bd32ca5fa8822efb0c308c/nvidia_cufft_cu12-11.3.3.41-py3-none-win_amd64.whl", hash = "sha256:f9760612886786601d27a0993bb29ce1f757e6b8b173499d0ecfa850d31b50f8", size = 192216738 },
-]
-
-[[package]]
-name = "nvidia-cufile-cu12"
-version = "1.13.0.11"
-source = { registry = "https://pypi.org/simple" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e5/9c/1f3264d0a84c8a031487fb7f59780fc78fa6f1c97776233956780e3dc3ac/nvidia_cufile_cu12-1.13.0.11-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:483f434c541806936b98366f6d33caef5440572de8ddf38d453213729da3e7d4", size = 1197801 },
-    { url = "https://files.pythonhosted.org/packages/35/80/f6a0fc90ab6fa4ac916f3643e5b620fd19724626c59ae83b74f5efef0349/nvidia_cufile_cu12-1.13.0.11-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:2acbee65dc2eaf58331f0798c5e6bcdd790c4acb26347530297e63528c9eba5d", size = 1120660 },
+    { url = "https://files.pythonhosted.org/packages/7a/8a/0e728f749baca3fbeffad762738276e5df60851958be7783af121a7221e7/nvidia_cufft_cu12-11.2.1.3-py3-none-manylinux2014_aarch64.whl", hash = "sha256:5dad8008fc7f92f5ddfa2101430917ce2ffacd86824914c82e28990ad7f00399", size = 211422548 },
+    { url = "https://files.pythonhosted.org/packages/27/94/3266821f65b92b3138631e9c8e7fe1fb513804ac934485a8d05776e1dd43/nvidia_cufft_cu12-11.2.1.3-py3-none-manylinux2014_x86_64.whl", hash = "sha256:f083fc24912aa410be21fa16d157fed2055dab1cc4b6934a0e03cba69eb242b9", size = 211459117 },
+    { url = "https://files.pythonhosted.org/packages/f6/ee/3f3f8e9874f0be5bbba8fb4b62b3de050156d159f8b6edc42d6f1074113b/nvidia_cufft_cu12-11.2.1.3-py3-none-win_amd64.whl", hash = "sha256:d802f4954291101186078ccbe22fc285a902136f974d369540fd4a5333d1440b", size = 210576476 },
 ]
 
 [[package]]
 name = "nvidia-curand-cu12"
-version = "10.3.9.55"
+version = "10.3.5.147"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f4/13/bbcf48e2f8a6a9adef58f130bc968810528a4e66bbbe62fad335241e699f/nvidia_curand_cu12-10.3.9.55-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:b6bb90c044fa9b07cedae2ef29077c4cf851fb6fdd6d862102321f359dca81e9", size = 63623836 },
-    { url = "https://files.pythonhosted.org/packages/bd/fc/7be5d0082507269bb04ac07cc614c84b78749efb96e8cf4100a8a1178e98/nvidia_curand_cu12-10.3.9.55-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:8387d974240c91f6a60b761b83d4b2f9b938b7e0b9617bae0f0dafe4f5c36b86", size = 63618038 },
-    { url = "https://files.pythonhosted.org/packages/d6/f0/91252f3cffe3f3c233a8e17262c21b41534652edfe783c1e58ea1c92c115/nvidia_curand_cu12-10.3.9.55-py3-none-win_amd64.whl", hash = "sha256:570d82475fe7f3d8ed01ffbe3b71796301e0e24c98762ca018ff8ce4f5418e1f", size = 62761446 },
+    { url = "https://files.pythonhosted.org/packages/80/9c/a79180e4d70995fdf030c6946991d0171555c6edf95c265c6b2bf7011112/nvidia_curand_cu12-10.3.5.147-py3-none-manylinux2014_aarch64.whl", hash = "sha256:1f173f09e3e3c76ab084aba0de819c49e56614feae5c12f69883f4ae9bb5fad9", size = 56314811 },
+    { url = "https://files.pythonhosted.org/packages/8a/6d/44ad094874c6f1b9c654f8ed939590bdc408349f137f9b98a3a23ccec411/nvidia_curand_cu12-10.3.5.147-py3-none-manylinux2014_x86_64.whl", hash = "sha256:a88f583d4e0bb643c49743469964103aa59f7f708d862c3ddb0fc07f851e3b8b", size = 56305206 },
+    { url = "https://files.pythonhosted.org/packages/1c/22/2573503d0d4e45673c263a313f79410e110eb562636b0617856fdb2ff5f6/nvidia_curand_cu12-10.3.5.147-py3-none-win_amd64.whl", hash = "sha256:f307cc191f96efe9e8f05a87096abc20d08845a841889ef78cb06924437f6771", size = 55799918 },
 ]
 
 [[package]]
 name = "nvidia-cusolver-cu12"
-version = "11.7.2.55"
+version = "11.6.1.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nvidia-cublas-cu12" },
@@ -816,61 +756,60 @@ dependencies = [
     { name = "nvidia-nvjitlink-cu12" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/8c/ce/4214a892e804b20bf66d04f04a473006fc2d3dac158160ef85f1bc906639/nvidia_cusolver_cu12-11.7.2.55-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:0fd9e98246f43c15bee5561147ad235dfdf2d037f5d07c9d41af3f7f72feb7cc", size = 260094827 },
-    { url = "https://files.pythonhosted.org/packages/c2/08/953675873a136d96bb12f93b49ba045d1107bc94d2551c52b12fa6c7dec3/nvidia_cusolver_cu12-11.7.2.55-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:4d1354102f1e922cee9db51920dba9e2559877cf6ff5ad03a00d853adafb191b", size = 260373342 },
-    { url = "https://files.pythonhosted.org/packages/c4/f9/e0e6f8b7aecd13e0f9e937d116fb3211329a0a92b9bea9624b1368de307a/nvidia_cusolver_cu12-11.7.2.55-py3-none-win_amd64.whl", hash = "sha256:a5a516c55da5c5aba98420d9bc9bcab18245f21ec87338cc1f930eb18dd411ac", size = 249600787 },
+    { url = "https://files.pythonhosted.org/packages/46/6b/a5c33cf16af09166845345275c34ad2190944bcc6026797a39f8e0a282e0/nvidia_cusolver_cu12-11.6.1.9-py3-none-manylinux2014_aarch64.whl", hash = "sha256:d338f155f174f90724bbde3758b7ac375a70ce8e706d70b018dd3375545fc84e", size = 127634111 },
+    { url = "https://files.pythonhosted.org/packages/3a/e1/5b9089a4b2a4790dfdea8b3a006052cfecff58139d5a4e34cb1a51df8d6f/nvidia_cusolver_cu12-11.6.1.9-py3-none-manylinux2014_x86_64.whl", hash = "sha256:19e33fa442bcfd085b3086c4ebf7e8debc07cfe01e11513cc6d332fd918ac260", size = 127936057 },
+    { url = "https://files.pythonhosted.org/packages/f2/be/d435b7b020e854d5d5a682eb5de4328fd62f6182507406f2818280e206e2/nvidia_cusolver_cu12-11.6.1.9-py3-none-win_amd64.whl", hash = "sha256:e77314c9d7b694fcebc84f58989f3aa4fb4cb442f12ca1a9bde50f5e8f6d1b9c", size = 125224015 },
 ]
 
 [[package]]
 name = "nvidia-cusparse-cu12"
-version = "12.5.7.53"
+version = "12.3.1.170"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nvidia-nvjitlink-cu12" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2e/a2/313db0453087f5324a5900380ca2e57e050c8de76f407b5e11383dc762ae/nvidia_cusparse_cu12-12.5.7.53-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d869c6146ca80f4305b62e02d924b4aaced936f8173e3cef536a67eed2a91af1", size = 291963692 },
-    { url = "https://files.pythonhosted.org/packages/c2/ab/31e8149c66213b846c082a3b41b1365b831f41191f9f40c6ddbc8a7d550e/nvidia_cusparse_cu12-12.5.7.53-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:3c1b61eb8c85257ea07e9354606b26397612627fdcd327bfd91ccf6155e7c86d", size = 292064180 },
-    { url = "https://files.pythonhosted.org/packages/7c/48/64b01653919a3d1d9b5117c156806ab0db8312c7496ff646477a5c1545bf/nvidia_cusparse_cu12-12.5.7.53-py3-none-win_amd64.whl", hash = "sha256:82c201d6781bacf6bb7c654f0446728d0fe596dfdd82ef4a04c204ce3e107441", size = 288767123 },
+    { url = "https://files.pythonhosted.org/packages/96/a9/c0d2f83a53d40a4a41be14cea6a0bf9e668ffcf8b004bd65633f433050c0/nvidia_cusparse_cu12-12.3.1.170-py3-none-manylinux2014_aarch64.whl", hash = "sha256:9d32f62896231ebe0480efd8a7f702e143c98cfaa0e8a76df3386c1ba2b54df3", size = 207381987 },
+    { url = "https://files.pythonhosted.org/packages/db/f7/97a9ea26ed4bbbfc2d470994b8b4f338ef663be97b8f677519ac195e113d/nvidia_cusparse_cu12-12.3.1.170-py3-none-manylinux2014_x86_64.whl", hash = "sha256:ea4f11a2904e2a8dc4b1833cc1b5181cde564edd0d5cd33e3c168eff2d1863f1", size = 207454763 },
+    { url = "https://files.pythonhosted.org/packages/a2/e0/3155ca539760a8118ec94cc279b34293309bcd14011fc724f87f31988843/nvidia_cusparse_cu12-12.3.1.170-py3-none-win_amd64.whl", hash = "sha256:9bc90fb087bc7b4c15641521f31c0371e9a612fc2ba12c338d3ae032e6b6797f", size = 204684315 },
 ]
 
 [[package]]
 name = "nvidia-cusparselt-cu12"
-version = "0.6.3"
+version = "0.6.2"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/62/da/4de092c61c6dea1fc9c936e69308a02531d122e12f1f649825934ad651b5/nvidia_cusparselt_cu12-0.6.3-py3-none-manylinux2014_aarch64.whl", hash = "sha256:8371549623ba601a06322af2133c4a44350575f5a3108fb75f3ef20b822ad5f1", size = 156402859 },
-    { url = "https://files.pythonhosted.org/packages/3b/9a/72ef35b399b0e183bc2e8f6f558036922d453c4d8237dab26c666a04244b/nvidia_cusparselt_cu12-0.6.3-py3-none-manylinux2014_x86_64.whl", hash = "sha256:e5c8a26c36445dd2e6812f1177978a24e2d37cacce7e090f297a688d1ec44f46", size = 156785796 },
-    { url = "https://files.pythonhosted.org/packages/46/3e/9e1e394a02a06f694be2c97bbe47288bb7c90ea84c7e9cf88f7b28afe165/nvidia_cusparselt_cu12-0.6.3-py3-none-win_amd64.whl", hash = "sha256:3b325bcbd9b754ba43df5a311488fca11a6b5dc3d11df4d190c000cf1a0765c7", size = 155595972 },
+    { url = "https://files.pythonhosted.org/packages/98/8e/675498726c605c9441cf46653bd29cb1b8666da1fb1469ffa25f67f20c58/nvidia_cusparselt_cu12-0.6.2-py3-none-manylinux2014_aarch64.whl", hash = "sha256:067a7f6d03ea0d4841c85f0c6f1991c5dda98211f6302cb83a4ab234ee95bef8", size = 149422781 },
+    { url = "https://files.pythonhosted.org/packages/78/a8/bcbb63b53a4b1234feeafb65544ee55495e1bb37ec31b999b963cbccfd1d/nvidia_cusparselt_cu12-0.6.2-py3-none-manylinux2014_x86_64.whl", hash = "sha256:df2c24502fd76ebafe7457dbc4716b2fec071aabaed4fb7691a201cde03704d9", size = 150057751 },
+    { url = "https://files.pythonhosted.org/packages/56/8f/2c33082238b6c5e783a877dc8786ab62619e3e6171c083bd3bba6e3fe75e/nvidia_cusparselt_cu12-0.6.2-py3-none-win_amd64.whl", hash = "sha256:0057c91d230703924c0422feabe4ce768841f9b4b44d28586b6f6d2eb86fbe70", size = 148755794 },
 ]
 
 [[package]]
 name = "nvidia-nccl-cu12"
-version = "2.26.2"
+version = "2.21.5"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/69/5b/ca2f213f637305633814ae8c36b153220e40a07ea001966dcd87391f3acb/nvidia_nccl_cu12-2.26.2-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:5c196e95e832ad30fbbb50381eb3cbd1fadd5675e587a548563993609af19522", size = 291671495 },
-    { url = "https://files.pythonhosted.org/packages/67/ca/f42388aed0fddd64ade7493dbba36e1f534d4e6fdbdd355c6a90030ae028/nvidia_nccl_cu12-2.26.2-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:694cf3879a206553cc9d7dbda76b13efaf610fdb70a50cba303de1b0d1530ac6", size = 201319755 },
+    { url = "https://files.pythonhosted.org/packages/df/99/12cd266d6233f47d00daf3a72739872bdc10267d0383508b0b9c84a18bb6/nvidia_nccl_cu12-2.21.5-py3-none-manylinux2014_x86_64.whl", hash = "sha256:8579076d30a8c24988834445f8d633c697d42397e92ffc3f63fa26766d25e0a0", size = 188654414 },
 ]
 
 [[package]]
 name = "nvidia-nvjitlink-cu12"
-version = "12.8.61"
+version = "12.4.127"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/03/f8/9d85593582bd99b8d7c65634d2304780aefade049b2b94d96e44084be90b/nvidia_nvjitlink_cu12-12.8.61-py3-none-manylinux2010_x86_64.manylinux_2_12_x86_64.whl", hash = "sha256:45fd79f2ae20bd67e8bc411055939049873bfd8fac70ff13bd4865e0b9bdab17", size = 39243473 },
-    { url = "https://files.pythonhosted.org/packages/af/53/698f3758f48c5fcb1112721e40cc6714da3980d3c7e93bae5b29dafa9857/nvidia_nvjitlink_cu12-12.8.61-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:9b80ecab31085dda3ce3b41d043be0ec739216c3fc633b8abe212d5a30026df0", size = 38374634 },
-    { url = "https://files.pythonhosted.org/packages/7f/c6/0d1b2bfeb2ef42c06db0570c4d081e5cde4450b54c09e43165126cfe6ff6/nvidia_nvjitlink_cu12-12.8.61-py3-none-win_amd64.whl", hash = "sha256:1166a964d25fdc0eae497574d38824305195a5283324a21ccb0ce0c802cbf41c", size = 268514099 },
+    { url = "https://files.pythonhosted.org/packages/02/45/239d52c05074898a80a900f49b1615d81c07fceadd5ad6c4f86a987c0bc4/nvidia_nvjitlink_cu12-12.4.127-py3-none-manylinux2014_aarch64.whl", hash = "sha256:4abe7fef64914ccfa909bc2ba39739670ecc9e820c83ccc7a6ed414122599b83", size = 20552510 },
+    { url = "https://files.pythonhosted.org/packages/ff/ff/847841bacfbefc97a00036e0fce5a0f086b640756dc38caea5e1bb002655/nvidia_nvjitlink_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl", hash = "sha256:06b3b9b25bf3f8af351d664978ca26a16d2c5127dbd53c0497e28d1fb9611d57", size = 21066810 },
+    { url = "https://files.pythonhosted.org/packages/81/19/0babc919031bee42620257b9a911c528f05fb2688520dcd9ca59159ffea8/nvidia_nvjitlink_cu12-12.4.127-py3-none-win_amd64.whl", hash = "sha256:fd9020c501d27d135f983c6d3e244b197a7ccad769e34df53a42e276b0e25fa1", size = 95336325 },
 ]
 
 [[package]]
 name = "nvidia-nvtx-cu12"
-version = "12.8.55"
+version = "12.4.127"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/e8/ae6ecbdade8bb9174d75db2b302c57c1c27d9277d6531c62aafde5fb32a3/nvidia_nvtx_cu12-12.8.55-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:c38405335fbc0f0bf363eaeaeb476e8dfa8bae82fada41d25ace458b9ba9f3db", size = 91103 },
-    { url = "https://files.pythonhosted.org/packages/8d/cd/0e8c51b2ae3a58f054f2e7fe91b82d201abfb30167f2431e9bd92d532f42/nvidia_nvtx_cu12-12.8.55-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:2dd0780f1a55c21d8e06a743de5bd95653de630decfff40621dbde78cc307102", size = 89896 },
-    { url = "https://files.pythonhosted.org/packages/e5/14/84d46e62bfde46dd20cfb041e0bb5c2ec454fd6a384696e7fa3463c5bb59/nvidia_nvtx_cu12-12.8.55-py3-none-win_amd64.whl", hash = "sha256:9022681677aef1313458f88353ad9c0d2fbbe6402d6b07c9f00ba0e3ca8774d3", size = 56435 },
+    { url = "https://files.pythonhosted.org/packages/06/39/471f581edbb7804b39e8063d92fc8305bdc7a80ae5c07dbe6ea5c50d14a5/nvidia_nvtx_cu12-12.4.127-py3-none-manylinux2014_aarch64.whl", hash = "sha256:7959ad635db13edf4fc65c06a6e9f9e55fc2f92596db928d169c0bb031e88ef3", size = 100417 },
+    { url = "https://files.pythonhosted.org/packages/87/20/199b8713428322a2f22b722c62b8cc278cc53dffa9705d744484b5035ee9/nvidia_nvtx_cu12-12.4.127-py3-none-manylinux2014_x86_64.whl", hash = "sha256:781e950d9b9f60d8241ccea575b32f5105a5baf4c2351cab5256a24869f12a1a", size = 99144 },
+    { url = "https://files.pythonhosted.org/packages/54/1b/f77674fbb73af98843be25803bbd3b9a4f0a96c75b8d33a2854a5c7d2d77/nvidia_nvtx_cu12-12.4.127-py3-none-win_amd64.whl", hash = "sha256:641dccaaa1139f3ffb0d3164b4b84f9d253397e38246a4f2f36728b48566d485", size = 66307 },
 ]
 
 [[package]]
@@ -1002,28 +941,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pytorch-triton"
-version = "3.3.0+git96316ce5"
-source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
-dependencies = [
-    { name = "setuptools" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp310-cp310-linux_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp311-cp311-linux_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp312-cp312-linux_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp313-cp313-linux_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp313-cp313t-linux_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp313-cp313t-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp39-cp39-linux_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/pytorch_triton-3.3.0%2Bgit96316ce5-cp39-cp39-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl" },
-]
-
-[[package]]
 name = "pywin32"
 version = "310"
 source = { registry = "https://pypi.org/simple" }
@@ -1049,7 +966,7 @@ name = "pyzmq"
 version = "26.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b1/11/b9213d25230ac18a71b39b3723494e57adebe36e066397b961657b3b41c1/pyzmq-26.4.0.tar.gz", hash = "sha256:4bd13f85f80962f91a651a7356fe0472791a5f7a92f227822b5acf44795c626d", size = 278293 }
 wheels = [
@@ -1138,14 +1055,10 @@ name = "scipy"
 version = "1.13.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version < '3.10'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "numpy", version = "2.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ae/00/48c2f661e2816ccf2ecd77982f6605b2950afe60f60a52b4cbbc2504aa8f/scipy-1.13.1.tar.gz", hash = "sha256:095a87a0312b08dfd6a6155cbbd310a8c51800fc931b8c0b84003014b874ed3c", size = 57210720 }
 wheels = [
@@ -1180,23 +1093,17 @@ name = "scipy"
 version = "1.15.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.12' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.11.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version >= '3.11' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
+    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
 ]
 dependencies = [
-    { name = "numpy", version = "2.2.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "numpy", version = "2.2.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10' or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b7/b9/31ba9cd990e626574baf93fbc1ac61cf9ed54faafd04c479117517661637/scipy-1.15.2.tar.gz", hash = "sha256:cd58a314d92838f7e6f755c8a2167ead4f27e1fd5c1251fd54289569ef3495ec", size = 59417316 }
 wheels = [
@@ -1283,20 +1190,6 @@ wheels = [
 name = "sympy"
 version = "1.13.1"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version >= '3.12' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-    "python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra != 'extra-24-bayesian-neural-networks-cu126' and extra != 'extra-24-bayesian-neural-networks-cu128'",
-]
 dependencies = [
     { name = "mpmath" },
 ]
@@ -1306,154 +1199,21 @@ wheels = [
 ]
 
 [[package]]
-name = "sympy"
-version = "1.13.3"
-source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version >= '3.12'",
-    "python_full_version == '3.11.*'",
-    "python_full_version == '3.10.*'",
-    "python_full_version < '3.10'",
-]
-dependencies = [
-    { name = "mpmath" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/11/8a/5a7fd6284fa8caac23a26c9ddf9c30485a48169344b4bd3b0f02fef1890f/sympy-1.13.3.tar.gz", hash = "sha256:b27fd2c6530e0ab39e275fc9b683895367e51d5da91baa8d3d64db2565fec4d9", size = 7533196 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/ff/c87e0622b1dadea79d2fb0b25ade9ed98954c9033722eb707053d310d4f3/sympy-1.13.3-py3-none-any.whl", hash = "sha256:54612cf55a62755ee71824ce692986f23c88ffa77207b30c1368eda4a7060f73", size = 6189483 },
-]
-
-[[package]]
 name = "torch"
 version = "2.6.0"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'darwin'",
-    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
-    "python_full_version == '3.10.*' and sys_platform == 'darwin'",
-    "python_full_version < '3.10' and sys_platform == 'darwin'",
-]
-dependencies = [
-    { name = "filelock", marker = "sys_platform == 'darwin'" },
-    { name = "fsspec", marker = "sys_platform == 'darwin'" },
-    { name = "jinja2", marker = "sys_platform == 'darwin'" },
-    { name = "networkx", version = "3.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.10' and sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "setuptools", marker = "python_full_version >= '3.12' and sys_platform == 'darwin'" },
-    { name = "sympy", version = "1.13.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'darwin'" },
-    { name = "typing-extensions", marker = "sys_platform == 'darwin'" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0-cp310-none-macosx_11_0_arm64.whl", hash = "sha256:09e06f9949e1a0518c5b09fe95295bc9661f219d9ecb6f9893e5123e10696628" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0-cp311-none-macosx_11_0_arm64.whl", hash = "sha256:94fc63b3b4bedd327af588696559f68c264440e2503cc9e6954019473d74ae21" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:9a610afe216a85a8b9bc9f8365ed561535c93e804c2a317ef7fabcc5deda0989" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0-cp313-none-macosx_11_0_arm64.whl", hash = "sha256:ff96f4038f8af9f7ec4231710ed4549da1bdebad95923953a25045dcf6fd87e2" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:265f70de5fd45b864d924b64be1797f86e76c8e48a02c2a3a6fc7ec247d2226c" },
-]
-
-[[package]]
-name = "torch"
-version = "2.6.0+cpu"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform != 'darwin'",
-    "python_full_version == '3.11.*' and sys_platform != 'darwin'",
-    "python_full_version == '3.10.*' and sys_platform != 'darwin'",
-    "python_full_version < '3.10' and sys_platform != 'darwin'",
-]
-dependencies = [
-    { name = "filelock", marker = "sys_platform != 'darwin'" },
-    { name = "fsspec", marker = "sys_platform != 'darwin'" },
-    { name = "jinja2", marker = "sys_platform != 'darwin'" },
-    { name = "networkx", version = "3.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.10' and sys_platform != 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (sys_platform == 'darwin' and extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra != 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "setuptools", marker = "python_full_version >= '3.12' and sys_platform != 'darwin'" },
-    { name = "sympy", version = "1.13.1", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin'" },
-    { name = "typing-extensions", marker = "sys_platform != 'darwin'" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:35a9e78b7e4096968b54c1a198687b981569c50ae93e661aa430f9fd208da102" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp310-cp310-manylinux_2_28_aarch64.whl", hash = "sha256:90832f4d118c566b8652a2196ac695fc1f14cf420db27b5a1b41c7eaaf2141e9" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp310-cp310-win_amd64.whl", hash = "sha256:6e22f0b13db8d53e55bcb3b46c9dd4b6676d1c44051b56753e745cec3075b333" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:5b6ae523bfb67088a17ca7734d131548a2e60346c622621e4248ed09dd0790cc" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp311-cp311-manylinux_2_28_aarch64.whl", hash = "sha256:d3dab9fb0294f268aec28e8aaba834e9d006b90a50db5bc2fe2191a9d48c6084" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp311-cp311-win_amd64.whl", hash = "sha256:24c9d3d13b9ea769dd7bd5c11cfa1fc463fd7391397156565484565ca685d908" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:59e78aa0c690f70734e42670036d6b541930b8eabbaa18d94e090abf14cc4d91" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:318290e8924353c61b125cdc8768d15208704e279e7757c113b9620740deca98" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp312-cp312-win_amd64.whl", hash = "sha256:4027d982eb2781c93825ab9527f17fbbb12dbabf422298e4b954be60016f87d8" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313-linux_x86_64.whl", hash = "sha256:e70ee2e37ad27a90201d101a41c2e10df7cf15a9ebd17c084f54cf2518c57bdf" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:b5e7e8d561b263b5ad8049736281cd12c78e51e7bc1a913fd4098fd0e0b96347" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313-win_amd64.whl", hash = "sha256:b436a6c62d086dc5b32f5721b59f0ca8ad3bf9de09ee9b5b83dbf1e7a7e22c60" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313t-linux_x86_64.whl", hash = "sha256:fb34d6cc4e6e20e66d74852c3d84e0301dc5e1a7c822076ef288886f978390f0" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp313-cp313t-manylinux_2_28_aarch64.whl", hash = "sha256:7cac05af909ee1c5c2915e8f3efaa1ea015e7e414be0ff53071402b9e4f3c7df" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:b68274aeb4047ba8c73e903f0621e2a4adb54ad5282b0845689c3e1dcd2e2546" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp39-cp39-manylinux_2_28_aarch64.whl", hash = "sha256:2ab9c6b3d6eea506bda9b82a0155e974d8ef8e38b417589d144568b4fa59afe1" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.6.0%2Bcpu-cp39-cp39-win_amd64.whl", hash = "sha256:e4a85b58ed455915ee66809ca45e0190a76d652d7e6210b72f53a0219459613b" },
-]
-
-[[package]]
-name = "torch"
-version = "2.6.0+cu126"
-source = { registry = "https://download.pytorch.org/whl/cu126" }
-resolution-markers = [
-    "python_full_version >= '3.12'",
-    "python_full_version == '3.11.*'",
-    "python_full_version == '3.10.*'",
-    "python_full_version < '3.10'",
-]
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "filelock" },
     { name = "fsspec" },
     { name = "jinja2" },
-    { name = "networkx", version = "3.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "setuptools", marker = "python_full_version >= '3.12'" },
-    { name = "sympy", version = "1.13.1", source = { registry = "https://pypi.org/simple" } },
-    { name = "typing-extensions" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp310-cp310-linux_aarch64.whl", hash = "sha256:48775b8544e6705aa72256117f33c5f0c3c1ab51cb7abef1989dcfc3cf2e6500" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:c55280b4da58e565d8a25e0e844dc27d0c96aaada7b90b4de70a45397faf604e" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp310-cp310-win_amd64.whl", hash = "sha256:eda7768f0a2ad9da3513abf60ff5c13049e7e2ec74ed4cfcd4736a8523ab1f89" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp311-cp311-linux_aarch64.whl", hash = "sha256:d4809b188f5c9b9753f7578085b79ae1f5d9c36a3fffc122e83e446ecf251325" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:cd3b15819315bd44d34e6fa56a8f6f64192608de17da112ec0cd6cd5fc1781f3" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp311-cp311-win_amd64.whl", hash = "sha256:5ddca43b81c64df8ce0c59260566e648ee46b2622ab6a718e38dea3c0ca059a1" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp312-cp312-linux_aarch64.whl", hash = "sha256:993e0e99c472df1d2746c3233ef8e88d992904fe75b8996a2c15439c43ff46c4" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:6bc5b9126daa3ac1e4d920b731da9f9503ff1f56204796de124e080f5cc3570e" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp312-cp312-win_amd64.whl", hash = "sha256:b10c39c83e5d1afd639b5c9f5683b351e97e41390a93f59c59187004a9949924" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313-linux_aarch64.whl", hash = "sha256:e7913d9dcca60d352b296adf566ae9bb84c9e4d27414cf070b78a84c0a0ceb20" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:2356c759696f4e296a7a08e8146c6381ccf2da40990fe400264b189a8a6c4bab" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313-win_amd64.whl", hash = "sha256:a1ce724eb9813fcd05b99cb8b652b2d02f447caba65f1469abd7d50af5e5323f" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313t-linux_aarch64.whl", hash = "sha256:e38a2564b15fba3fd8cb24d03d165b86a80fe3681b7207be5e500b100e19893c" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp313-cp313t-manylinux_2_28_x86_64.whl", hash = "sha256:90d9c64ab8961595e05d4816e7190f38d8a1cd9931909a669da7bc398b9bc26b" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp39-cp39-linux_aarch64.whl", hash = "sha256:2eea662d2d4ba57db2117d510c1baa47f49b1f327f9e91cf3a29d38f298d7f21" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:eccdaa0908f91321f34d37d7286843ff7b32a8e187fdc61c97f8a895e636b19f" },
-    { url = "https://download.pytorch.org/whl/cu126/torch-2.6.0%2Bcu126-cp39-cp39-win_amd64.whl", hash = "sha256:57ce9f680a4fe2ea0ecc0085e165fdedd2b333b34b6099b054b966d2ba169787" },
-]
-
-[[package]]
-name = "torch"
-version = "2.8.0.dev20250416+cu128"
-source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
-resolution-markers = [
-    "python_full_version >= '3.12'",
-    "python_full_version == '3.11.*'",
-    "python_full_version == '3.10.*'",
-    "python_full_version < '3.10'",
-]
-dependencies = [
-    { name = "filelock" },
-    { name = "fsspec" },
-    { name = "jinja2" },
-    { name = "networkx", version = "3.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "networkx", version = "3.2.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version < '3.10' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu126') or (python_full_version >= '3.10' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
     { name = "nvidia-cublas-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cuda-cupti-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cuda-nvrtc-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cuda-runtime-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cudnn-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cufft-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
-    { name = "nvidia-cufile-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-curand-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cusolver-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-cusparse-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
@@ -1461,30 +1221,32 @@ dependencies = [
     { name = "nvidia-nccl-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-nvjitlink-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "nvidia-nvtx-cu12", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
-    { name = "pytorch-triton", marker = "sys_platform == 'linux'" },
     { name = "setuptools", marker = "python_full_version >= '3.12'" },
-    { name = "sympy", version = "1.13.3", source = { registry = "https://pypi.org/simple" } },
+    { name = "sympy" },
+    { name = "triton", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
     { name = "typing-extensions" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp310-cp310-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp310-cp310-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp310-cp310-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp311-cp311-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp311-cp311-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp311-cp311-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp312-cp312-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp312-cp312-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp312-cp312-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp313-cp313-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp313-cp313-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp313-cp313-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp313-cp313t-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp313-cp313t-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp313-cp313t-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp39-cp39-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp39-cp39-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/nightly/cu128/torch-2.8.0.dev20250416%2Bcu128-cp39-cp39-win_amd64.whl" },
+    { url = "https://files.pythonhosted.org/packages/37/81/aa9ab58ec10264c1abe62c8b73f5086c3c558885d6beecebf699f0dbeaeb/torch-2.6.0-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:6860df13d9911ac158f4c44031609700e1eba07916fff62e21e6ffa0a9e01961", size = 766685561 },
+    { url = "https://files.pythonhosted.org/packages/86/86/e661e229df2f5bfc6eab4c97deb1286d598bbeff31ab0cdb99b3c0d53c6f/torch-2.6.0-cp310-cp310-manylinux_2_28_aarch64.whl", hash = "sha256:c4f103a49830ce4c7561ef4434cc7926e5a5fe4e5eb100c19ab36ea1e2b634ab", size = 95751887 },
+    { url = "https://files.pythonhosted.org/packages/20/e0/5cb2f8493571f0a5a7273cd7078f191ac252a402b5fb9cb6091f14879109/torch-2.6.0-cp310-cp310-win_amd64.whl", hash = "sha256:56eeaf2ecac90da5d9e35f7f35eb286da82673ec3c582e310a8d1631a1c02341", size = 204165139 },
+    { url = "https://files.pythonhosted.org/packages/e5/16/ea1b7842413a7b8a5aaa5e99e8eaf3da3183cc3ab345ad025a07ff636301/torch-2.6.0-cp310-none-macosx_11_0_arm64.whl", hash = "sha256:09e06f9949e1a0518c5b09fe95295bc9661f219d9ecb6f9893e5123e10696628", size = 66520221 },
+    { url = "https://files.pythonhosted.org/packages/78/a9/97cbbc97002fff0de394a2da2cdfa859481fdca36996d7bd845d50aa9d8d/torch-2.6.0-cp311-cp311-manylinux1_x86_64.whl", hash = "sha256:7979834102cd5b7a43cc64e87f2f3b14bd0e1458f06e9f88ffa386d07c7446e1", size = 766715424 },
+    { url = "https://files.pythonhosted.org/packages/6d/fa/134ce8f8a7ea07f09588c9cc2cea0d69249efab977707cf67669431dcf5c/torch-2.6.0-cp311-cp311-manylinux_2_28_aarch64.whl", hash = "sha256:ccbd0320411fe1a3b3fec7b4d3185aa7d0c52adac94480ab024b5c8f74a0bf1d", size = 95759416 },
+    { url = "https://files.pythonhosted.org/packages/11/c5/2370d96b31eb1841c3a0883a492c15278a6718ccad61bb6a649c80d1d9eb/torch-2.6.0-cp311-cp311-win_amd64.whl", hash = "sha256:46763dcb051180ce1ed23d1891d9b1598e07d051ce4c9d14307029809c4d64f7", size = 204164970 },
+    { url = "https://files.pythonhosted.org/packages/0b/fa/f33a4148c6fb46ca2a3f8de39c24d473822d5774d652b66ed9b1214da5f7/torch-2.6.0-cp311-none-macosx_11_0_arm64.whl", hash = "sha256:94fc63b3b4bedd327af588696559f68c264440e2503cc9e6954019473d74ae21", size = 66530713 },
+    { url = "https://files.pythonhosted.org/packages/e5/35/0c52d708144c2deb595cd22819a609f78fdd699b95ff6f0ebcd456e3c7c1/torch-2.6.0-cp312-cp312-manylinux1_x86_64.whl", hash = "sha256:2bb8987f3bb1ef2675897034402373ddfc8f5ef0e156e2d8cfc47cacafdda4a9", size = 766624563 },
+    { url = "https://files.pythonhosted.org/packages/01/d6/455ab3fbb2c61c71c8842753b566012e1ed111e7a4c82e0e1c20d0c76b62/torch-2.6.0-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:b789069020c5588c70d5c2158ac0aa23fd24a028f34a8b4fcb8fcb4d7efcf5fb", size = 95607867 },
+    { url = "https://files.pythonhosted.org/packages/18/cf/ae99bd066571656185be0d88ee70abc58467b76f2f7c8bfeb48735a71fe6/torch-2.6.0-cp312-cp312-win_amd64.whl", hash = "sha256:7e1448426d0ba3620408218b50aa6ada88aeae34f7a239ba5431f6c8774b1239", size = 204120469 },
+    { url = "https://files.pythonhosted.org/packages/81/b4/605ae4173aa37fb5aa14605d100ff31f4f5d49f617928c9f486bb3aaec08/torch-2.6.0-cp312-none-macosx_11_0_arm64.whl", hash = "sha256:9a610afe216a85a8b9bc9f8365ed561535c93e804c2a317ef7fabcc5deda0989", size = 66532538 },
+    { url = "https://files.pythonhosted.org/packages/24/85/ead1349fc30fe5a32cadd947c91bda4a62fbfd7f8c34ee61f6398d38fb48/torch-2.6.0-cp313-cp313-manylinux1_x86_64.whl", hash = "sha256:4874a73507a300a5d089ceaff616a569e7bb7c613c56f37f63ec3ffac65259cf", size = 766626191 },
+    { url = "https://files.pythonhosted.org/packages/dd/b0/26f06f9428b250d856f6d512413e9e800b78625f63801cbba13957432036/torch-2.6.0-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:a0d5e1b9874c1a6c25556840ab8920569a7a4137afa8a63a32cee0bc7d89bd4b", size = 95611439 },
+    { url = "https://files.pythonhosted.org/packages/c2/9c/fc5224e9770c83faed3a087112d73147cd7c7bfb7557dcf9ad87e1dda163/torch-2.6.0-cp313-cp313-win_amd64.whl", hash = "sha256:510c73251bee9ba02ae1cb6c9d4ee0907b3ce6020e62784e2d7598e0cfa4d6cc", size = 204126475 },
+    { url = "https://files.pythonhosted.org/packages/88/8b/d60c0491ab63634763be1537ad488694d316ddc4a20eaadd639cedc53971/torch-2.6.0-cp313-none-macosx_11_0_arm64.whl", hash = "sha256:ff96f4038f8af9f7ec4231710ed4549da1bdebad95923953a25045dcf6fd87e2", size = 66536783 },
+    { url = "https://files.pythonhosted.org/packages/40/bb/feb5644baa621fd8e1e88bf51f6fa38ab3f985d472a764144ff4867ac1d6/torch-2.6.0-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:9ea955317cfcd3852b1402b62af258ce735c2edeee42ca9419b6bc889e5ae053", size = 766680961 },
+    { url = "https://files.pythonhosted.org/packages/ee/11/08774a8198a33263947c59e04b8a0bf85a61a44e82100c46cf833bbce35e/torch-2.6.0-cp39-cp39-manylinux_2_28_aarch64.whl", hash = "sha256:bb2c6c3e65049f081940f5ab15c9136c7de40d3f01192541c920a07c7c585b7e", size = 95782656 },
+    { url = "https://files.pythonhosted.org/packages/c1/0d/56fb07032accbfebb4555638b6002ec5678d0942da85497e40f9405ab756/torch-2.6.0-cp39-cp39-win_amd64.whl", hash = "sha256:683410f97984103148e31b38a8631acf31c3034c020c0f4d26171e7626d8317a", size = 204061417 },
+    { url = "https://files.pythonhosted.org/packages/b3/17/41f681b87290a1d2f1394f943e470f8b0b3c2987b7df8dc078d8831fce5b/torch-2.6.0-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:265f70de5fd45b864d924b64be1797f86e76c8e48a02c2a3a6fc7ec247d2226c", size = 66520446 },
 ]
 
 [[package]]
@@ -1512,6 +1274,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/eb/79/72064e6a701c2183016abbbfedaba506d81e30e232a68c9f0d6f6fcd1574/traitlets-5.14.3.tar.gz", hash = "sha256:9ed0579d3502c94b4b3732ac120375cda96f923114522847de4b3bb98b96b6b7", size = 161621 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/00/c0/8f5d070730d7836adc9c9b6408dec68c6ced86b304a9b26a14df072a6e8c/traitlets-5.14.3-py3-none-any.whl", hash = "sha256:b74e89e397b1ed28cc831db7aea759ba6640cb3de13090ca145426688ff1ac4f", size = 85359 },
+]
+
+[[package]]
+name = "triton"
+version = "3.2.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/01/65/3ffa90e158a2c82f0716eee8d26a725d241549b7d7aaf7e4f44ac03ebd89/triton-3.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b3e54983cd51875855da7c68ec05c05cf8bb08df361b1d5b69e05e40b0c9bd62", size = 253090354 },
+    { url = "https://files.pythonhosted.org/packages/a7/2e/757d2280d4fefe7d33af7615124e7e298ae7b8e3bc4446cdb8e88b0f9bab/triton-3.2.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8009a1fb093ee8546495e96731336a33fb8856a38e45bb4ab6affd6dbc3ba220", size = 253157636 },
+    { url = "https://files.pythonhosted.org/packages/06/00/59500052cb1cf8cf5316be93598946bc451f14072c6ff256904428eaf03c/triton-3.2.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8d9b215efc1c26fa7eefb9a157915c92d52e000d2bf83e5f69704047e63f125c", size = 253159365 },
+    { url = "https://files.pythonhosted.org/packages/c7/30/37a3384d1e2e9320331baca41e835e90a3767303642c7a80d4510152cbcf/triton-3.2.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e5dfa23ba84541d7c0a531dfce76d8bcd19159d50a4a8b14ad01e91734a5c1b0", size = 253154278 },
+    { url = "https://files.pythonhosted.org/packages/bc/74/9f12bdedeb110242d8bb1bd621f6605e753ee0cbf73cf7f3a62b8173f190/triton-3.2.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:30ceed0eff2c4a73b14eb63e052992f44bbdf175f3fad21e1ac8097a772de7ee", size = 253057866 },
 ]
 
 [[package]]
