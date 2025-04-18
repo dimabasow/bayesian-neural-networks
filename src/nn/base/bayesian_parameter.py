@@ -243,11 +243,11 @@ class BayesianParameter(BayesianModule):
     ) -> torch.Tensor:
         dim_batch_expand = x.shape[:-1]
         if self.training:
-            dim_batch = dim_batch_expand
             dim_expand = None
+            dim_batch = dim_batch_expand
         else:
-            dim_batch = dim_batch_expand[:1]
             dim_expand = dim_batch_expand[1:]
+            dim_batch = dim_batch_expand[:1]
         sigma = next(self.get_sigma())
         gamma = next(self.get_gamma())
         mu = gamma * sigma
