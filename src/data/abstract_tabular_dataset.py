@@ -1,7 +1,7 @@
-import random
 from abc import ABC, abstractmethod
-from typing import Dict, Iterator, List, NamedTuple, Optional, Sequence, Tuple, TypeVar
+from typing import Dict, Iterator, NamedTuple, Optional, Sequence, Tuple, TypeVar
 
+import numpy as np
 import polars as pl
 
 from src.data.preprocessing.metadata import Metadata
@@ -168,12 +168,12 @@ class AbstractTabularDataset(ABC):
         shuffle: bool = False,
         num_epochs: Optional[int] = 1,
     ) -> Iterator[Iterator[TableItem]]:
-        idx = list(range(len(self)))
+        idx = np.arange(len(self))
         count = 0
         while num_epochs is None or count < num_epochs:
             count += 1
             if shuffle and batch_size is not None:
-                random.shuffle(idx)
+                np.random.shuffle(idx)
             yield self.__get_batches(idx=idx, batch_size=batch_size)
 
     def to_bathes(
@@ -182,17 +182,17 @@ class AbstractTabularDataset(ABC):
         shuffle: bool = False,
         num_epochs: Optional[int] = 1,
     ) -> Iterator[TableItem]:
-        idx = list(range(len(self)))
+        idx = np.arange(len(self))
         count = 0
         while num_epochs is None or count < num_epochs:
             count += 1
             if shuffle and batch_size is not None:
-                random.shuffle(idx)
+                np.random.shuffle(idx)
             yield from self.__get_batches(idx=idx, batch_size=batch_size)
 
     def __get_batches(
         self,
-        idx: List[int],
+        idx: np.ndarray,
         batch_size: Optional[int],
     ) -> Iterator[TableItem]:
         if batch_size is None:
