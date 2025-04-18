@@ -60,4 +60,5 @@ explicit = true
 [dependency-groups]
 dev = [
     "ipykernel>=6.29.5",
+    "scikit-learn>=1.6.1",
 ]
