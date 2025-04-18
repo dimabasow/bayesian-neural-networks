@@ -30,7 +30,7 @@ class TorchTabularDataset(AbstractTabularDataset):
         if data.features_numeric is None:
             features_numeric = None
         else:
-            features_numeric = data.features_numeric.to_torch()
+            features_numeric = data.features_numeric.to_torch().float()
 
         if data.target is None:
             target = None
