@@ -6,23 +6,27 @@ readme = "README.md"
 authors = [
     { name = "Dmitriy Basov", email = "dimabasow@vk.com" }
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
     "polars>=1.27.1",
-    "scipy>=1.13.1",
+    "scipy>=1.15.2",
 ]
 
 [project.optional-dependencies]
+cpu = [
+    "torch>=2.6.0",
+]
 cu126 = [
     "torch>=2.6.0",
 ]
 cu128 = [
-    "torch>=2.6.0",
+    "torch>=2.8.0.dev20250418",
 ]
 
 [tool.uv]
 conflicts = [
   [
+    { extra = "cpu" },
     { extra = "cu126" },
     { extra = "cu128" },
   ],
@@ -32,33 +36,30 @@ conflicts = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src"]
-
-[[tool.uv.index]]
-url = "file:///workspaces/bayesian-neural-networks/pytorch-cu128-nightly"
-
-[[tool.uv.index]]
-url = "file:///workspaces/bayesian-neural-networks/pytorch-cu126"
-
-
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
-
-[[tool.uv.index]]
-name = "pytorch-cu126"
-url = "https://download.pytorch.org/whl/cu126"
-explicit = true
-
-[[tool.uv.index]]
-name = "pytorch-cu128-nightly"
-url = "https://download.pytorch.org/whl/nightly/cu128"
-explicit = true
-
 [dependency-groups]
 dev = [
     "ipykernel>=6.29.5",
     "scikit-learn>=1.6.1",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cpu", extra = "cpu" },
+  { index = "pytorch-cu126", extra = "cu126" },
+  { index = "pytorch-cu128-nightly", extra = "cu128" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128-nightly"
+url = "https://download.pytorch.org/whl/nightly/cu128"
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
