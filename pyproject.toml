@@ -39,6 +39,9 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "ipykernel>=6.29.5",
+    "nbformat>=5.10.4",
+    "pandas>=2.2.3",
+    "plotly>=6.0.1",
     "scikit-learn>=1.6.1",
 ]
 
