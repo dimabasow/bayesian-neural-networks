@@ -126,7 +126,7 @@ class AbstractTabularDataset(ABC):
         return self.length
 
     def __getitem__(self, idx) -> TableItem:
-        if isinstance(idx, (slice, list)):
+        if isinstance(idx, (slice, list, np.ndarray)):
             idx = idx
         elif isinstance(idx, Sequence):
             idx = list(idx)

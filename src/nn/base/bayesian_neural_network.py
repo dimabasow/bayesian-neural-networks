@@ -73,6 +73,6 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
             kl = self.get_kl()
             kl.backward()
             optimizer.step()
-            metrics.append(kl.item())
+            metrics.append(kl.detach().item())
         self.init_mode_off()
         return metrics
