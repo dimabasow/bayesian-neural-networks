@@ -23,9 +23,9 @@ def transform(df: pl.DataFrame, conf: List[Dict[str, Any]]) -> pl.DataFrame:
             columns.append(column)
             series = df[column]
             series = (series - item["mean"]) / item["std"]
-            list_to_cat.append(series)
-        df_ecoded: pl.DataFrame = pl.concat(list_to_cat, how="horizontal")
-        return df_ecoded
+            list_to_cat.append(series.to_frame())
+    df_ecoded: pl.DataFrame = pl.concat(list_to_cat, how="horizontal")
+    return df_ecoded
 
 
 class StandardScaler(BaseTransformer, ABC):
@@ -38,7 +38,7 @@ class StandardScaler(BaseTransformer, ABC):
 
     @property
     def columns_out(self) -> List[str]:
-        return [self.rename_column(item["name"]) for item in self.conf]
+        return [self.rename_column(column=item["column"]) for item in self.conf]
 
     @classmethod
     def from_config(
@@ -78,6 +78,7 @@ class FeatureStandardScaler(StandardScaler):
 
     def transform(self, data: pl.DataFrame) -> pl.DataFrame:
         df = transform(df=data[self.columns_in], conf=self.conf)
+        df.columns = [self.rename_column(column=column) for column in df.columns]
         df = df.fill_nan(0).fill_null(0)
         return df[self.columns_out]
 
@@ -87,4 +88,5 @@ class TargetStandardScaler(StandardScaler):
 
     def transform(self, data: pl.DataFrame) -> pl.DataFrame:
         df = transform(df=data[self.columns_in], conf=self.conf)
+        df.columns = [self.rename_column(column=column) for column in df.columns]
         return df
