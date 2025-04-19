@@ -9,7 +9,6 @@ from src.nn.heads.binary_classification_head import BinaryClassificationHead
 class BayesianBinaryPerceptrone(BayesianNeuralNetwork):
     def __init__(
         self,
-        name_in: str,
         name_out: str,
         name_target: str,
         dim_in: int,
@@ -30,7 +29,7 @@ class BayesianBinaryPerceptrone(BayesianNeuralNetwork):
         self.backbones = BayesianModuleList(
             [
                 BayesianPerceptrone(
-                    name_in=name_in,
+                    name_in=None,
                     name_out="embeding",
                     dim_in=dim_in,
                     dim_out=1,

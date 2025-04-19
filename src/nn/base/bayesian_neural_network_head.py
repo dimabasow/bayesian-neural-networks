@@ -13,7 +13,7 @@ class BayesianNeuralNetworkHead(BayesianModule, ABC):
 
     def __init__(
         self,
-        name_in: str,
+        name_in: Optional[str],
         name_out: str,
         name_target: str,
     ) -> None:

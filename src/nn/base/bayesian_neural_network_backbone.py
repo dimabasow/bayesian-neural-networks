@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from typing import Dict, Optional
 
 import torch
 
@@ -12,6 +12,6 @@ class BayesianNeuralNetworkBackbone(BayesianModule, ABC):
     @abstractmethod
     def forward(
         self,
-        x: Dict[str, torch.Tensor],
+        x: Dict[Optional[str], torch.Tensor],
     ) -> torch.Tensor:
         pass

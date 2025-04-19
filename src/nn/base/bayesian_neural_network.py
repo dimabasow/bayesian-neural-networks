@@ -24,8 +24,9 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
 
     def forward(
         self,
-        x: Dict[str, torch.Tensor],
+        features: torch.Tensor,
     ) -> Dict[str, torch.Tensor]:
+        x = {None: features}
         x = self.forward_backbone(x=x)
         y = {}
         for head in self.heads:
@@ -34,10 +35,11 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
 
     def loss(
         self,
-        x: Dict[str, torch.Tensor],
+        features: torch.Tensor,
         target: Dict[str, TorchTargetItem],
         train_size: int,
     ) -> torch.Tensor:
+        x = {None: features}
         x = self.forward_backbone(x=x)
         loss = torch.zeros(size=[], dtype=self.dtype, device=self.device)
         for head in self.heads:
@@ -51,7 +53,7 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
 
     def init(
         self,
-        x: Dict[str, torch.Tensor],
+        features: torch.Tensor,
         optimizer: str = "Adam",
         lr: float = 0.1,
         num_epoch: int = 10,
@@ -64,6 +66,7 @@ class BayesianNeuralNetwork(BayesianModule, ABC):
             weight_decay=0,
         )
         metrics = []
+        x = {None: features}
         for _ in range(num_epoch):
             optimizer.zero_grad()
             self.forward_backbone(x)
