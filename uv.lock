@@ -20,6 +20,22 @@ conflicts = [[
 ]]
 
 [[package]]
+name = "altair"
+version = "5.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jinja2" },
+    { name = "jsonschema" },
+    { name = "narwhals" },
+    { name = "packaging" },
+    { name = "typing-extensions", marker = "python_full_version < '3.14' or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu126') or (extra == 'extra-24-bayesian-neural-networks-cpu' and extra == 'extra-24-bayesian-neural-networks-cu128') or (extra == 'extra-24-bayesian-neural-networks-cu126' and extra == 'extra-24-bayesian-neural-networks-cu128')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/16/b1/f2969c7bdb8ad8bbdda031687defdce2c19afba2aa2c8e1d2a17f78376d8/altair-5.5.0.tar.gz", hash = "sha256:d960ebe6178c56de3855a68c47b516be38640b73fb3b5111c2a9ca90546dd73d", size = 705305 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/f3/0b6ced594e51cc95d8c1fc1640d3623770d01e4969d29c0bd09945fafefa/altair-5.5.0-py3-none-any.whl", hash = "sha256:91a310b926508d560fe0148d02a194f38b824122641ef528113d029fcd129f8c", size = 731200 },
+]
+
+[[package]]
 name = "appnope"
 version = "0.1.4"
 source = { registry = "https://pypi.org/simple" }
@@ -51,6 +67,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "polars" },
+    { name = "polars-hash" },
     { name = "scipy" },
 ]
 
@@ -68,6 +85,7 @@ cu128 = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "altair" },
     { name = "ipykernel" },
     { name = "nbformat" },
     { name = "pandas" },
@@ -78,6 +96,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "polars", specifier = ">=1.27.1" },
+    { name = "polars-hash", specifier = ">=0.5.2" },
     { name = "scipy", specifier = ">=1.15.2" },
     { name = "torch", marker = "extra == 'cpu'", specifier = ">=2.6.0", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "bayesian-neural-networks", extra = "cpu" } },
     { name = "torch", marker = "extra == 'cu126'", specifier = ">=2.6.0", index = "https://download.pytorch.org/whl/cu126", conflict = { package = "bayesian-neural-networks", extra = "cu126" } },
@@ -87,6 +106,7 @@ provides-extras = ["cpu", "cu126", "cu128"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "altair", specifier = ">=5.5.0" },
     { name = "ipykernel", specifier = ">=6.29.5" },
     { name = "nbformat", specifier = ">=5.10.4" },
     { name = "pandas", specifier = ">=2.2.3" },
@@ -711,6 +731,26 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/88/c2/37720b8794935f1e77bde439564fa421a41f5fed8111aeb7b9ca0ebafb2d/polars-1.27.1-cp39-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:4d18a29c65222451818b63cd397b2e95c20412ea0065d735a20a4a79a7b26e8a", size = 32586083 },
     { url = "https://files.pythonhosted.org/packages/41/3d/1bb108eb278c1eafb303f78c515fb71c9828944eba3fb5c0ac432b9fad28/polars-1.27.1-cp39-abi3-win_amd64.whl", hash = "sha256:a4f832cf478b282d97f8bf86eeae2df66fa1384de1c49bc61f7224a10cc6a5df", size = 35602500 },
     { url = "https://files.pythonhosted.org/packages/0f/5c/cc23daf0a228d6fadbbfc8a8c5165be33157abe5b9d72af3e127e0542857/polars-1.27.1-cp39-abi3-win_arm64.whl", hash = "sha256:4f238ee2e3c5660345cb62c0f731bbd6768362db96c058098359ecffa42c3c6c", size = 31891470 },
+]
+
+[[package]]
+name = "polars-hash"
+version = "0.5.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "polars" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/25/ba/4e36eae3a537a5b9d8ac9300a1cceb74b86f2617b907284e5adcd47a6e1c/polars_hash-0.5.2.tar.gz", hash = "sha256:c16f58739e231a4c39d5956e49340b7c3415c8ad49f4a183d529b5984f1c37d9", size = 33457 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c6/ce/ef4cf9bcad7d83b5097d3d45885c026e31b2b7a0dda8f2eb7d20382a3f17/polars_hash-0.5.2-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:4d768a025bfe4e74a3bf4a3a98f2b44a32ab00494ac43ec44be37aafa445bb0a", size = 3442518 },
+    { url = "https://files.pythonhosted.org/packages/ae/01/407ad2045bf6b5058fd08092a233542f6854718674be93bf73e7a1c64e8e/polars_hash-0.5.2-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:79d0979f14fe8a6b9ce829cdbd2517925372185fea96fb3fe8c9b408a32299c4", size = 3092983 },
+    { url = "https://files.pythonhosted.org/packages/74/52/2600ba47c617000c624cf7578aa009e605672f5815e900398792b05b9035/polars_hash-0.5.2-cp38-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:6ee13335a0d4fe2978718889f419ac966f2b4dddc3f378ca3f85b640eca25933", size = 4135821 },
+    { url = "https://files.pythonhosted.org/packages/85/49/6da59d50906e0acf2f74aae05a721f7d347b1fe5039bd6415cfc8bc75668/polars_hash-0.5.2-cp38-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:d7420b0508066254e19ef63173299893d76d1437f9d4d39d7a745b25cf885b86", size = 4358612 },
+    { url = "https://files.pythonhosted.org/packages/cc/37/b51a772af03571700aa4972ab30ced44dec2feed08b26f6e7c587c6fc150/polars_hash-0.5.2-cp38-abi3-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:56b1c89f5ab56073f02049ce6fd935b2aae29a163fb9c88fad77a0a9c1e070e4", size = 4824449 },
+    { url = "https://files.pythonhosted.org/packages/29/f5/ee6daa0ee8c979380ebe2b4c6eed2359eeb6e0b417a3e64e525589c46ef8/polars_hash-0.5.2-cp38-abi3-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:3bd451eb8e8785f19c7127d4f00f3c603713f9aa94aba62f30849325a0e6ba16", size = 4665759 },
+    { url = "https://files.pythonhosted.org/packages/7a/5a/df82f964eb7673bc9bc173f2f256ea764c7ad09a1bcfb1ec279f7604a36e/polars_hash-0.5.2-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:20f2a6496ef3846cdf759da37add264308b025eb45859668db3c336fb6d80afe", size = 4626647 },
+    { url = "https://files.pythonhosted.org/packages/72/ac/0c49e366134fbff15077d2bdc30b61ab92eab7e8d6b930ea180e17c2dc5a/polars_hash-0.5.2-cp38-abi3-win32.whl", hash = "sha256:dcd0063332cc0bb7c12a4e6691301090ab298907f49746fed8b034b2c2a4b4e7", size = 3488499 },
+    { url = "https://files.pythonhosted.org/packages/23/a8/3e22266bb5be3799dfe7b65b8f9231ceee965da87fe36c972618599ee955/polars_hash-0.5.2-cp38-abi3-win_amd64.whl", hash = "sha256:a59c3337f90ec36079106f42df3162db896eeabef0049c4f96a88efdce7f199f", size = 3851203 },
 ]
 
 [[package]]
