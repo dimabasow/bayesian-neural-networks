@@ -58,4 +58,4 @@ class MissingIndicator(BaseTransformer):
         return data
 
     def rename_column(self, column: str) -> str:
-        return f"{column}_{self.__class__.__name__}"
+        return f"{self.__class__.__name__}_{column}"

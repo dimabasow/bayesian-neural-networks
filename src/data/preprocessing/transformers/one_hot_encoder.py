@@ -5,7 +5,7 @@ import polars as pl
 
 from src.data.preprocessing.metadata import TransformType
 from src.data.preprocessing.transformers.base import BaseTransformer
-from src.data.preprocessing.utils import drop_columns_constant
+from src.data.preprocessing.utils import drop_columns_empty_or_constant
 
 
 class OneHotEncoder(BaseTransformer):
@@ -80,7 +80,7 @@ class OneHotEncoder(BaseTransformer):
 
     @staticmethod
     def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
-        return drop_columns_constant(df=data)
+        return drop_columns_empty_or_constant(df=data)
 
     def rename_column(self, column: str, value) -> str:
-        return f"{column}_{self.__class__.__name__}_{value}"
+        return f"{self.__class__.__name__}_{column}_{value}"

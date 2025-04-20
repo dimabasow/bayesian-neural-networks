@@ -1,3 +1,4 @@
+import copy
 import json
 from typing import (
     Any,
@@ -13,7 +14,8 @@ from typing import (
 import polars as pl
 
 import src.data.preprocessing.transformers
-from src.data.preprocessing.metadata import Metadata
+from src.data.preprocessing.metadata import Metadata, TransformType
+from src.data.preprocessing.scaler import Scaler
 from src.data.preprocessing.transformers import BaseTransformer
 
 
@@ -27,8 +29,10 @@ class Preprocessor:
     def __init__(
         self,
         transformers: Sequence[BaseTransformer],
+        scaler: Scaler,
     ):
         self.transformers = tuple(transformers)
+        self.scaler = scaler
 
     @classmethod
     def from_rules(cls, *rules: RuleTransform) -> "Preprocessor":
@@ -43,15 +47,16 @@ class Preprocessor:
                 kwargs=rule.kwargs,
             )
             transformers.append(transformer)
-        return cls(transformers=transformers)
+        return cls(transformers=transformers, scaler=Scaler())
 
     @classmethod
     def from_state(
         cls,
-        state: Sequence[Dict[str, Union[str, Dict]]],
+        conf_transformers: Sequence[Dict[str, Union[str, Dict]]],
+        conf_scaler: Dict[str, Dict[str, float]],
     ) -> "Preprocessor":
         transformers = []
-        for item in state:
+        for item in conf_transformers:
             cls_name = item["name"]
             cls_state = item["state"]
             constructor: BaseTransformer = getattr(
@@ -60,12 +65,13 @@ class Preprocessor:
             )
             transformer = constructor(**cls_state)
             transformers.append(transformer)
-        return cls(transformers=tuple(transformers))
+        scaler = Scaler(conf=conf_scaler)
+        return cls(transformers=tuple(transformers), scaler=scaler)
 
     @classmethod
     def from_json(cls, json_str: str) -> "Preprocessor":
         state = json.loads(json_str)
-        return cls(**state)
+        return cls.from_state(**state)
 
     @property
     def metadata(self) -> Metadata:
@@ -76,8 +82,21 @@ class Preprocessor:
                 metadata_dict[transform_type] = []
             metadata_dict[transform_type].extend(item.columns_out)
 
+        if self.scaler.conf is not None:
+            for key in (
+                TransformType.features_numeric.name,
+                TransformType.targets_regression.name,
+            ):
+                if key in metadata_dict:
+                    columns = metadata_dict[key]
+                    columns = [
+                        column for column in columns if column in self.scaler.conf
+                    ]
+                    metadata_dict[key] = columns
+
         for key, value in metadata_dict.items():
-            metadata_dict[key] = sorted(set(value))
+            metadata_dict[key] = tuple(sorted(set(value)))
+
         return Metadata(**metadata_dict)
 
     @property
@@ -107,26 +126,37 @@ class Preprocessor:
 
     @property
     def state(self) -> List[Dict[str, Union[str, Dict]]]:
-        return [
+        conf_transformers = [
             {"name": item.__class__.__name__, "state": item.state}
             for item in self.transformers
         ]
+        conf_scaler = copy.deepcopy(self.scaler.conf)
+        return {
+            "conf_transformers": conf_transformers,
+            "conf_scaler": conf_scaler,
+        }
 
     def to_json(self) -> str:
         return json.dumps(self.state)
 
-    def fit(self, data: pl.DataFrame):
+    def fit(self, data: pl.DataFrame) -> None:
         for item in self.transformers:
             item.fit(data=data)
+        self.scaler.fit(df=data, metadata=self.metadata)
 
     def transform(self, data: pl.DataFrame) -> pl.DataFrame:
         dfs = (item.transform(data=data) for item in self.transformers)
         df = pl.concat(dfs, how="horizontal")
+        df = self.scaler.transform(df=df)
+        if self.metadata.features_numeric is not None:
+            for column in self.metadata.features_numeric:
+                df = df.with_columns(pl.col(column).fill_nan(0).fill_null(0))
         columns = [column for column in self.columns_out if column in df.columns]
         return df[columns]
 
     def fit_transform(self, data: pl.DataFrame) -> pl.DataFrame:
         dfs = (item.fit_transform(data=data) for item in self.transformers)
         df = pl.concat(dfs, how="horizontal")
+        df = self.scaler.fit_transform(df=df, metadata=self.metadata)
         columns = [column for column in self.columns_out if column in df.columns]
         return df[columns]

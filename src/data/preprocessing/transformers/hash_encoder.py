@@ -5,7 +5,7 @@ import polars_hash as plh
 
 from src.data.preprocessing.metadata import TransformType
 from src.data.preprocessing.transformers.base import BaseTransformer
-from src.data.preprocessing.utils import drop_columns_constant
+from src.data.preprocessing.utils import drop_columns_empty_or_constant
 
 
 class HashEncoder(BaseTransformer):
@@ -54,7 +54,10 @@ class HashEncoder(BaseTransformer):
     def transform(self, data: pl.DataFrame) -> pl.DataFrame:
         df_encoded = data.select(
             *[
-                plh.col(column).cast(pl.String()).nchash.murmur32(seed=0)
+                plh.col(column)
+                .cast(pl.String())
+                .fill_null("<fcjdLR")
+                .nchash.murmur32(seed=0)
                 for column in self.columns_in
             ]
         )
@@ -69,7 +72,7 @@ class HashEncoder(BaseTransformer):
 
     @staticmethod
     def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
-        return drop_columns_constant(df=data)
+        return drop_columns_empty_or_constant(df=data)
 
     def rename_column(self, column: str, count: int) -> str:
-        return f"{column}_{self.__class__.__name__}_{count}"
+        return f"{self.__class__.__name__}_{column}_{count}"

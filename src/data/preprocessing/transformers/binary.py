@@ -1,4 +1,5 @@
 import copy
+from abc import ABC
 from typing import Any, Dict, List, Optional
 
 import polars as pl
@@ -8,9 +9,7 @@ from src.data.preprocessing.transformers.base import BaseTransformer
 from src.data.preprocessing.utils import drop_columns_empty_or_constant
 
 
-class BinaryTarget(BaseTransformer):
-    transform_type = TransformType.targets_binary
-
+class Binary(BaseTransformer, ABC):
     def __init__(self, conf: List[Dict[str, Any]]):
         self.conf = copy.deepcopy(conf)
         self.columns_in = [item["column"] for item in conf]
@@ -32,7 +31,7 @@ class BinaryTarget(BaseTransformer):
         cls,
         columns: Optional[List[str]] = None,
         kwargs: Optional[Dict[str, Any]] = None,
-    ) -> "BinaryTarget":
+    ) -> "Binary":
         return cls(conf=[{"column": column} for column in columns])
 
     @property
@@ -81,11 +80,19 @@ class BinaryTarget(BaseTransformer):
                 )[name]
                 list_to_cat.append(series_encoded.to_frame())
         df_encoded = pl.concat(list_to_cat, how="horizontal")
-        return df_encoded
+        return df_encoded[self.columns_out]
 
     @staticmethod
     def filter_raw_data(data: pl.DataFrame) -> pl.DataFrame:
         return drop_columns_empty_or_constant(df=data)
 
     def rename_column(self, column: str, value_zero, value_one) -> str:
-        return f"{column}_{self.__class__.__name__}_{value_zero}_{value_one}"
+        return f"{self.__class__.__name__}_{column}_{value_zero}_{value_one}"
+
+
+class BinaryFeature(Binary):
+    transform_type = TransformType.features_numeric
+
+
+class BinaryTarget(Binary):
+    transform_type = TransformType.targets_binary

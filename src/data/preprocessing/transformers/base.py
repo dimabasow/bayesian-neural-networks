@@ -9,6 +9,7 @@ from src.data.preprocessing.metadata import TransformType
 
 class BaseTransformer(ABC):
     columns_in: Optional[List[str]] = None
+    columns_out: Optional[List[str]]
     transform_type: TransformType
 
     @abstractmethod
