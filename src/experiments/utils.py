@@ -78,18 +78,20 @@ def inference_binary_perceptrone(
 def train_bayesian_model(
     dataset: TorchTabularDataset,
     model: BayesianNeuralNetwork,
+    optimizer: str = "Adam",
+    lr: float = 0.1,
+    num_epoch: int = 1000,
 ) -> List[float]:
+    optimizer: torch.optim.Optimizer = getattr(torch.optim, optimizer)(
+        model.parameters(),
+        lr=lr,
+        weight_decay=0,
+    )
     model.train()
     loss_train = []
     for epoch_num, batch in enumerate(
-        dataset.to_bathes(batch_size=None, shuffle=False, num_epochs=5_000)
+        dataset.to_bathes(batch_size=None, shuffle=False, num_epochs=num_epoch)
     ):
-        if epoch_num == 0:
-            optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=0)
-        elif epoch_num == 1_000:
-            optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=0)
-        elif epoch_num == 2_000:
-            optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=0)
         optimizer.zero_grad()
         loss = model.loss(
             features=batch.features_numeric,
@@ -132,13 +134,43 @@ def make_experiment_bayesian_binary_perceptrone(
 
     loss_init = model.init(
         features=dataset_train.data.features_numeric,
-        num_epoch=1000,
-        lr=0.01,
+        optimizer="SGD",
+        num_epoch=100,
+        lr=0.00001,
+    )
+    loss_init.extend(
+        model.init(
+            features=dataset_train.data.features_numeric,
+            optimizer="SGD",
+            num_epoch=100,
+            lr=0.0001,
+        )
     )
 
     loss_train = train_bayesian_model(
         dataset=dataset_train,
         model=model,
+        optimizer="Adam",
+        lr=0.01,
+        num_epoch=2_000,
+    )
+    loss_train.extend(
+        train_bayesian_model(
+            dataset=dataset_train,
+            model=model,
+            optimizer="Adam",
+            lr=0.005,
+            num_epoch=2_000,
+        )
+    )
+    loss_train.extend(
+        train_bayesian_model(
+            dataset=dataset_train,
+            model=model,
+            optimizer="Adam",
+            lr=0.001,
+            num_epoch=2_000,
+        )
     )
 
     df_inference_train = inference_binary_perceptrone(
