@@ -87,6 +87,7 @@ cu128 = [
 dev = [
     { name = "altair" },
     { name = "ipykernel" },
+    { name = "matplotlib" },
     { name = "nbformat" },
     { name = "pandas" },
     { name = "plotly" },
@@ -108,6 +109,7 @@ provides-extras = ["cpu", "cu126", "cu128"]
 dev = [
     { name = "altair", specifier = ">=5.5.0" },
     { name = "ipykernel", specifier = ">=6.29.5" },
+    { name = "matplotlib", specifier = ">=3.9.0" },
     { name = "nbformat", specifier = ">=5.10.4" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "plotly", specifier = ">=6.0.1" },
@@ -180,6 +182,38 @@ wheels = [
 ]
 
 [[package]]
+name = "contourpy"
+version = "1.2.1"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+dependencies = [
+    { name = "numpy" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-macosx_10_9_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp311-cp311-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-macosx_10_9_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/contourpy-1.2.1-cp312-cp312-win_amd64.whl" },
+]
+
+[[package]]
+name = "cycler"
+version = "0.12.1"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/cycler-0.12.1-py3-none-any.whl" },
+]
+
+[[package]]
 name = "debugpy"
 version = "1.8.14"
 source = { registry = "https://pypi.org/simple" }
@@ -233,6 +267,24 @@ version = "3.13.1"
 source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
 wheels = [
     { url = "https://download.pytorch.org/whl/nightly/filelock-3.13.1-py3-none-any.whl" },
+]
+
+[[package]]
+name = "fonttools"
+version = "4.53.0"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp311-cp311-macosx_10_9_universal2.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp311-cp311-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp311-cp311-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp312-cp312-macosx_10_9_universal2.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp312-cp312-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-cp312-cp312-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/fonttools-4.53.0-py3-none-any.whl" },
 ]
 
 [[package]]
@@ -392,6 +444,31 @@ wheels = [
 ]
 
 [[package]]
+name = "kiwisolver"
+version = "1.4.5"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-macosx_10_9_universal2.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-macosx_10_9_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp311-cp311-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-macosx_10_9_universal2.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-macosx_10_9_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-manylinux_2_17_s390x.manylinux2014_s390x.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/kiwisolver-1.4.5-cp312-cp312-win_amd64.whl" },
+]
+
+[[package]]
 name = "markupsafe"
 version = "2.1.5"
 source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
@@ -409,6 +486,34 @@ wheels = [
     { url = "https://download.pytorch.org/whl/nightly/MarkupSafe-2.1.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
     { url = "https://download.pytorch.org/whl/nightly/MarkupSafe-2.1.5-cp312-cp312-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl" },
     { url = "https://download.pytorch.org/whl/nightly/MarkupSafe-2.1.5-cp312-cp312-win_amd64.whl" },
+]
+
+[[package]]
+name = "matplotlib"
+version = "3.9.0"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+dependencies = [
+    { name = "contourpy" },
+    { name = "cycler" },
+    { name = "fonttools" },
+    { name = "kiwisolver" },
+    { name = "numpy" },
+    { name = "packaging" },
+    { name = "pillow" },
+    { name = "pyparsing" },
+    { name = "python-dateutil" },
+]
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp311-cp311-macosx_10_12_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp311-cp311-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp311-cp311-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp312-cp312-macosx_10_12_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp312-cp312-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/matplotlib-3.9.0-cp312-cp312-win_amd64.whl" },
 ]
 
 [[package]]
@@ -698,6 +803,43 @@ wheels = [
 ]
 
 [[package]]
+name = "pillow"
+version = "11.0.0"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-macosx_10_10_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-manylinux_2_28_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-manylinux_2_28_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp311-cp311-win_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-macosx_10_13_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-manylinux_2_28_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-manylinux_2_28_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp312-cp312-win_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-macosx_10_13_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-manylinux_2_28_aarch64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-manylinux_2_28_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313-win_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313t-macosx_10_13_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313t-macosx_11_0_arm64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313t-manylinux_2_28_x86_64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313t-win_amd64.whl" },
+    { url = "https://download.pytorch.org/whl/nightly/pillow-11.0.0-cp313-cp313t-win_arm64.whl" },
+]
+
+[[package]]
 name = "platformdirs"
 version = "4.3.7"
 source = { registry = "https://pypi.org/simple" }
@@ -812,6 +954,14 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/7c/2d/c3338d48ea6cc0feb8446d8e6937e1408088a72a39937982cc6111d17f84/pygments-2.19.1.tar.gz", hash = "sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f", size = 4968581 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8a/0b/9fcc47d19c48b59121088dd6da2488a49d5f72dacf8262e2790a1d2c7d15/pygments-2.19.1-py3-none-any.whl", hash = "sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c", size = 1225293 },
+]
+
+[[package]]
+name = "pyparsing"
+version = "3.1.2"
+source = { registry = "https://download.pytorch.org/whl/nightly/cu128" }
+wheels = [
+    { url = "https://download.pytorch.org/whl/nightly/pyparsing-3.1.2-py3-none-any.whl" },
 ]
 
 [[package]]
