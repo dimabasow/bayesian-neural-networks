@@ -133,6 +133,7 @@ def make_experiment_bayesian_binary_perceptrone(
     loss_init = model.init(
         features=dataset_train.data.features_numeric,
         num_epoch=1000,
+        lr=0.01,
     )
 
     loss_train = train_bayesian_model(
@@ -259,6 +260,8 @@ def make_experiment_binary_perceptrone(
     batch_size_inference_bayesian: Optional[int],
     sample_size_inference_bayesian: int,
     random_seed: int,
+    log_loss_init: bool = False,
+    log_loss_train: bool = False,
 ) -> Dict:
     result = {}
     result["bayesian"] = make_experiment_bayesian_binary_perceptrone(
@@ -269,6 +272,8 @@ def make_experiment_binary_perceptrone(
         batch_size_inference=batch_size_inference_bayesian,
         sample_size_inference=sample_size_inference_bayesian,
         random_seed=random_seed,
+        log_loss_init=log_loss_init,
+        log_loss_train=log_loss_train,
     )
     for weight_decay in weight_decays_classic:
         result[f"classic_{weight_decay}"] = (
@@ -279,6 +284,7 @@ def make_experiment_binary_perceptrone(
                 n_hidden=n_hidden,
                 weight_decay=weight_decay,
                 random_seed=random_seed,
+                log_loss_train=log_loss_train,
             )
         )
     return result

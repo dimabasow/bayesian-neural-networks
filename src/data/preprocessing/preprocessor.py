@@ -158,5 +158,8 @@ class Preprocessor:
         dfs = (item.fit_transform(data=data) for item in self.transformers)
         df = pl.concat(dfs, how="horizontal")
         df = self.scaler.fit_transform(df=df, metadata=self.metadata)
+        if self.metadata.features_numeric is not None:
+            for column in self.metadata.features_numeric:
+                df = df.with_columns(pl.col(column).fill_nan(0).fill_null(0))
         columns = [column for column in self.columns_out if column in df.columns]
         return df[columns]

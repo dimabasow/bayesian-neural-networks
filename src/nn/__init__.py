@@ -1,5 +1,5 @@
 from .affine import BayesianAffine
-from .backbones import BayesianPerceptrone, Perceptrone
+from .backbones import BayesianPerceptrone, BayesianResNet, Perceptrone
 from .base import (
     BayesianModule,
     BayesianNeuralNetwork,
@@ -15,7 +15,6 @@ from .container import (
 )
 from .heads import BinaryClassificationHead
 from .layers import (
-    BayesianResNet,
     BayesianResNetLast,
     ResNet,
 )
@@ -23,6 +22,7 @@ from .linear import BayesianLinear
 from .models import (
     BayesianBinaryClassifier,
     BayesianBinaryPerceptrone,
+    BayesianBinaryResNet,
     BayesianRegressor,
     BinaryClassifier,
     BinaryPerceptrone,
@@ -31,6 +31,7 @@ from .models import (
 __all__ = [
     "BayesianAffine",
     "BayesianPerceptrone",
+    "BayesianResNet",
     "Perceptrone",
     "BayesianModule",
     "BayesianNeuralNetwork",
@@ -42,12 +43,12 @@ __all__ = [
     "BayesianModuleList",
     "BayesianSequential",
     "BinaryClassificationHead",
-    "BayesianResNet",
     "BayesianResNetLast",
     "ResNet",
     "BayesianLinear",
     "BayesianBinaryClassifier",
     "BayesianBinaryPerceptrone",
+    "BayesianBinaryResNet",
     "BayesianRegressor",
     "BinaryClassifier",
     "BinaryPerceptrone",
