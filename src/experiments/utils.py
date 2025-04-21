@@ -335,6 +335,7 @@ def make_experiments_binary_perceptrone(
 ):
     if not os.path.exists(path=path_to_save):
         os.mkdir(path=path_to_save)
+    data = []
     for dim_hidden in dims_hidden:
         path_output = os.path.join(
             path_to_save, f"n_hidden_{n_hidden}_dim_hidden_{dim_hidden}.json"
@@ -352,3 +353,24 @@ def make_experiments_binary_perceptrone(
             )
             with open(path_output, "w") as f:
                 json.dump(result, f, indent=4)
+        else:
+            with open(path_output, "r") as f:
+                result = json.load(f)
+                for experiment in tuple(result.keys()):
+                    for metric in tuple(result[experiment].keys()):
+                        result[f"{experiment}_{metric}"] = result[experiment][metric]
+                    result.pop(experiment)
+                result["n_hidden"] = n_hidden
+                result["dim_hidden"] = dim_hidden
+                data.append(result)
+    df = pl.DataFrame(data).sort("dim_hidden")
+    df = df[
+        ["n_hidden", "dim_hidden"]
+        + [column for column in df.columns if column not in ["n_hidden", "dim_hidden"]]
+    ]
+    df.write_csv(
+        os.path.join(
+            path_to_save,
+            f"n_hidden_{n_hidden}_dims_hidden_{dims_hidden[0]}_{dims_hidden[-1]}.csv",
+        )
+    )
