@@ -20,6 +20,7 @@
 		}
 	},
 	"runArgs": [
+		"--userns=keep-id", // only for podman, not for docker
 		"--gpus",
 		"all"
 	]
