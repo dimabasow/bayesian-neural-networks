@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Iterator
+from typing import Iterator, Optional, Sequence
 
 import torch
 
@@ -67,8 +67,41 @@ class BayesianModule(torch.nn.Module, ABC):
             return module.device
 
     @property
-    def dtype(self) -> torch.device:
+    def dtype(self) -> torch.dtype:
         for parameter in self.parameters():
             return parameter.dtype
         for module in self.bayesian_modules():
             return module.dtype
+
+    def sample_noise(
+        self,
+        dim_batch: Optional[Sequence[int]] = None,
+        dim_expand: Optional[Sequence[int]] = None,
+        dim_sample: Optional[Sequence[int]] = None,
+    ) -> torch.Tensor:
+        if dim_batch is None:
+            dim_batch = tuple()
+        if dim_sample is None:
+            dim_sample = tuple()
+        if dim_expand is None:
+            dim_expand = tuple()
+
+        noise = torch.normal(
+            mean=0,
+            std=1,
+            size=list(dim_batch) + list(dim_sample),
+            dtype=self.dtype,
+            device=self.device,
+        )
+
+        noise = noise.reshape(
+            *dim_batch,
+            *([1] * len(dim_expand)),
+            *dim_sample,
+        )
+        noise = noise.expand(
+            *dim_batch,
+            *dim_expand,
+            *dim_sample,
+        )
+        return noise

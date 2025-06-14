@@ -211,7 +211,11 @@ def train_classical_model(
 ) -> List[float]:
     model.train()
     loss_train = []
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=weight_decay)
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=0.01,
+        weight_decay=weight_decay,
+    )
     for batch in dataset.to_bathes(batch_size=None, shuffle=False, num_epochs=5_000):
         optimizer.zero_grad()
         loss = model.loss(

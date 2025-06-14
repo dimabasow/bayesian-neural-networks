@@ -21,6 +21,12 @@ class BayesianNeuralNetworkHead(BayesianModule, ABC):
         self.name_in = name_in
         self.name_out = name_out
         self.name_target = name_target
+        self.__device_parameter = torch.nn.Parameter(
+            data=torch.tensor(
+                data=0,
+                dtype=torch.float32,
+            )
+        )
 
     @abstractmethod
     def negative_likelihood(

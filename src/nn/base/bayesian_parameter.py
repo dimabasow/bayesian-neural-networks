@@ -44,7 +44,8 @@ class BayesianParameter(BayesianModule):
 
     def get_init_gamma(self) -> torch.Tensor:
         return (
-            torch.randn_like(self.gamma) * self.softplus(self.init_parameters[0])
+            torch.randn_like(self.gamma) *
+            self.softplus(self.init_parameters[0])
             + self.init_parameters[1]
         )
 
@@ -75,39 +76,6 @@ class BayesianParameter(BayesianModule):
         gamma_pow_2 = gamma**2
         kl = (torch.log(1 + gamma_pow_2)).sum() / 2
         return kl
-
-    def sample_noise(
-        self,
-        dim_batch: Optional[Sequence[int]] = None,
-        dim_expand: Optional[Sequence[int]] = None,
-        dim_sample: Optional[Sequence[int]] = None,
-    ) -> torch.Tensor:
-        if dim_batch is None:
-            dim_batch = tuple()
-        if dim_sample is None:
-            dim_sample = tuple()
-        if dim_expand is None:
-            dim_expand = tuple()
-
-        noise = torch.normal(
-            mean=0,
-            std=1,
-            size=list(dim_batch) + list(dim_sample),
-            dtype=self.dtype,
-            device=self.device,
-        )
-
-        noise = noise.reshape(
-            *dim_batch,
-            *([1] * len(dim_expand)),
-            *dim_sample,
-        )
-        noise = noise.expand(
-            *dim_batch,
-            *dim_expand,
-            *dim_sample,
-        )
-        return noise
 
     def sample(
         self,
@@ -243,11 +211,11 @@ class BayesianParameter(BayesianModule):
     ) -> torch.Tensor:
         dim_batch_expand = x.shape[:-1]
         if self.training:
-            dim_expand = None
             dim_batch = dim_batch_expand
+            dim_expand = None
         else:
-            dim_expand = dim_batch_expand[1:]
             dim_batch = dim_batch_expand[:1]
+            dim_expand = dim_batch_expand[1:]
         sigma = next(self.get_sigma())
         gamma = next(self.get_gamma())
         mu = gamma * sigma
