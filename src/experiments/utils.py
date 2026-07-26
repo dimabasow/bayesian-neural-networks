@@ -40,7 +40,12 @@ def inference_binary_perceptrone(
     dataset: TorchTabularDataset,
     batch_size: Optional[int],
     sample_size: int,
+    random_seed: int = 0,
 ) -> pl.DataFrame:
+    torch.random.manual_seed(random_seed)
+    random.seed(random_seed)
+    np.random.seed(random_seed)
+
     name_target = dataset.metadata.targets_binary[0]
     result = {
         "score": [],
