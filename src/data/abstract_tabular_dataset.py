@@ -162,20 +162,6 @@ class AbstractTabularDataset(ABC):
             target=target,
         )
 
-    def to_epochs(
-        self,
-        batch_size: Optional[int],
-        shuffle: bool = False,
-        num_epochs: Optional[int] = 1,
-    ) -> Iterator[Iterator[TableItem]]:
-        idx = np.arange(len(self))
-        count = 0
-        while num_epochs is None or count < num_epochs:
-            count += 1
-            if shuffle and batch_size is not None:
-                np.random.shuffle(idx)
-            yield self.__get_batches(idx=idx, batch_size=batch_size)
-
     def to_bathes(
         self,
         batch_size: Optional[int],

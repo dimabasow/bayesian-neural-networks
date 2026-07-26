@@ -81,6 +81,7 @@ def train_bayesian_model(
     optimizer: str = "Adam",
     lr: float = 0.1,
     num_epoch: int = 1000,
+    batch_size: int | None = None,
 ) -> List[float]:
     optimizer: torch.optim.Optimizer = getattr(torch.optim, optimizer)(
         model.parameters(),
@@ -89,8 +90,8 @@ def train_bayesian_model(
     )
     model.train()
     loss_train = []
-    for epoch_num, batch in enumerate(
-        dataset.to_bathes(batch_size=None, shuffle=False, num_epochs=num_epoch)
+    for _, batch in enumerate(
+        dataset.to_bathes(batch_size=batch_size, shuffle=True, num_epochs=num_epoch)
     ):
         optimizer.zero_grad()
         loss = model.loss(
@@ -208,6 +209,7 @@ def train_classical_model(
     dataset: TorchTabularDataset,
     model: BayesianNeuralNetwork,
     weight_decay: float = 0,
+    batch_size: int | None = None,
 ) -> List[float]:
     model.train()
     loss_train = []
@@ -216,7 +218,7 @@ def train_classical_model(
         lr=0.01,
         weight_decay=weight_decay,
     )
-    for batch in dataset.to_bathes(batch_size=None, shuffle=False, num_epochs=5_000):
+    for batch in dataset.to_bathes(batch_size=batch_size, shuffle=True, num_epochs=5_000):
         optimizer.zero_grad()
         loss = model.loss(
             features=batch.features_numeric,
