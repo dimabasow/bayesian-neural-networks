@@ -21,7 +21,7 @@ class BayesianParameter(BayesianModule):
             torch.empty(size=list(size), **factory_kwargs),
         )
         self.init_parameters = torch.nn.Parameter(
-            data=torch.zeros(size=[4], **factory_kwargs),
+            data=torch.randn(size=[4], **factory_kwargs),
         )
         self.reset_parameters()
 
@@ -45,13 +45,13 @@ class BayesianParameter(BayesianModule):
     def get_init_gamma(self) -> torch.Tensor:
         return (
             torch.randn_like(self.gamma) *
-            self.softplus(self.init_parameters[0])
+            self.init_parameters[0].abs()
             + self.init_parameters[1]
         )
 
     def get_init_rho(self) -> torch.Tensor:
         return (
-            torch.randn_like(self.rho) * self.softplus(self.init_parameters[2])
+            torch.randn_like(self.rho) * self.init_parameters[2].abs()
             + self.init_parameters[3]
         )
 

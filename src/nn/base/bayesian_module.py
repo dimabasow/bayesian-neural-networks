@@ -46,12 +46,12 @@ class BayesianModule(torch.nn.Module, ABC):
     def get_sigma(self) -> Iterator[torch.nn.Parameter]:
         for module in self.bayesian_modules():
             for rho in module.get_rho():
-                yield self.softplus(rho)
+                yield rho.abs()
 
     def get_mu(self) -> Iterator[torch.nn.Parameter]:
         for module in self.bayesian_modules():
             for gamma, rho in zip(module.get_gamma(), module.get_rho()):
-                yield gamma * self.softplus(rho)
+                yield gamma * rho.abs()
 
     def get_kl(self) -> torch.Tensor:
         kl = torch.zeros(size=[], dtype=self.dtype, device=self.device)
