@@ -158,7 +158,7 @@ def make_experiment_bayesian_binary_perceptrone(
         model=model,
         optimizer="Adam",
         lr=0.1,
-        num_epoch=2000,
+        num_epoch=3000,
     )
     loss_train.extend(
         train_bayesian_model(
@@ -166,6 +166,33 @@ def make_experiment_bayesian_binary_perceptrone(
             model=model,
             optimizer="Adam",
             lr=0.01,
+            num_epoch=1000,
+        )
+    )
+    loss_train.extend(
+        train_bayesian_model(
+            dataset=dataset_train,
+            model=model,
+            optimizer="Adam",
+            lr=0.001,
+            num_epoch=1000,
+        )
+    )
+    loss_train.extend(
+        train_bayesian_model(
+            dataset=dataset_train,
+            model=model,
+            optimizer="Adam",
+            lr=0.0001,
+            num_epoch=1000,
+        )
+    )
+    loss_train.extend(
+        train_bayesian_model(
+            dataset=dataset_train,
+            model=model,
+            optimizer="Adam",
+            lr=0.00001,
             num_epoch=1000,
         )
     )
