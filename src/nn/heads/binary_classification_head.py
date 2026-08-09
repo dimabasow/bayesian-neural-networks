@@ -15,7 +15,7 @@ class BinaryClassificationHead(BayesianNeuralNetworkHead):
     ) -> torch.Tensor:
         return binary_cross_entropy_with_logits(
             input=x,
-            target=y.view(-1, 1),
+            target=y.view_as(x),
             weight=mask,
             reduction="mean",
         )
