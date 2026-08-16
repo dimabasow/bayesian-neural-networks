@@ -7,8 +7,10 @@ import numpy as np
 import polars as pl
 import torch
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
 
 from src.data.torch_tabular_dataset import TorchTabularDataset
+from src.data.preprocessing.preprocessor import RuleTransform, Preprocessor
 from src.nn import BayesianBinaryPerceptrone, BayesianNeuralNetwork, BinaryPerceptrone
 
 
@@ -116,12 +118,13 @@ def make_experiment_bayesian_binary_perceptrone(
     dataset_test: TorchTabularDataset,
     dim_hidden: int,
     n_hidden: int,
+    f_act: "str",
     batch_size_inference: Optional[int],
     sample_size_inference: int,
     random_seed: int,
     log_loss_init: bool = False,
     log_loss_train: bool = False,
-):
+) -> dict[str, float]:
     torch.random.manual_seed(random_seed)
     random.seed(random_seed)
     np.random.seed(random_seed)
@@ -132,7 +135,7 @@ def make_experiment_bayesian_binary_perceptrone(
         name_target=name_target,
         dim_in=len(dataset_train.metadata.features_numeric),
         dims_hidden=[dim_hidden] * n_hidden,
-        f_act="ReLU",
+        f_act=f_act,
         batch_norm=False,
         batch_affine=False,
         batch_penalty=False,
@@ -260,6 +263,7 @@ def make_experiment_classical_binary_perceptrone(
     dataset_test: TorchTabularDataset,
     dim_hidden: int,
     n_hidden: int,
+    f_act: "str",
     weight_decay: float,
     random_seed: int,
     log_loss_train: bool = False,
@@ -274,7 +278,7 @@ def make_experiment_classical_binary_perceptrone(
         name_target=name_target,
         dim_in=len(dataset_train.metadata.features_numeric),
         dims_hidden=[dim_hidden] * n_hidden,
-        f_act="ReLU",
+        f_act=f_act,
     ).cuda()
 
     loss_train = train_classical_model(
@@ -317,89 +321,148 @@ def make_experiment_binary_perceptrone(
     dataset_test: TorchTabularDataset,
     dim_hidden: int,
     n_hidden: int,
-    weight_decays_classic: List[float],
+    f_act: "str",
     batch_size_inference_bayesian: Optional[int],
     sample_size_inference_bayesian: int,
     random_seed: int,
     log_loss_init: bool = False,
     log_loss_train: bool = False,
-) -> Dict:
-    result = {}
+) -> dict[str, dict[str, float]]:
+    result = {
+        "random_seed": random_seed,
+        "n_hidden": n_hidden,
+        "dim_hidden": dim_hidden,
+        "f_act": f_act,
+    }
     result["bayesian"] = make_experiment_bayesian_binary_perceptrone(
         dataset_train=dataset_train,
         dataset_test=dataset_test,
         dim_hidden=dim_hidden,
         n_hidden=n_hidden,
+        f_act=f_act,
         batch_size_inference=batch_size_inference_bayesian,
         sample_size_inference=sample_size_inference_bayesian,
         random_seed=random_seed,
         log_loss_init=log_loss_init,
         log_loss_train=log_loss_train,
     )
-    for weight_decay in weight_decays_classic:
-        result[f"classic_{weight_decay}"] = (
-            make_experiment_classical_binary_perceptrone(
-                dataset_train=dataset_train,
-                dataset_test=dataset_test,
-                dim_hidden=dim_hidden,
-                n_hidden=n_hidden,
-                weight_decay=weight_decay,
-                random_seed=random_seed,
-                log_loss_train=log_loss_train,
-            )
+    result["classic"] = (
+        make_experiment_classical_binary_perceptrone(
+            dataset_train=dataset_train,
+            dataset_test=dataset_test,
+            dim_hidden=dim_hidden,
+            n_hidden=n_hidden,
+            f_act=f_act,
+            weight_decay=0,
+            random_seed=random_seed,
+            log_loss_train=log_loss_train,
         )
+    )
     return result
 
 
 def make_experiments_binary_perceptrone(
     path_to_save: str,
-    dims_hidden: List[int],
-    dataset_train: TorchTabularDataset,
-    dataset_test: TorchTabularDataset,
-    n_hidden: int,
-    weight_decays_classic: List[float],
+    df: pl.DataFrame,
+    rules_tranform: list[RuleTransform],
+    n_hidden_layers: list[int],
+    dims_hidden: list[int],
+    random_seeds: list[int],
+    f_act: str,
     batch_size_inference_bayesian: Optional[int],
     sample_size_inference_bayesian: int,
-    random_seed: int,
 ):
     if not os.path.exists(path=path_to_save):
         os.mkdir(path=path_to_save)
-    data = []
-    for dim_hidden in dims_hidden:
-        path_output = os.path.join(
-            path_to_save, f"n_hidden_{n_hidden}_dim_hidden_{dim_hidden}.json"
-        )
-        if not os.path.exists(path=path_output):
-            result = make_experiment_binary_perceptrone(
-                dataset_train=dataset_train,
-                dataset_test=dataset_test,
-                dim_hidden=dim_hidden,
-                n_hidden=n_hidden,
-                weight_decays_classic=weight_decays_classic,
-                batch_size_inference_bayesian=batch_size_inference_bayesian,
-                sample_size_inference_bayesian=sample_size_inference_bayesian,
-                random_seed=random_seed,
-            )
-            with open(path_output, "w") as f:
-                json.dump(result, f, indent=4)
-        else:
-            with open(path_output, "r") as f:
-                result = json.load(f)
-                for experiment in tuple(result.keys()):
-                    for metric in tuple(result[experiment].keys()):
-                        result[f"{experiment}_{metric}"] = result[experiment][metric]
-                    result.pop(experiment)
-                result["n_hidden"] = n_hidden
-                result["dim_hidden"] = dim_hidden
-                data.append(result)
-    df = pl.DataFrame(data).sort("dim_hidden")
-    df = df[
-        ["n_hidden", "dim_hidden"]
-        + [column for column in df.columns if column not in ["n_hidden", "dim_hidden"]]
-    ]
-    df.write_csv(
-        os.path.join(
-            path_to_save,
-            f"n_hidden_{n_hidden}_dims_hidden_{dims_hidden[0]}_{dims_hidden[-1]}.csv",
-        )
-    )
+    for random_seed in random_seeds:
+        df_train, df_test = train_test_split(df, test_size=0.2, random_state=random_seed)
+        preprocessor = Preprocessor.from_rules(*rules_tranform)
+        df_train_transformed = preprocessor.fit_transform(data=df_train)
+        df_test_transformed = preprocessor.transform(data=df_test)
+
+        dataset_train = TorchTabularDataset(
+            df=df_train_transformed,
+            metadata=preprocessor.metadata,
+        ).cuda()
+        dataset_test = TorchTabularDataset(
+            df=df_test_transformed,
+            metadata=preprocessor.metadata,
+        ).cuda()
+        results = []
+        for dim_hidden in dims_hidden:
+            for n_hidden in n_hidden_layers:
+                path_output = os.path.join(
+                    path_to_save, f"n_hidden_{n_hidden}_dim_hidden_{dim_hidden}_f_act_{f_act}.json"
+                )
+                if not os.path.exists(path=path_output):
+                    result = make_experiment_binary_perceptrone(
+                        dataset_train=dataset_train,
+                        dataset_test=dataset_test,
+                        dim_hidden=dim_hidden,
+                        n_hidden=n_hidden,
+                        f_act=f_act,
+                        batch_size_inference_bayesian=batch_size_inference_bayesian,
+                        sample_size_inference_bayesian=sample_size_inference_bayesian,
+                        random_seed=random_seed,
+                    )
+                    with open(path_output, "w") as f:
+                        json.dump(result, f, indent=4)
+                else:
+                    with open(path_output, "r") as f:
+                        result = json.load(f)
+                results.append(result)
+    return results
+
+
+# def make_experiments_binary_perceptrone(
+#     path_to_save: str,
+#     dims_hidden: List[int],
+#     dataset_train: TorchTabularDataset,
+#     dataset_test: TorchTabularDataset,
+#     n_hidden: int,
+#     weight_decays_classic: List[float],
+#     batch_size_inference_bayesian: Optional[int],
+#     sample_size_inference_bayesian: int,
+#     random_seed: int,
+# ):
+#     if not os.path.exists(path=path_to_save):
+#         os.mkdir(path=path_to_save)
+#     data = []
+#     for dim_hidden in dims_hidden:
+#         path_output = os.path.join(
+#             path_to_save, f"n_hidden_{n_hidden}_dim_hidden_{dim_hidden}.json"
+#         )
+#         if not os.path.exists(path=path_output):
+#             result = make_experiment_binary_perceptrone(
+#                 dataset_train=dataset_train,
+#                 dataset_test=dataset_test,
+#                 dim_hidden=dim_hidden,
+#                 n_hidden=n_hidden,
+#                 weight_decays_classic=weight_decays_classic,
+#                 batch_size_inference_bayesian=batch_size_inference_bayesian,
+#                 sample_size_inference_bayesian=sample_size_inference_bayesian,
+#                 random_seed=random_seed,
+#             )
+#             with open(path_output, "w") as f:
+#                 json.dump(result, f, indent=4)
+#         else:
+#             with open(path_output, "r") as f:
+#                 result = json.load(f)
+#                 for experiment in tuple(result.keys()):
+#                     for metric in tuple(result[experiment].keys()):
+#                         result[f"{experiment}_{metric}"] = result[experiment][metric]
+#                     result.pop(experiment)
+#                 result["n_hidden"] = n_hidden
+#                 result["dim_hidden"] = dim_hidden
+#                 data.append(result)
+#     df = pl.DataFrame(data).sort("dim_hidden")
+#     df = df[
+#         ["n_hidden", "dim_hidden"]
+#         + [column for column in df.columns if column not in ["n_hidden", "dim_hidden"]]
+#     ]
+#     df.write_csv(
+#         os.path.join(
+#             path_to_save,
+#             f"n_hidden_{n_hidden}_dims_hidden_{dims_hidden[0]}_{dims_hidden[-1]}.csv",
+#         )
+#     )
