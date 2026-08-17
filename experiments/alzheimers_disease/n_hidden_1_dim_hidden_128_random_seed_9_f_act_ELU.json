@@ -1,0 +1,14 @@
+{
+    "random_seed": 9,
+    "n_hidden": 1,
+    "dim_hidden": 128,
+    "f_act": "ELU",
+    "bayesian": {
+        "roc_auc_train": 0.9581532271187444,
+        "roc_auc_test": 0.9326354767499822
+    },
+    "classic": {
+        "roc_auc_train": 1.0,
+        "roc_auc_test": 0.8121602696479862
+    }
+}
