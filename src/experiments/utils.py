@@ -392,7 +392,7 @@ def make_experiments_binary_perceptrone(
         for dim_hidden in dims_hidden:
             for n_hidden in n_hidden_layers:
                 path_output = os.path.join(
-                    path_to_save, f"n_hidden_{n_hidden}_dim_hidden_{dim_hidden}_f_act_{f_act}.json"
+                    path_to_save, f"n_hidden_{n_hidden}_dim_hidden_{dim_hidden}_random_seed_{random_seed}_f_act_{f_act}.json"
                 )
                 if not os.path.exists(path=path_output):
                     result = make_experiment_binary_perceptrone(
